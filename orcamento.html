@@ -141,6 +141,13 @@
       gap: 10px;
     }
 
+    .row-item-form {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
     .pill-btn {
       display: flex;
       align-items: center;
@@ -150,11 +157,9 @@
       color: white;
       border: none;
       border-radius: 20px;
-      padding: 10px 18px;
-      font-size: 0.82rem;
+      padding: 8px 14px;
+      font-size: 0.78rem;
       font-weight: 600;
-      width: 100%;
-      margin: 10px 0;
       cursor: pointer;
       box-shadow: 0 2px 6px rgba(0, 102, 255, 0.2);
     }
@@ -175,24 +180,6 @@
       margin-top: 14px;
       box-shadow: 0 4px 12px rgba(0, 85, 255, 0.3);
       cursor: pointer;
-    }
-
-    .table-simples {
-      width: 100%;
-      font-size: 0.8rem;
-      border-collapse: collapse;
-      margin-top: 8px;
-    }
-
-    .table-simples th, .table-simples td {
-      padding: 6px 4px;
-      border-bottom: 1px solid #f1f5f9;
-      text-align: left;
-    }
-
-    .table-simples th {
-      color: #64748b;
-      font-weight: 600;
     }
   </style>
 </head>
@@ -217,7 +204,7 @@
             <div class="data-card-header"><span>Dados Principais</span> <span style="color:#d97706; background:#fef3c7; padding:2px 8px; border-radius:10px; font-size:0.7rem;">Pendente</span></div>
             <div class="form-group">
               <label>Nº do Orçamento:</label>
-              <input type="text" id="orcNum" value="ORC-000125" readonly>
+              <input type="text" id="orcNum" value="ORC-000125">
             </div>
             <div class="form-group">
               <label>Data de Emissão:</label>
@@ -225,19 +212,19 @@
             </div>
             <div class="form-group">
               <label>Validade:</label>
-              <input type="text" id="orcValidade" value="7 dias (até 30/09/2026)">
+              <input type="text" id="orcValidade" placeholder="Ex: 7 dias (até 30/09/2026)">
             </div>
             <div class="form-group">
               <label>Cliente (Razão Social):</label>
-              <input type="text" id="cliNome" placeholder="Ex: Clínica Odontológica Sorriso Feliz" value="Clínica Odontológica Sorriso Feliz">
+              <input type="text" id="cliNome" placeholder="Digite o nome do cliente...">
             </div>
             <div class="form-group">
               <label>CPF / CNPJ / Resp:</label>
-              <input type="text" id="cliCnpj" value="12.345.678/0001-90 - Maria Silva">
+              <input type="text" id="cliCnpj" placeholder="00.000.000/0001-00 - Responsável">
             </div>
             <div class="form-group">
               <label>Equipamento / Marca:</label>
-              <input type="text" id="eqInfo" value="Cadeira Odontológica KaVo UniK (N/S: K123456)">
+              <input type="text" id="eqInfo" placeholder="Ex: Cadeira Odontológica KaVo">
             </div>
           </div>
           <button type="button" class="next-btn" onclick="proximaEtapa(2)">Próximo &rarr;</button>
@@ -248,11 +235,11 @@
           <div class="data-card">
             <div class="data-card-header">Problema Identificado *</div>
             <div class="form-group">
-              <textarea id="probRelato" placeholder="Descreva o problema encontrado no equipamento...">A cadeira para na posição mais baixa e o motor faz um barulho estranho ao tentar subir.</textarea>
+              <textarea id="probRelato" placeholder="Descreva o problema encontrado no equipamento..."></textarea>
             </div>
             <div class="form-group">
               <label>Diagnóstico Técnico *</label>
-              <textarea id="diagTecnico" placeholder="Informe o diagnóstico técnico realizado...">Falha no atuador do sistema de elevação. Solenoide com defeito e desgaste no atuador.</textarea>
+              <textarea id="diagTecnico" placeholder="Informe o diagnóstico técnico realizado..."></textarea>
             </div>
             <div class="form-group">
               <label>Fotos do Equipamento (Opcional)</label>
@@ -262,30 +249,64 @@
           <button type="button" class="next-btn" onclick="proximaEtapa(3)">Próximo &rarr;</button>
         </div>
 
-        <!-- ETAPA 3: SERVIÇOS E PEÇAS -->
+        <!-- ETAPA 3: SERVIÇOS E PEÇAS (TOTALMENTE PREENCHÍVEL PELO USUÁRIO) -->
         <div class="tab-step" id="step3">
           <div class="data-card">
-            <div class="data-card-header"><span>Serviços</span> <button type="button" style="background:none; border:none; color:#0066ff; font-weight:700; cursor:pointer;">+ Adicionar</button></div>
-            <table class="table-simples">
-              <tr><th>Serviço</th><th>Qtd</th><th>Valor Unit.</th></tr>
-              <tr><td>Mão de obra para reparo</td><td>1</td><td>R$ 450,00</td></tr>
-              <tr><td>Regulagem do sistema</td><td>1</td><td>R$ 150,00</td></tr>
-            </table>
+            <div class="data-card-header">
+              <span>Serviços Realizados</span>
+            </div>
+            <div class="form-group">
+              <label>Descrição do Serviço / Mão de Obra:</label>
+              <input type="text" id="srvDesc" placeholder="Ex: Reparo no sistema de elevação">
+            </div>
+            <div class="row-2">
+              <div class="form-group">
+                <label>Qtd:</label>
+                <input type="number" id="srvQtd" value="1" min="1" oninput="calcularTotalEtapa3()">
+              </div>
+              <div class="form-group">
+                <label>Valor Unit. (R$):</label>
+                <input type="text" id="srvValor" placeholder="0,00" oninput="calcularTotalEtapa3()">
+              </div>
+            </div>
           </div>
 
           <div class="data-card">
-            <div class="data-card-header"><span>Peças</span> <button type="button" style="background:none; border:none; color:#0066ff; font-weight:700; cursor:pointer;">+ Adicionar</button></div>
-            <table class="table-simples">
-              <tr><th>Peça</th><th>Qtd</th><th>Valor Unit.</th></tr>
-              <tr><td>Atuador</td><td>1</td><td>R$ 1.450,00</td></tr>
-              <tr><td>Solenoide</td><td>1</td><td>R$ 380,00</td></tr>
-              <tr><td>Conector e cabos</td><td>1</td><td>R$ 120,00</td></tr>
-            </table>
+            <div class="data-card-header">
+              <span>Peças e Componentes</span>
+            </div>
+            <div class="form-group">
+              <label>Nome da Peça:</label>
+              <input type="text" id="pecaDesc" placeholder="Ex: Atuador / Solenoide">
+            </div>
+            <div class="row-2">
+              <div class="form-group">
+                <label>Qtd:</label>
+                <input type="number" id="pecaQtd" value="1" min="1" oninput="calcularTotalEtapa3()">
+              </div>
+              <div class="form-group">
+                <label>Valor Unit. (R$):</label>
+                <input type="text" id="pecaValor" placeholder="0,00" oninput="calcularTotalEtapa3()">
+              </div>
+            </div>
           </div>
 
           <div class="data-card">
-            <div class="data-card-header">Materiais e insumos</div>
-            <input type="text" id="matInsumos" value="R$ 200,00" placeholder="Ex: parafusos, lubrificantes">
+            <div class="data-card-header">Materiais, Insumos e Deslocamento</div>
+            <div class="row-2">
+              <div class="form-group">
+                <label>Materiais (R$):</label>
+                <input type="text" id="matValor" placeholder="0,00" oninput="calcularTotalEtapa3()">
+              </div>
+              <div class="form-group">
+                <label>Deslocamento (R$):</label>
+                <input type="text" id="deslValor" placeholder="0,00" oninput="calcularTotalEtapa3()">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Desconto (R$):</label>
+              <input type="text" id="descValor" placeholder="0,00" oninput="calcularTotalEtapa3()">
+            </div>
           </div>
 
           <button type="button" class="next-btn" onclick="proximaEtapa(4)">Próximo &rarr;</button>
@@ -295,22 +316,22 @@
         <div class="tab-step" id="step4">
           <div class="data-card">
             <div class="data-card-header">Resumo Financeiro</div>
-            <div class="detail-row" style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.85rem;"><span>Mão de obra:</span> <strong>R$ 600,00</strong></div>
-            <div class="detail-row" style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.85rem;"><span>Peças:</span> <strong>R$ 1.950,00</strong></div>
-            <div class="detail-row" style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.85rem;"><span>Materiais:</span> <strong>R$ 120,00</strong></div>
-            <div class="detail-row" style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.85rem;"><span>Deslocamento:</span> <strong>R$ 0,00</strong></div>
-            <div class="detail-row" style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:0.85rem;"><span>Desconto:</span> <strong>R$ 0,00</strong></div>
+            <div class="detail-row" style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.85rem;"><span>Serviço / Mão de obra:</span> <strong id="resSrv">R$ 0,00</strong></div>
+            <div class="detail-row" style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.85rem;"><span>Peças:</span> <strong id="resPeca">R$ 0,00</strong></div>
+            <div class="detail-row" style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.85rem;"><span>Materiais:</span> <strong id="resMat">R$ 0,00</strong></div>
+            <div class="detail-row" style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.85rem;"><span>Deslocamento:</span> <strong id="resDesl">R$ 0,00</strong></div>
+            <div class="detail-row" style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:0.85rem;"><span>Desconto:</span> <strong id="resDesc">R$ 0,00</strong></div>
 
             <div style="background:#003b8e; color:white; padding:12px; border-radius:8px; display:flex; justify-content:space-between; font-weight:800; font-size:1.1rem;">
               <span>TOTAL</span>
-              <span id="lblTotalFin">R$ 2.670,00</span>
+              <span id="lblTotalFin">R$ 0,00</span>
             </div>
 
             <div class="form-group" style="margin-top: 14px;">
               <label>Condições de Pagamento *</label>
               <select id="condPagamento">
-                <option value="PIX">PIX / Dinheiro / Cartão / Transferência</option>
-                <option value="Boleto">Boleto Bancário</option>
+                <option value="PIX / Dinheiro / Cartão">PIX / Dinheiro / Cartão / Transferência</option>
+                <option value="Boleto Bancário">Boleto Bancário</option>
               </select>
             </div>
             <div class="form-group">
@@ -327,31 +348,31 @@
             <div class="data-card-header">Prazo de Execução</div>
             <div class="form-group">
               <label>Prazo Estimado:</label>
-              <input type="text" id="prazEst" value="5 dias úteis">
+              <input type="text" id="prazEst" placeholder="Ex: 5 dias úteis">
             </div>
             <div class="row-2">
               <div class="form-group">
                 <label>Início Previsto:</label>
-                <input type="text" id="prazIni" value="26/09/2026">
+                <input type="text" id="prazIni" placeholder="DD/MM/AAAA">
               </div>
               <div class="form-group">
                 <label>Conclusão Prevista:</label>
-                <input type="text" id="prazFim" value="30/09/2026">
+                <input type="text" id="prazFim" placeholder="DD/MM/AAAA">
               </div>
             </div>
 
             <div class="data-card-header" style="margin-top:16px;">Garantia</div>
             <div class="form-group">
               <label>Garantia do Serviço:</label>
-              <input type="text" id="garServico" value="90 dias">
+              <input type="text" id="garServico" placeholder="Ex: 90 dias">
             </div>
             <div class="form-group">
               <label>Garantia das Peças:</label>
-              <input type="text" id="garPecas" value="Conforme fabricante">
+              <input type="text" id="garPecas" placeholder="Ex: Conforme fabricante">
             </div>
             <div class="form-group">
               <label>Condições da Garantia:</label>
-              <textarea id="garCond">A garantia não cobre mau uso, quedas, sobrecarga elétrica ou danos causados por terceiros.</textarea>
+              <textarea id="garCond" placeholder="Descreva as condições da garantia..."></textarea>
             </div>
           </div>
           <button type="button" class="next-btn" onclick="proximaEtapa(6)">Próximo &rarr;</button>
@@ -362,17 +383,17 @@
           <div class="data-card">
             <div class="data-card-header">Observações Gerais</div>
             <div class="form-group">
-              <textarea id="obsGerais" placeholder="Adicione observações importantes para o cliente...">O orçamento inclui a substituição do atuador, verificação elétrica e teste completo do equipamento.</textarea>
+              <textarea id="obsGerais" placeholder="Adicione observações importantes para o cliente..."></textarea>
             </div>
             <div class="form-group">
               <label>Condição do Orçamento:</label>
-              <textarea id="obsCond">Orçamento válido por 7 dias, sujeito a alteração sem aviso prévio.</textarea>
+              <textarea id="obsCond" placeholder="Ex: Orçamento válido por 7 dias..."></textarea>
             </div>
           </div>
           <button type="button" class="next-btn" onclick="proximaEtapa(7)">Próximo &rarr;</button>
         </div>
 
-        <!-- ETAPA 7 (Original 8): AÇÕES FINAIS E GERAR PDF -->
+        <!-- ETAPA 7: AÇÕES FINAIS E GERAR PDF -->
         <div class="tab-step" id="step7">
           <div class="data-card" style="text-align: center;">
             <div class="data-card-header" style="justify-content:center;">Arquivos e Envio</div>
@@ -407,20 +428,47 @@
       }
     }
 
-    // Função para gerar o PDF formatado em A4 com base em todas as etapas preenchidas
+    // Função para calcular os valores preenchidos na Etapa 3 e atualizar o resumo financeiro
+    function calcularTotalEtapa3() {
+      const parseMoeda = (val) => parseFloat(val.replace('R$', '').replace(/\./g, '').replace(',', '.').trim()) || 0;
+
+      const srvQtd = parseFloat(document.getElementById('srvQtd').value) || 0;
+      const srvValor = parseMoeda(document.getElementById('srvValor').value);
+      const totalSrv = srvQtd * srvValor;
+
+      const pecaQtd = parseFloat(document.getElementById('pecaQtd').value) || 0;
+      const pecaValor = parseMoeda(document.getElementById('pecaValor').value);
+      const totalPeca = pecaQtd * pecaValor;
+
+      const matValor = parseMoeda(document.getElementById('matValor').value);
+      const deslValor = parseMoeda(document.getElementById('deslValor').value);
+      const descValor = parseMoeda(document.getElementById('descValor').value);
+
+      const totalGeral = (totalSrv + totalPeca + matValor + deslValor) - descValor;
+
+      // Exibe no Resumo Financeiro (Etapa 4)
+      document.getElementById('resSrv').innerText = totalSrv.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      document.getElementById('resPeca').innerText = totalPeca.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      document.getElementById('resMat').innerText = matValor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      document.getElementById('resDesl').innerText = deslValor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      document.getElementById('resDesc').innerText = descValor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      document.getElementById('lblTotalFin').innerText = totalGeral.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    // Função para gerar o PDF formatado em A4 com base no que o usuário preencheu
     function gerarPDFOrcamentoCompleto() {
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF('p', 'mm', 'a4');
 
       const numOrc = document.getElementById('orcNum').value;
-      const cliente = document.getElementById('cliNome').value;
-      const equip = document.getElementById('eqInfo').value;
-      const problema = document.getElementById('probRelato').value;
-      const diagnostico = document.getElementById('diagTecnico').value;
+      const cliente = document.getElementById('cliNome').value || 'Cliente Geral';
+      const equip = document.getElementById('eqInfo').value || 'Equipamento Odontológico';
+      const problema = document.getElementById('probRelato').value || 'N/A';
+      const diagnostico = document.getElementById('diagTecnico').value || 'N/A';
       const totalFin = document.getElementById('lblTotalFin').innerText;
-      const prazo = document.getElementById('prazEst').value;
-      const garantia = document.getElementById('garServico').value;
-      const obs = document.getElementById('obsGerais').value;
+      const prazo = document.getElementById('prazEst').value || 'A combinar';
+      const garantia = document.getElementById('garServico').value || 'N/A';
+      const obs = document.getElementById('obsGerais').value || 'N/A';
       const dataEmissao = document.getElementById('orcData').value;
 
       const imgLogo = new Image();
@@ -455,7 +503,6 @@
 
       let y = 42;
 
-      // Título e OS
       doc.setTextColor(15, 23, 42);
       doc.setFontSize(15);
       doc.setFont("helvetica", "bold");
@@ -474,7 +521,6 @@
 
       y += 16;
 
-      // Dados do Cliente e Equipamento
       doc.setFontSize(9.5);
       doc.setTextColor(51, 65, 85);
       doc.setFont("helvetica", "normal");
@@ -483,7 +529,6 @@
 
       y += 16;
 
-      // Problema e Diagnóstico
       doc.setFillColor(240, 244, 248);
       doc.rect(15, y, 180, 7, "F");
       doc.setFont("helvetica", "bold");
@@ -497,7 +542,6 @@
 
       y += 16;
 
-      // Total e Prazos
       doc.setFillColor(240, 246, 255);
       doc.roundedRect(15, y, 180, 16, 3, 3, "FD");
       doc.setFont("helvetica", "bold");
@@ -507,7 +551,6 @@
 
       y += 24;
 
-      // Observações
       doc.setFont("helvetica", "bold");
       doc.setTextColor(15, 23, 42);
       doc.text("Observações:", 15, y);
