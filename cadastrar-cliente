@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Cadastrar Cliente - AC Serviços</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: #e2e8f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .app-wrapper {
+      width: 100%;
+      max-width: 420px;
+      background-color: #f8fafc;
+      min-height: 100vh;
+      position: relative;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Cabeçalho Azul */
+    .header-banner {
+      background-color: #003b8e;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #ffffff;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .back-btn {
+      background: none;
+      border: none;
+      color: #ffffff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
+    .header-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-align: right;
+      line-height: 1.1;
+    }
+
+    /* Conteúdo */
+    .container {
+      padding: 16px;
+      flex: 1;
+      overflow-y: auto;
+      padding-bottom: 40px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: #001e50;
+      margin-bottom: 10px;
+      margin-top: 16px;
+    }
+
+    .section-title:first-child {
+      margin-top: 4px;
+    }
+
+    .step-badge {
+      width: 24px;
+      height: 24px;
+      background-color: #0066ff;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .data-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 14px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+      margin-bottom: 14px;
+    }
+
+    /* Seletor Tipo de Cliente */
+    .tipo-cliente-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .tipo-option {
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #f8fafc;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .tipo-option input {
+      accent-color: #0066ff;
+    }
+
+    .tipo-option.selected {
+      border-color: #0066ff;
+      background: #eff6ff;
+      color: #003b8e;
+    }
+
+    /* Formulários */
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-group:last-child {
+      margin-bottom: 0;
+    }
+
+    label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #334155;
+      margin-bottom: 4px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: #1e293b;
+      background-color: #f8fafc;
+      outline: none;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #0066ff;
+      background-color: #ffffff;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 70px;
+    }
+
+    .row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    /* LGPD Box */
+    .lgpd-box {
+      background: #eff6ff;
+      border: 1px solid #dbeafe;
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .lgpd-box svg {
+      color: #0066ff;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .lgpd-box p {
+      font-size: 0.72rem;
+      color: #1e40af;
+      line-height: 1.4;
+    }
+
+    /* Botão Salvar */
+    .save-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #0077ff 0%, #0044cc 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 15px rgba(0, 102, 255, 0.35);
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-wrapper">
+    <!-- Cabeçalho -->
+    <header class="header-banner">
+      <div class="header-left">
+        <button class="back-btn" onclick="window.location.href='clientes.html'">
+          <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" fill="none" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <h1 class="header-title">Cadastrar Cliente</h1>
+      </div>
+      <div class="header-logo">
+        AC SERVIÇOS<br><span style="font-weight: 400; opacity: 0.8;">Sistema de Equipamento</span>
+      </div>
+    </header>
+
+    <main class="container">
+      <form id="clienteForm" onsubmit="salvarCliente(event)">
+
+        <!-- ETAPA 1: Tipo de Cliente -->
+        <div class="section-title">
+          <div class="step-badge">1</div>
+          <span>Tipo de cliente</span>
+        </div>
+        <div class="data-card">
+          <div class="tipo-cliente-grid">
+            <label class="tipo-option selected" id="lblFisica" onclick="mudarTipo('fisica')">
+              <input type="radio" name="tipoCliente" id="tipoFisica" checked> Pessoa Física
+            </label>
+            <label class="tipo-option" id="lblJuridica" onclick="mudarTipo('juridica')">
+              <input type="radio" name="tipoCliente" id="tipoJuridica"> Pessoa Jurídica
+            </label>
+          </div>
+        </div>
+
+        <!-- ETAPA 2: Dados do Cliente -->
+        <div class="section-title">
+          <div class="step-badge">2</div>
+          <span>Dados do cliente</span>
+        </div>
+        <div class="data-card">
+          <div class="form-group">
+            <label>Nome completo</label>
+            <input type="text" id="cliNome" placeholder="Digite o nome completo" required>
+          </div>
+          <div class="form-group">
+            <label id="labelCpfCnpj">CPF</label>
+            <input type="text" id="cliCpfCnpj" placeholder="Digite o CPF">
+          </div>
+          <div class="row-2">
+            <div class="form-group">
+              <label>Telefone</label>
+              <input type="text" id="cliTelefone" placeholder="(00) 00000-0000">
+            </div>
+            <div class="form-group">
+              <label>WhatsApp</label>
+              <input type="text" id="cliWhatsapp" placeholder="(00) 00000-0000">
+            </div>
+          </div>
+          <div class="form-group" style="margin-top: 12px;">
+            <label>E-mail</label>
+            <input type="email" id="cliEmail" placeholder="Digite o e-mail">
+          </div>
+        </div>
+
+        <!-- ETAPA 3: Endereço -->
+        <div class="section-title">
+          <div class="step-badge">3</div>
+          <span>Endereço</span>
+        </div>
+        <div class="data-card">
+          <div class="form-group">
+            <label>CEP</label>
+            <input type="text" id="cliCep" placeholder="Digite o CEP">
+          </div>
+          <div class="form-group" style="margin-top: 12px;">
+            <label>Rua / Avenida</label>
+            <input type="text" id="cliRua" placeholder="Digite o nome da rua">
+          </div>
+          <div class="row-2" style="margin-top: 12px;">
+            <div class="form-group">
+              <label>Nº</label>
+              <input type="text" id="cliNumero" placeholder="Nº">
+            </div>
+            <div class="form-group">
+              <label>Complemento</label>
+              <input type="text" id="cliComplemento" placeholder="Apto, sala, etc.">
+            </div>
+          </div>
+          <div class="form-group" style="margin-top: 12px;">
+            <label>Bairro</label>
+            <input type="text" id="cliBairro" placeholder="Digite o bairro">
+          </div>
+          <div class="row-2" style="margin-top: 12px;">
+            <div class="form-group">
+              <label>Cidade</label>
+              <input type="text" id="cliCidade" placeholder="Digite a cidade">
+            </div>
+            <div class="form-group">
+              <label>Estado</label>
+              <select id="cliEstado">
+                <option value="">Selecione o estado</option>
+                <option value="AC">AC</option><option value="AL">AL</option><option value="AP">AP</option><option value="AM">AM</option><option value="BA">BA</option><option value="CE">CE</option><option value="DF">DF</option><option value="ES">ES</option><option value="GO">GO</option><option value="MA">MA</option><option value="MT">MT</option><option value="MS">MS</option><option value="MG">MG</option><option value="PA">PA</option><option value="PB">PB</option><option value="PR">PR</option><option value="PE">PE</option><option value="PI">PI</option><option value="RJ">RJ</option><option value="RN">RN</option><option value="RS">RS</option><option value="RO">RO</option><option value="RR">RR</option><option value="SC">SC</option><option value="SP">SP</option><option value="SE">SE</option><option value="TO">TO</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- ETAPA 4: Informações Adicionais -->
+        <div class="section-title">
+          <div class="step-badge">4</div>
+          <span>Informações adicionais</span>
+        </div>
+        <div class="data-card">
+          <div class="form-group">
+            <label>Responsável pelo equipamento</label>
+            <input type="text" id="cliResponsavel" placeholder="Nome do responsável (opcional)">
+          </div>
+          <div class="form-group" style="margin-top: 12px;">
+            <label>Observações</label>
+            <textarea id="cliObs" placeholder="Alguma observação adicional? (opcional)" maxlength="500"></textarea>
+          </div>
+        </div>
+
+        <!-- LGPD Aviso -->
+        <div class="lgpd-box">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+          <p>Seus dados serão utilizados apenas para cadastro e contato. Todas as informações estão protegidas e em conformidade com a LGPD.</p>
+        </div>
+
+        <button type="submit" class="save-btn">
+          💾 Salvar Cliente
+        </button>
+
+      </form>
+    </main>
+  </div>
+
+  <script>
+    function mudarTipo(tipo) {
+      const lblFisica = document.getElementById('lblFisica');
+      const lblJuridica = document.getElementById('lblJuridica');
+      const labelCpfCnpj = document.getElementById('labelCpfCnpj');
+      const inputCpfCnpj = document.getElementById('cliCpfCnpj');
+
+      if (tipo === 'fisica') {
+        lblFisica.classList.add('selected');
+        lblJuridica.classList.remove('selected');
+        document.getElementById('tipoFisica').checked = true;
+        labelCpfCnpj.innerText = 'CPF';
+        inputCpfCnpj.placeholder = 'Digite o CPF';
+      } else {
+        lblJuridica.classList.add('selected');
+        lblFisica.classList.remove('selected');
+        document.getElementById('tipoJuridica').checked = true;
+        labelCpfCnpj.innerText = 'CNPJ';
+        inputCpfCnpj.placeholder = 'Digite o CNPJ';
+      }
+    }
+
+    function salvarCliente(event) {
+      event.preventDefault();
+
+      const novoCliente = {
+        nome: document.getElementById('cliNome').value,
+        tipo: document.getElementById('tipoFisica').checked ? 'Pessoa Física' : 'Pessoa Jurídica',
+        cpfCnpj: document.getElementById('cliCpfCnpj').value,
+        telefone: document.getElementById('cliTelefone').value,
+        whatsapp: document.getElementById('cliWhatsapp').value,
+        email: document.getElementById('cliEmail').value,
+        cep: document.getElementById('cliCep').value,
+        rua: document.getElementById('cliRua').value,
+        numero: document.getElementById('cliNumero').value,
+        bairro: document.getElementById('cliBairro').value,
+        cidade: document.getElementById('cliCidade').value,
+        estado: document.getElementById('cliEstado').value,
+        responsavel: document.getElementById('cliResponsavel').value,
+        obs: document.getElementById('cliObs').value
+      };
+
+      let clientesSalvos = JSON.parse(localStorage.getItem('ac_lista_clientes')) || [];
+      clientesSalvos.unshift(novoCliente);
+      localStorage.setItem('ac_lista_clientes', JSON.stringify(clientesSalvos));
+
+      alert('Cliente cadastrado com sucesso!');
+      window.location.href = 'clientes.html';
+    }
+  </script>
+
+</body>
+</html>
