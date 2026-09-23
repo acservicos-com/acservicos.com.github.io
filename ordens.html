@@ -121,8 +121,7 @@
       align-items: center;
       justify-content: space-between;
       box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-      text-decoration: none;
-      cursor: pointer;
+      position: relative;
     }
 
     .os-card-content {
@@ -170,7 +169,7 @@
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      gap: 10px;
+      gap: 12px;
     }
 
     /* Badges de Status */
@@ -188,7 +187,23 @@
     .status-andamento { background-color: #e0f2fe; color: #0284c7; }
     .status-aberta { background-color: #f1f5f9; color: #64748b; }
 
-    .arrow-icon { color: #94a3b8; }
+    /* Botão de Apagar */
+    .delete-btn {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      padding: 4px;
+      border-radius: 4px;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    .delete-btn:hover {
+      color: #ef4444;
+      background-color: #ffeeef;
+    }
 
     /* Estado Vazio */
     .empty-state {
@@ -278,11 +293,8 @@
   </div>
 
   <script>
-    // Carregar Ordens de Serviço salvas no navegador
     function carregarOrdensServico() {
       const container = document.getElementById('listaOS');
-      
-      // Recupera do localStorage ou inicia vazio []
       const ordensSalvas = JSON.parse(localStorage.getItem('ac_lista_os')) || [];
 
       if (ordensSalvas.length === 0) {
@@ -297,7 +309,7 @@
       }
 
       let html = '';
-      ordensSalvas.forEach(os => {
+      ordensSalvas.forEach((os, index) => {
         html += `
           <div class="os-card" data-status="${os.statusClasse || 'andamento'}">
             <div class="os-card-content">
@@ -316,13 +328,24 @@
             </div>
             <div class="os-right-side">
               <span class="status-badge ${os.statusEstilo || 'status-andamento'}">${os.statusTexto || 'Em andamento'}</span>
-              <svg class="arrow-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              <button class="delete-btn" onclick="apagarOS(${index})" title="Apagar OS">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+              </button>
             </div>
           </div>
         `;
       });
 
       container.innerHTML = html;
+    }
+
+    function apagarOS(index) {
+      if (confirm("Tem certeza que deseja apagar esta Ordem de Serviço do histórico?")) {
+        let ordensSalvas = JSON.parse(localStorage.getItem('ac_lista_os')) || [];
+        ordensSalvas.splice(index, 1); // Remove o item pelo índice
+        localStorage.setItem('ac_lista_os', JSON.stringify(ordensSalvas));
+        carregarOrdensServico(); // Recarrega a lista no ecrã
+      }
     }
 
     function filtrarOS(status, elemento) {
@@ -344,7 +367,6 @@
       });
     }
 
-    // Executa ao carregar a página
     window.onload = carregarOrdensServico;
   </script>
 
