@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Orçamento - AC Serviços</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: #e2e8f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .app-wrapper {
+      width: 100%;
+      max-width: 420px;
+      background-color: #f8fafc;
+      min-height: 100vh;
+      position: relative;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Topo Azul com Logo */
+    .header-banner {
+      background-color: #003b8e;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #ffffff;
+    }
+
+    .back-btn, .menu-btn {
+      background: none;
+      border: none;
+      color: #ffffff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
+    .header-logo-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .header-logo {
+      height: 28px;
+      object-fit: contain;
+    }
+
+    /* Conteúdo Principal */
+    .container {
+      padding: 16px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    /* Título e Status da OS */
+    .os-info-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .os-title-area h1 {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .os-title-area p {
+      font-size: 0.85rem;
+      color: #64748b;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .status-badge {
+      background-color: #fef3c7;
+      color: #d97706;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 16px;
+      border: 1px solid #fde68a;
+    }
+
+    /* Detalhes do Cliente e Equipamento */
+    .client-equip-info {
+      font-size: 0.82rem;
+      color: #334155;
+      margin-bottom: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .client-equip-info div {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Abas de Navegação */
+    .nav-tabs {
+      display: flex;
+      background: #e2e8f0;
+      padding: 3px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      text-align: center;
+      padding: 8px 0;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #64748b;
+      background: transparent;
+      border: none;
+      border-radius: 16px;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      background: #0066ff;
+      color: #ffffff;
+      box-shadow: 0 2px 5px rgba(0, 102, 255, 0.3);
+    }
+
+    /* Cards Superiores (Valor e Validade) */
+    .top-cards-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .card-box {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+    .card-box-title {
+      font-size: 0.72rem;
+      color: #64748b;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .card-box-value {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .card-box-sub {
+      font-size: 0.7rem;
+      color: #64748b;
+      margin-top: 2px;
+    }
+
+    /* Bloco Detalhes do Orçamento */
+    .details-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 14px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+    .details-card-title {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 12px;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      color: #334155;
+      padding: 6px 0;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .detail-row:last-child {
+      border-bottom: none;
+    }
+
+    .detail-row.total-row {
+      border-top: 1px solid #e2e8f0;
+      margin-top: 6px;
+      padding-top: 10px;
+      font-weight: 800;
+      color: #003b8e;
+      font-size: 0.95rem;
+    }
+
+    .total-highlight-box {
+      background: #f0f6ff;
+      border: 1px solid #d0e1fd;
+      border-radius: 10px;
+      padding: 10px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .total-highlight-box span {
+      font-weight: 800;
+      color: #003b8e;
+      font-size: 1rem;
+    }
+
+    /* Forma de Pagamento e Observações */
+    .info-card-link {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      text-decoration: none;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+    .info-card-link div strong {
+      display: block;
+      font-size: 0.85rem;
+      color: #0f172a;
+      font-weight: 700;
+    }
+
+    .info-card-link div span {
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+
+    .obs-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+    .obs-card strong {
+      display: block;
+      font-size: 0.85rem;
+      color: #0f172a;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .obs-card p {
+      font-size: 0.75rem;
+      color: #475569;
+      line-height: 1.4;
+    }
+
+    .obs-card p a {
+      color: #0066ff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-wrapper">
+    <!-- Cabeçalho com Logomarca -->
+    <header class="header-banner">
+      <button class="back-btn" onclick="window.location.href='index.html'">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" fill="none" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <div class="header-logo-container">
+        <img src="AClogomarca.png" alt="AC Serviços" class="header-logo">
+      </div>
+      <button class="menu-btn">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" fill="none" stroke-width="2.5"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+      </button>
+    </header>
+
+    <!-- Conteúdo da Página -->
+    <main class="container">
+      
+      <!-- Cabeçalho do Orçamento -->
+      <div class="os-info-header">
+        <div class="os-title-area">
+          <h1>Orçamento</h1>
+          <p>OS #000125</p>
+        </div>
+        <span class="status-badge">Pendente</span>
+      </div>
+
+      <!-- Informações do Cliente e Equipamento -->
+      <div class="client-equip-info">
+        <div>👤 <strong>Cliente:</strong> Clínica Sorriso Feliz</div>
+        <div>⚙️ <strong>Equipamento:</strong> Autocláve</div>
+        <div>📅 <strong>Data do orçamento:</strong> 23/09/2026 - 14:32</div>
+      </div>
+
+      <!-- Abas de Navegação -->
+      <div class="nav-tabs">
+        <button class="tab-btn active">Resumo</button>
+        <button class="tab-btn">Itens</button>
+        <button class="tab-btn">Condições</button>
+        <button class="tab-btn">Histórico</button>
+      </div>
+
+      <!-- Cards Superiores -->
+      <div class="top-cards-grid">
+        <div class="card-box">
+          <div class="card-box-title">Valor total do orçamento</div>
+          <div class="card-box-value">R$ 4.850,00</div>
+        </div>
+        <div class="card-box">
+          <div class="card-box-title">Validade do orçamento</div>
+          <div class="card-box-value" style="font-size: 1rem;">7 dias</div>
+          <div class="card-box-sub">(até 30/09/2026)</div>
+        </div>
+      </div>
+
+      <!-- Detalhes do Orçamento -->
+      <div class="details-card">
+        <div class="details-card-title">Detalhes do orçamento</div>
+        
+        <div class="detail-row">
+          <span>Mão de obra</span>
+          <span>R$ 1.500,00</span>
+        </div>
+        <div class="detail-row">
+          <span>Peças e componentes</span>
+          <span>R$ 2.800,00</span>
+        </div>
+        <div class="detail-row">
+          <span>Materiais e insumos</span>
+          <span>R$ 200,00</span>
+        </div>
+        <div class="detail-row">
+          <span>Deslocamento</span>
+          <span>R$ 150,00</span>
+        </div>
+        <div class="detail-row">
+          <span>Desconto</span>
+          <span>R$ 0,00</span>
+        </div>
+
+        <div class="total-highlight-box">
+          <strong>Total</strong>
+          <span>R$ 4.850,00</span>
+        </div>
+      </div>
+
+      <!-- Forma de Pagamento -->
+      <a href="#" class="info-card-link">
+        <div>
+          <strong>Forma de pagamento</strong>
+          <span>PIX | Cartão | Transferência | Dinheiro</span>
+        </div>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#94a3b8" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </a>
+
+      <!-- Observações -->
+      <div class="obs-card">
+        <strong>Observações</strong>
+        <p>O orçamento inclui a substituição da válvula de segurança, verificação do sistema elétrico e teste completo do equipamento. Qualquer alteração será <a href="#">comunicada previamente</a>.</p>
+      </div>
+
+    </main>
+  </div>
+
+</body>
+</html>
