@@ -35,49 +35,22 @@
       animation: fadeInSmooth 0.4s ease-out forwards;
     }
 
-    /* Topo Mobile / Header */
+    /* Cabeçalho com Logomarca Centralizada */
     .header-banner {
-      background-color: #0d2c54;
-      color: #ffffff;
-      padding: 16px 20px;
-      border-bottom-left-radius: 16px;
-      border-bottom-right-radius: 16px;
+      background-color: #2b3990; /* Tom azul idêntico ao da imagem */
+      padding: 24px 16px;
       display: flex;
+      justify-content: center;
       align-items: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
     }
 
-    .brand-group {
-      display: flex;
-      align-items: center;
-      gap: 14px;
+    .brand-logo-full {
       width: 100%;
-    }
-
-    .brand-logo {
-      height: 48px;
-      width: auto;
+      max-width: 320px;
+      height: auto;
       object-fit: contain;
-    }
-
-    .brand-info h1 {
-      font-size: 1.15rem;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-    }
-
-    .brand-info p {
-      font-size: 0.7rem;
-      color: #a0c4ff;
-      text-transform: uppercase;
-      line-height: 1.2;
-    }
-
-    .brand-info .phone-text {
-      font-size: 0.8rem;
-      font-weight: bold;
-      color: #fff;
-      margin-top: 2px;
+      display: block;
     }
 
     /* Container Principal Mobile */
@@ -93,18 +66,18 @@
     }
 
     .welcome-text h2 {
-      font-size: 1.25rem;
-      color: #0d2c54;
-      font-weight: 700;
+      font-size: 1.3rem;
+      color: #1e293b;
+      font-weight: 800;
     }
 
     .welcome-text p {
-      font-size: 0.82rem;
-      color: #666;
+      font-size: 0.85rem;
+      color: #64748b;
       margin-top: 2px;
     }
 
-    /* Grid de Resumo (Cards Superiores) - 2 colunas para mobile */
+    /* Grid de Resumo (Cards Superiores) */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -152,11 +125,7 @@
       color: #6b7280;
     }
 
-    .full-width-card {
-      grid-column: span 2;
-    }
-
-    /* Grid de Botões de Ação - 3 colunas mobile igual ao modelo */
+    /* Grid de Botões de Ação */
     .actions-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -164,7 +133,7 @@
     }
 
     .action-btn {
-      background: #0066cc;
+      background: #2b3990;
       color: #ffffff;
       border: none;
       border-radius: 12px;
@@ -177,13 +146,13 @@
       text-decoration: none;
       font-size: 0.75rem;
       font-weight: 600;
-      box-shadow: 0 3px 8px rgba(0, 102, 204, 0.18);
+      box-shadow: 0 3px 8px rgba(43, 57, 144, 0.2);
       text-align: center;
     }
 
     .action-btn.dark-blue {
-      background: #0d2c54;
-      box-shadow: 0 3px 8px rgba(13, 44, 84, 0.18);
+      background: #1e255e;
+      box-shadow: 0 3px 8px rgba(30, 37, 94, 0.2);
     }
 
     .action-btn:active {
@@ -200,7 +169,7 @@
       stroke-linejoin: round;
     }
 
-    /* Navegação Inferior Mobile Fixa */
+    /* Navegação Inferior Fixa Mobile */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -226,7 +195,7 @@
     }
 
     .nav-item.active {
-      color: #0066cc;
+      color: #2b3990;
       font-weight: bold;
     }
 
@@ -241,16 +210,9 @@
 </head>
 <body>
 
-  <!-- Topo Mobile -->
+  <!-- Topo Mobile Apenas com a Logomarca Centralizada -->
   <header class="header-banner animate-entry">
-    <div class="brand-group">
-      <img src="AClogomarca.png" alt="AC Serviços" class="brand-logo">
-      <div class="brand-info">
-        <h1>AC SERVIÇOS</h1>
-        <p>Consertos de Equipamentos Odontológicos</p>
-        <p class="phone-text">(99) 98456-4555</p>
-      </div>
-    </div>
+    <img src="AClogomarca.png" alt="AC Serviços" class="brand-logo-full">
   </header>
 
   <!-- Conteúdo Principal -->
@@ -262,7 +224,6 @@
 
     <!-- Cards de Resumo -->
     <div class="stats-grid">
-      <!-- Card AGENDAR (Substituiu Abertas) -->
       <div class="stat-card">
         <div class="stat-icon blue-bg">📅</div>
         <div class="stat-info">
@@ -279,7 +240,6 @@
         </div>
       </div>
 
-      <!-- Card Orçamento (Sem o texto do prazo) -->
       <div class="stat-card">
         <div class="stat-icon purple-bg">📝</div>
         <div class="stat-info">
@@ -293,14 +253,6 @@
         <div class="stat-info">
           <div class="number">8</div>
           <div class="label">Concluídas</div>
-        </div>
-      </div>
-
-      <!-- Card Total do mês (Sem o valor em R$) -->
-      <div class="stat-card full-width-card">
-        <div class="stat-icon blue-bg">📊</div>
-        <div class="stat-info">
-          <div class="label">Total do mês</div>
         </div>
       </div>
     </div>
