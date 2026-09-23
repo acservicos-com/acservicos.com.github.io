@@ -21,7 +21,6 @@
       min-height: 100vh;
     }
 
-    /* Simulação de Moldura de Celular se visualizado no PC */
     .app-wrapper {
       width: 100%;
       max-width: 420px;
@@ -132,7 +131,7 @@
       font-weight: 700;
     }
 
-    /* Conteúdo Rolável */
+    /* Conteúdo com Scroll */
     .container {
       padding: 16px;
       flex: 1;
@@ -176,16 +175,11 @@
       color: #001e50;
     }
 
-    .chevron-icon {
-      color: #94a3b8;
-    }
-
     .divider-ou {
       text-align: center;
       font-size: 0.75rem;
       color: #94a3b8;
       margin: 6px 0 12px 0;
-      position: relative;
     }
 
     /* Botão Novo Cliente */
@@ -206,7 +200,7 @@
       cursor: pointer;
     }
 
-    /* Card de Dados do Cliente */
+    /* Cartão de Dados do Cliente */
     .data-card {
       background: #ffffff;
       border: 1px solid #f1f5f9;
@@ -231,7 +225,7 @@
       stroke: #003b8e;
     }
 
-    /* Formulários e Inputs */
+    /* Formulários e Entradas */
     .form-group {
       margin-bottom: 12px;
     }
@@ -305,14 +299,14 @@
   <div class="app-wrapper">
     <!-- Cabeçalho -->
     <header class="header-banner">
-      <a href="#" class="back-btn">
+      <a href="index.html" class="back-btn">
         <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" fill="none" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
       </a>
       <h1 class="header-title">Nova Ordem de Serviço</h1>
       <span class="counter-badge">1/11</span>
     </header>
 
-    <!-- Stepper das Etapas -->
+    <!-- Stepper de Passos -->
     <div class="stepper-container">
       <div class="stepper-line"></div>
       <div class="stepper-steps">
@@ -339,7 +333,7 @@
       </div>
     </div>
 
-    <!-- Conteúdo Formulário -->
+    <!-- Conteúdo do Formulário em Branco -->
     <main class="container">
       
       <!-- Selecionar Cliente Existente -->
@@ -359,7 +353,7 @@
         <span>+</span> Cadastrar novo cliente
       </button>
 
-      <!-- Card Dados do Cliente -->
+      <!-- Cartão de Dados do Cliente Vazio (Com Placeholders) -->
       <div class="data-card">
         <div class="data-card-header">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
@@ -369,53 +363,52 @@
         <form>
           <div class="form-group">
             <label>Nome / Razão Social <span>*</span></label>
-            <input type="text" value="Clínica Odontológica Sorriso Feliz">
+            <input type="text" placeholder="Digite o nome ou razão social">
           </div>
 
           <div class="row-2">
             <div class="form-group">
               <label>CPF / CNPJ <span>*</span></label>
-              <input type="text" value="12.345.678/0001-90">
+              <input type="text" placeholder="000.000.000-00">
             </div>
             <div class="form-group">
               <label>Responsável <span>*</span></label>
-              <input type="text" value="Maria Silva">
+              <input type="text" placeholder="Nome do responsável">
             </div>
           </div>
 
           <div class="row-2">
             <div class="form-group">
               <label>Telefone / WhatsApp <span>*</span></label>
-
-              <input type="text" value=" (99) 98456-4555">
+              <input type="text" placeholder="(00) 00000-0000">
             </div>
             <div class="form-group">
               <label>E-mail</label>
-              <input type="email" value="contato@sorrisofeliz.com.br">
+              <input type="email" placeholder="email@exemplo.com">
             </div>
           </div>
 
           <div class="form-group">
             <label>Endereço <span>*</span></label>
-            <input type="text" value="Rua das Flores, 123">
+            <input type="text" placeholder="Rua, número, bairro">
           </div>
 
           <div class="row-cidade-uf">
             <div class="form-group">
               <label>Cidade <span>*</span></label>
-              <input type="text" value="São João dos Patos">
+              <input type="text" placeholder="Cidade">
             </div>
             <div class="form-group">
               <label>UF <span>*</span></label>
               <select>
-                <option value="MA" selected>MA</option>
+                <option value="" disabled selected>UF</option>
+                <option value="MA">MA</option>
                 <option value="PI">PI</option>
                 <option value="CE">CE</option>
               </select>
             </div>
           </div>
 
-          <!-- Botão de Ação -->
           <button type="button" class="next-btn">
             Próximo &rarr;
           </button>
