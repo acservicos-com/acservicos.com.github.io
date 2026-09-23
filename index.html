@@ -15,10 +15,10 @@
     body {
       background-color: #f2f5f9;
       color: #333;
-      padding-bottom: 70px; /* Espaço para o menu inferior */
+      padding-bottom: 70px;
     }
 
-    /* Animação Minimalista de Entrada */
+    /* Animação minimalista de entrada */
     @keyframes fadeInSmooth {
       from {
         opacity: 0;
@@ -38,19 +38,19 @@
     .header-banner {
       background-color: #0d2c54;
       color: #ffffff;
-      padding: 20px 16px;
+      padding: 20px 24px;
       border-bottom-left-radius: 16px;
       border-bottom-right-radius: 16px;
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: center;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
     .brand-group {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 16px;
     }
 
     .brand-logo {
@@ -66,7 +66,7 @@
     }
 
     .brand-info p {
-      font-size: 0.68rem;
+      font-size: 0.72rem;
       color: #a0c4ff;
       text-transform: uppercase;
       line-height: 1.2;
@@ -81,9 +81,9 @@
 
     /* Container Principal */
     .container {
-      max-width: 480px;
+      max-width: 600px;
       margin: 0 auto;
-      padding: 20px 16px;
+      padding: 24px 16px;
     }
 
     .welcome-text {
@@ -105,14 +105,14 @@
     /* Grid de Resumo (Cards Superiores) */
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
       margin-bottom: 12px;
     }
 
     .stat-card {
       background: #ffffff;
-      padding: 12px;
+      padding: 14px 12px;
       border-radius: 12px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.04);
       display: flex;
@@ -121,15 +121,15 @@
     }
 
     .stat-icon {
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
       font-weight: bold;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       flex-shrink: 0;
     }
 
@@ -145,12 +145,19 @@
     }
 
     .stat-info .label {
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       color: #6b7280;
     }
 
+    .stat-info .sub-label {
+      font-size: 0.65rem;
+      color: #2563eb;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
     .full-width-card {
-      grid-column: span 3;
+      grid-column: span 2;
     }
 
     /* Grid de Ações Principais (Botões) */
@@ -166,17 +173,18 @@
       color: #ffffff;
       border: none;
       border-radius: 12px;
-      padding: 16px 8px;
+      padding: 18px 8px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 10px;
       text-decoration: none;
       font-size: 0.8rem;
       font-weight: 600;
       box-shadow: 0 3px 10px rgba(0, 102, 204, 0.2);
       transition: transform 0.2s ease, background-color 0.2s ease;
+      text-align: center;
     }
 
     .action-btn.dark-blue {
@@ -189,8 +197,8 @@
     }
 
     .action-btn svg {
-      width: 24px;
-      height: 24px;
+      width: 26px;
+      height: 26px;
       fill: none;
       stroke: currentColor;
       stroke-width: 2;
@@ -219,7 +227,7 @@
       gap: 4px;
       color: #6b7280;
       text-decoration: none;
-      font-size: 0.7rem;
+      font-size: 0.72rem;
     }
 
     .nav-item.active {
@@ -238,7 +246,7 @@
 </head>
 <body>
 
-  <!-- Topo com a Logomarca PNG -->
+  <!-- Topo -->
   <header class="header-banner animate-entry">
     <div class="brand-group">
       <img src="AClogomarca.png" alt="AC Serviços" class="brand-logo">
@@ -257,7 +265,7 @@
       <p>Acompanhe suas ordens de serviço e mantenha seu trabalho sempre organizado.</p>
     </div>
 
-    <!-- Cards de Status -->
+    <!-- Cards de Resumo -->
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-icon blue-bg">📋</div>
@@ -275,11 +283,13 @@
         </div>
       </div>
 
+      <!-- Card de Orçamentos com estimativa de tempo -->
       <div class="stat-card">
-        <div class="stat-icon purple-bg">⚙️</div>
+        <div class="stat-icon purple-bg">📝</div>
         <div class="stat-info">
           <div class="number">3</div>
-          <div class="label">Aguardando peça</div>
+          <div class="label">Orçamentos</div>
+          <div class="sub-label">⏱️ Prazo: 24h a 48h</div>
         </div>
       </div>
 
@@ -300,7 +310,7 @@
       </div>
     </div>
 
-    <!-- Botões de Ação (Com o botão "Orçamento") -->
+    <!-- Botões de Ação -->
     <div class="actions-grid">
       <a href="#" class="action-btn">
         <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
@@ -317,14 +327,13 @@
         Clientes
       </a>
 
-      <!-- Botão Orçamento no lugar de Equipamento -->
       <a href="#" class="action-btn">
         <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="6" y1="8" x2="18" y2="8"></line><line x1="6" y1="12" x2="18" y2="12"></line><line x1="6" y1="16" x2="12" y2="16"></line></svg>
         Orçamento
       </a>
 
       <a href="#" class="action-btn dark-blue">
-        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><line x1="16" y1="13" x2="8" y2="17"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
         Relatórios
       </a>
 
