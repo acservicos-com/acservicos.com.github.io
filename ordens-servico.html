@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Nova Ordem de Serviço</title>
-  <!-- Biblioteca jsPDF para gerar o PDF formatado -->
+  <!-- Biblioteca jsPDF para gerar o PDF em A4 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     * {
@@ -150,7 +150,6 @@
       display: block;
     }
 
-    /* Cards e Formulários */
     .data-card {
       background: #ffffff;
       border: 1px solid #f1f5f9;
@@ -168,12 +167,6 @@
       font-weight: 800;
       color: #001e50;
       margin-bottom: 14px;
-    }
-
-    .data-card-header svg {
-      width: 18px;
-      height: 18px;
-      stroke: #003b8e;
     }
 
     .form-group {
@@ -305,7 +298,6 @@
 <body>
 
   <div class="app-wrapper">
-    <!-- Cabeçalho -->
     <header class="header-banner">
       <button type="button" class="back-btn" onclick="voltarEtapa()">
         <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" fill="none" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
@@ -314,7 +306,6 @@
       <span class="counter-badge" id="counterBadge">1/11</span>
     </header>
 
-    <!-- Stepper de Passos -->
     <div class="stepper-container">
       <div class="stepper-line"></div>
       <div class="stepper-steps">
@@ -341,32 +332,17 @@
       </div>
     </div>
 
-    <!-- Conteúdo -->
     <main class="container">
       <form id="osForm">
         
         <!-- ETAPA 1: CLIENTE -->
         <div class="tab-step active" id="step1">
-          <a href="#" class="action-card-btn">
-            <span>Selecionar cliente existente</span>
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#94a3b8" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
-          </a>
-
-          <div class="divider-ou">ou</div>
-
-          <button type="button" class="pill-btn">+ Cadastrar novo cliente</button>
-
           <div class="data-card">
-            <div class="data-card-header">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-              Dados do Cliente
-            </div>
-
+            <div class="data-card-header">Dados do Cliente</div>
             <div class="form-group">
               <label>Nome / Razão Social <span>*</span></label>
               <input type="text" id="clienteNome" placeholder="Ex: Clínica Odontológica Sorriso Feliz">
             </div>
-
             <div class="row-2">
               <div class="form-group">
                 <label>CPF / CNPJ <span>*</span></label>
@@ -377,7 +353,6 @@
                 <input type="text" id="clienteResp" placeholder="Nome do responsável">
               </div>
             </div>
-
             <div class="row-2">
               <div class="form-group">
                 <label>Telefone / WhatsApp <span>*</span></label>
@@ -388,12 +363,10 @@
                 <input type="email" id="clienteEmail" placeholder="email@exemplo.com">
               </div>
             </div>
-
             <div class="form-group">
               <label>Endereço <span>*</span></label>
               <input type="text" id="clienteEndereco" placeholder="Rua, número, bairro">
             </div>
-
             <div class="row-cidade-uf">
               <div class="form-group">
                 <label>Cidade <span>*</span></label>
@@ -416,39 +389,23 @@
         <!-- ETAPA 2: EQUIPAMENTO -->
         <div class="tab-step" id="step2">
           <div class="data-card">
-            <div class="data-card-header">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-              Dados do Equipamento
-            </div>
-
+            <div class="data-card-header">Dados do Equipamento</div>
             <div class="form-group">
               <label>Equipamento:</label>
               <input type="text" id="eqNome" placeholder="Ex: Cadeira Odontológica">
             </div>
-
             <div class="form-group">
               <label>Marca/Modelo:</label>
               <input type="text" id="eqMarca" placeholder="Ex: KaVo UniK">
             </div>
-
             <div class="form-group">
               <label>Nº de Série:</label>
               <input type="text" id="eqSerie" placeholder="Ex: K123456">
             </div>
-
             <div class="form-group">
               <label>Data de Instalação:</label>
               <input type="text" id="eqDataInst" placeholder="DD/MM/AAAA">
             </div>
-
-            <a href="#" class="action-card-btn">
-              <span>Selecionar de Equipamento Salvo</span>
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#94a3b8" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </a>
-
-            <div class="divider-ou">ou</div>
-
-            <button type="button" class="pill-btn">+ Cadastrar novo equipamento</button>
           </div>
           <button type="button" class="next-btn" onclick="proximaEtapa(3)">Próximo &rarr;</button>
         </div>
@@ -456,37 +413,23 @@
         <!-- ETAPA 3: PROBLEMA -->
         <div class="tab-step" id="step3">
           <div class="data-card">
-            <div class="data-card-header">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg>
-              Descrição do Problema
-            </div>
-
+            <div class="data-card-header">Descrição do Problema</div>
             <div class="form-group">
               <label>Título do Problema:</label>
               <input type="text" id="probTitulo" placeholder="Ex: Cadeira não sobe">
             </div>
-
             <div class="form-group">
               <label>Descrição Detalhada:</label>
               <textarea id="probDesc" placeholder="Descreva detalhadamente o problema relatado..."></textarea>
             </div>
-
-            <div class="form-group">
-              <label>Data do Início:</label>
-              <input type="text" id="probDataInicio" placeholder="Ex: Ontem ou DD/MM/AAAA">
-            </div>
-
             <div class="form-group">
               <label>Nível de Urgência:</label>
               <select id="probUrgencia">
                 <option value="Baixa">Baixa</option>
                 <option value="Média" selected>Média</option>
                 <option value="Alta">Alta</option>
-                <option value="Crítica">Crítica</option>
               </select>
             </div>
-
-            <button type="button" class="pill-btn">+ Adicionar Anexo/Foto</button>
           </div>
           <button type="button" class="next-btn" onclick="proximaEtapa(4)">Próximo &rarr;</button>
         </div>
@@ -494,46 +437,18 @@
         <!-- ETAPA 4: DIAGNÓSTICO -->
         <div class="tab-step" id="step4">
           <div class="data-card">
-            <div class="data-card-header">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-              Diagnóstico Técnico
-            </div>
-
+            <div class="data-card-header">Diagnóstico Técnico</div>
             <div class="form-group">
               <label>Causa Provável:</label>
-              <input type="text" id="diagCausa" placeholder="Ex: Falha no Atuador do Sistema de Elevação">
+              <input type="text" id="diagCausa" placeholder="Ex: Falha no Atuador">
             </div>
-
             <div class="form-group">
               <label>Peças Necessárias:</label>
               <input type="text" id="diagPecas" placeholder="Ex: Atuador KaVo K-Eleve">
             </div>
-
-            <div class="form-group">
-              <label>Peças em Estoque:</label>
-              <select id="diagEstoque">
-                <option value="Sim">Sim</option>
-                <option value="Não" selected>Não</option>
-              </select>
-            </div>
-
             <div class="form-group">
               <label>Orçamento Estimado:</label>
               <input type="text" id="diagOrcamento" placeholder="Ex: R$ 1.800,00">
-            </div>
-
-            <div class="form-group">
-              <label>Tempo Estimado:</label>
-              <input type="text" id="diagTempo" placeholder="Ex: 3 dias úteis">
-            </div>
-
-            <div class="form-group">
-              <label>Aprovação do Cliente:</label>
-              <select id="diagAprovacao">
-                <option value="Pendente" selected>Pendente</option>
-                <option value="Aprovado">Aprovado</option>
-                <option value="Recusado">Recusado</option>
-              </select>
             </div>
           </div>
           <button type="button" class="next-btn" onclick="proximaEtapa(5)">Próximo &rarr;</button>
@@ -542,54 +457,20 @@
         <!-- ETAPA 5: RESUMO / CONCLUSÃO -->
         <div class="tab-step" id="step5">
           <div class="data-card">
-            <div class="data-card-header">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-              Ordem de Serviço (Resumo)
-            </div>
-
-            <div class="summary-item">
-              <strong>Cliente:</strong>
-              <span id="resCliente">--</span>
-            </div>
-
-            <div class="summary-item">
-              <strong>Equipamento:</strong>
-              <span id="resEquipamento">--</span>
-            </div>
-
-            <div class="summary-item">
-              <strong>Problema:</strong>
-              <span id="resProblema">--</span>
-            </div>
-
-            <div class="summary-item">
-              <strong>Diagnóstico:</strong>
-              <span id="resDiagnostico">--</span>
-            </div>
-
-            <div class="summary-item">
-              <strong>Serviço:</strong>
-              <span id="resServico">Substituição do componente danificado</span>
-            </div>
+            <div class="data-card-header">Ordem de Serviço (Resumo)</div>
+            <div class="summary-item"><strong>Cliente:</strong> <span id="resCliente">--</span></div>
+            <div class="summary-item"><strong>Equipamento:</strong> <span id="resEquipamento">--</span></div>
+            <div class="summary-item"><strong>Problema:</strong> <span id="resProblema">--</span></div>
+            <div class="summary-item"><strong>Diagnóstico:</strong> <span id="resDiagnostico">--</span></div>
 
             <div class="form-group" style="margin-top: 14px;">
               <label>Técnico Responsável:</label>
-              <input type="text" id="tecNome" placeholder="Nome/Matrícula" value="AC Serviços">
-            </div>
-
-            <div class="form-group">
-              <label>Data de Início:</label>
-              <input type="text" id="tecDataInicio" placeholder="DD/MM/AAAA">
-            </div>
-
-            <div class="form-group">
-              <label>Data de Conclusão Prevista:</label>
-              <input type="text" id="tecDataFim" placeholder="DD/MM/AAAA">
+              <input type="text" id="tecNome" value="João Carlos Souza">
             </div>
           </div>
 
-          <!-- BOTÃO GERAR PDF -->
-          <button type="button" class="next-btn" onclick="gerarPDF()">
+          <!-- BOTÃO GERAR PDF FORMATADO EM A4 -->
+          <button type="button" class="next-btn" onclick="gerarPDFA4()">
             GERAR PDF &rarr;
           </button>
         </div>
@@ -626,107 +507,139 @@
     }
 
     function atualizarResumo() {
-      const nome = document.getElementById('clienteNome').value || 'Não informado';
-      const equip = document.getElementById('eqNome').value || 'Não informado';
-      const marca = document.getElementById('eqMarca').value || '';
-      const prob = document.getElementById('probTitulo').value || 'Não informado';
-      const urg = document.getElementById('probUrgencia').value;
-      const diag = document.getElementById('diagCausa').value || 'Não informado';
-
-      document.getElementById('resCliente').innerText = nome;
-      document.getElementById('resEquipamento').innerText = `${equip} ${marca}`.trim();
-      document.getElementById('resProblema').innerText = `${prob} (Nível ${urg})`;
-      document.getElementById('resDiagnostico').innerText = diag;
+      document.getElementById('resCliente').innerText = document.getElementById('clienteNome').value || 'Não informado';
+      document.getElementById('resEquipamento').innerText = `${document.getElementById('eqNome').value} ${document.getElementById('eqMarca').value}`.trim();
+      document.getElementById('resProblema').innerText = document.getElementById('probTitulo').value || 'Não informado';
+      document.getElementById('resDiagnostico').innerText = document.getElementById('diagCausa').value || 'Não informado';
     }
 
-    // Função para Gerar o PDF com o padrão solicitado
-    function gerarPDF() {
+    // Função de Geração de PDF em Folha A4 com o layout solicitado
+    function gerarPDFA4() {
       const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
+      const doc = new jsPDF('p', 'mm', 'a4'); // Formato A4 Vertical
 
       const cliente = document.getElementById('clienteNome').value || 'Cliente_Geral';
-      const cnpj = document.getElementById('clienteCnpj').value || 'N/A';
-      const tel = document.getElementById('clienteTel').value || 'N/A';
-      const endereco = document.getElementById('clienteEndereco').value || 'N/A';
+      const cnpj = document.getElementById('clienteCnpj').value || '35.183.961/0001-63';
+      const tel = document.getElementById('clienteTel').value || '(99) 98456-4555';
+      const endereco = document.getElementById('clienteEndereco').value || 'Rua Sá Sobrinho, nº 26';
       
-      const equip = document.getElementById('eqNome').value || 'N/A';
-      const marca = document.getElementById('eqMarca').value || 'N/A';
-      const serie = document.getElementById('eqSerie').value || 'N/A';
+      const equip = document.getElementById('eqNome').value || 'Cadeira Odontológica';
+      const marca = document.getElementById('eqMarca').value || 'KaVo';
+      const serie = document.getElementById('eqSerie').value || 'K123456';
 
-      const prob = document.getElementById('probTitulo').value || 'N/A';
+      const prob = document.getElementById('probTitulo').value || 'Manutenção';
       const desc = document.getElementById('probDesc').value || 'N/A';
-      const urg = document.getElementById('probUrgencia').value || 'N/A';
+      const urg = document.getElementById('probUrgencia').value || 'Média';
 
       const causa = document.getElementById('diagCausa').value || 'N/A';
       const pecas = document.getElementById('diagPecas').value || 'N/A';
-      const orcamento = document.getElementById('diagOrcamento').value || 'N/A';
+      const orcamento = document.getElementById('diagOrcamento').value || 'R$ 1.800,00';
+      const tecnico = document.getElementById('tecNome').value || 'João Carlos Souza';
 
-      const tecnico = document.getElementById('tecNome').value || 'AC Serviços';
-      const dataInicio = document.getElementById('tecDataInicio').value || 'N/A';
-      const dataFim = document.getElementById('tecDataFim').value || 'N/A';
+      const dataAtual = new Date().toLocaleDateString('pt-BR');
 
-      // Estilo do PDF
-      doc.setFillColor(0, 59, 142); // Azul AC Serviços
-      doc.rect(0, 0, 210, 25, "F");
+      // --- TOPO AZUL INSTITUCIONAL ---
+      doc.setFillColor(0, 59, 142);
+      doc.rect(0, 0, 210, 32, "F");
 
       doc.setTextColor(255, 255, 255);
-      doc.setFontSize(16);
+      doc.setFontSize(18);
       doc.setFont("helvetica", "bold");
-      doc.text("AC SERVIÇOS - ORDEM DE SERVIÇO", 15, 16);
+      doc.text("AC SERVIÇOS", 15, 14);
 
-      doc.setTextColor(30, 41, 59);
+      doc.setFontSize(9);
+      doc.setFont("helvetica", "normal");
+      doc.text("CONSERTOS DE EQUIPAMENTOS ODONTOLÓGICOS", 15, 20);
+      doc.text("Cel.: (99) 98456-4555  |  Rua Sá Sobrinho nº 26, São João dos Patos-MA", 15, 26);
+
+      // --- FAIXA DE TÍTULO DA ORDEM DE SERVIÇO ---
+      doc.setFillColor(240, 244, 248);
+      doc.rect(15, 38, 180, 10, "F");
+      doc.setTextColor(0, 59, 142);
       doc.setFontSize(11);
+      doc.setFont("helvetica", "bold");
+      doc.text("ORDEM DE SERVIÇO", 18, 45);
+      doc.text("Nº OS-00125", 95, 45);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(9);
+      doc.text(`Data: ${dataAtual}`, 155, 45);
+
+      let y = 58;
+
+      // --- CAIXAS: DADOS DO CLIENTE & DADOS DO EQUIPAMENTO ---
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(10);
+      doc.text("DADOS DO CLIENTE", 15, y);
+      doc.text("DADOS DO EQUIPAMENTO", 110, y);
+
+      y += 6;
+      doc.setFontSize(9);
+      doc.setFont("helvetica", "normal");
       
-      let y = 35;
-      doc.setFont("helvetica", "bold");
-      doc.text("1. DADOS DO CLIENTE", 15, y);
-      y += 6;
-      doc.setFont("helvetica", "normal");
+      // Cliente Esquerda
       doc.text(`Nome / Razão Social: ${cliente}`, 15, y);
-      y += 6;
-      doc.text(`CPF / CNPJ: ${cnpj} | Tel: ${tel}`, 15, y);
-      y += 6;
-      doc.text(`Endereço: ${endereco}`, 15, y);
+      doc.text(`CPF / CNPJ: ${cnpj}`, 15, y + 6);
+      doc.text(`Telefone: ${tel}`, 15, y + 12);
+      doc.text(`Endereço: ${endereco}`, 15, y + 18);
 
-      y += 10;
+      // Equipamento Direita
+      doc.text(`Equipamento: ${equip}`, 110, y);
+      doc.text(`Marca/Modelo: ${marca}`, 110, y + 6);
+      doc.text(`Nº de Série: ${serie}`, 110, y + 12);
+
+      y += 28;
+
+      // --- PROBLEMA APRESENTADO ---
+      doc.setFillColor(240, 244, 248);
+      doc.rect(15, y, 180, 7, "F");
       doc.setFont("helvetica", "bold");
-      doc.text("2. DADOS DO EQUIPAMENTO", 15, y);
-      y += 6;
+      doc.text("PROBLEMA APRESENTADO", 18, y + 5);
+      
+      y += 12;
       doc.setFont("helvetica", "normal");
-      doc.text(`Equipamento: ${equip} | Marca/Modelo: ${marca}`, 15, y);
-      y += 6;
-      doc.text(`Nº de Série: ${serie}`, 15, y);
+      doc.text(`Relato: ${prob} (Urgência: ${urg})`, 15, y);
+      doc.text(`Descrição: ${desc}`, 15, y + 6);
 
-      y += 10;
-      doc.setFont("helvetica", "bold");
-      doc.text("3. DESCRIÇÃO DO PROBLEMA", 15, y);
-      y += 6;
-      doc.setFont("helvetica", "normal");
-      doc.text(`Título: ${prob} (Urgência: ${urg})`, 15, y);
-      y += 6;
-      doc.text(`Detalhes: ${desc}`, 15, y);
+      y += 16;
 
-      y += 10;
+      // --- DIAGNÓSTICO TÉCNICO ---
+      doc.setFillColor(240, 244, 248);
+      doc.rect(15, y, 180, 7, "F");
       doc.setFont("helvetica", "bold");
-      doc.text("4. DIAGNÓSTICO TÉCNICO", 15, y);
-      y += 6;
+      doc.text("DIAGNÓSTICO TÉCNICO", 18, y + 5);
+
+      y += 12;
       doc.setFont("helvetica", "normal");
       doc.text(`Causa Provável: ${causa}`, 15, y);
-      y += 6;
-      doc.text(`Peças Necessárias: ${pecas} | Orçamento: ${orcamento}`, 15, y);
+      doc.text(`Peças Necessárias: ${pecas}`, 15, y + 6);
 
-      y += 10;
+      y += 16;
+
+      // --- ORÇAMENTO / VALORES ---
+      doc.setFillColor(240, 244, 248);
+      doc.rect(15, y, 180, 7, "F");
       doc.setFont("helvetica", "bold");
-      doc.text("5. CONCLUSÃO E PRAZOS", 15, y);
-      y += 6;
-      doc.setFont("helvetica", "normal");
-      doc.text(`Técnico Responsável: ${tecnico}`, 15, y);
-      y += 6;
-      doc.text(`Início: ${dataInicio} | Previsão de Conclusão: ${dataFim}`, 15, y);
+      doc.text("ORÇAMENTO E VALORES", 18, y + 5);
 
-      // Nome do arquivo solicitado: "AC SERVIÇOS inicio _ [Nome do Cliente].pdf"
-      const nomeArquivoClean = cliente.replace(/[^a-zA-Z0-9 _-]/g, "");
-      doc.save(`AC SERVIÇOS inicio _ ${nomeArquivoClean}.pdf`);
+      y += 12;
+      doc.setFont("helvetica", "normal");
+      doc.text(`Orçamento Estimado: ${orcamento}`, 15, y);
+      doc.text(`Forma de Pagamento: PIX / Dinheiro / Cartão`, 15, y + 6);
+
+      y += 20;
+
+      // --- ASSINATURAS NO RODAPÉ ---
+      doc.line(15, y, 90, y);
+      doc.line(120, y, 195, y);
+
+      y += 5;
+      doc.setFontSize(8);
+      doc.text(`Técnico: ${tecnico}`, 15, y);
+      doc.text(`Cliente: ${cliente}`, 120, y);
+
+      // Nome do arquivo padrão solicitado
+      const nomeClean = cliente.replace(/[^a-zA-Z0-9 _-]/g, "");
+      doc.save(`AC SERVIÇOS inicio _ ${nomeClean}.pdf`);
     }
 
     async function carregarCidades() {
