@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Clientes - AC Serviços</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: #e2e8f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .app-wrapper {
+      width: 100%;
+      max-width: 420px;
+      background-color: #f8fafc;
+      min-height: 100vh;
+      position: relative;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Cabeçalho Azul */
+    .header-banner {
+      background-color: #003b8e;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #ffffff;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .icon-btn {
+      background: none;
+      border: none;
+      color: #ffffff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
+    .header-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    /* Barra de Pesquisa */
+    .search-container {
+      padding: 12px 14px;
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .search-input-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-input-box svg {
+      position: absolute;
+      left: 12px;
+      color: #94a3b8;
+    }
+
+    .search-input-box input {
+      width: 100%;
+      padding: 10px 12px 10px 38px;
+      border: 1px solid #cbd5e1;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      background-color: #f8fafc;
+      outline: none;
+    }
+
+    .search-input-box input:focus {
+      border-color: #0066ff;
+      background-color: #ffffff;
+    }
+
+    /* Lista de Clientes */
+    .container {
+      padding: 14px;
+      flex: 1;
+      overflow-y: auto;
+      padding-bottom: 90px;
+    }
+
+    .client-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    }
+
+    .client-info-area {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .client-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #e0f2fe;
+      color: #0284c7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.95rem;
+      flex-shrink: 0;
+    }
+
+    .client-details h3 {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 2px;
+    }
+
+    .client-details p {
+      font-size: 0.78rem;
+      color: #475569;
+      margin-bottom: 2px;
+    }
+
+    .client-tag {
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background-color: #f1f5f9;
+      color: #64748b;
+      display: inline-block;
+      margin-top: 4px;
+    }
+
+    /* Botão de Apagar */
+    .delete-btn {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 6px;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    .delete-btn:hover {
+      color: #ef4444;
+      background-color: #ffeeef;
+    }
+
+    /* Estado Vazio */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #64748b;
+    }
+
+    .empty-state svg {
+      width: 52px;
+      height: 52px;
+      stroke: #cbd5e1;
+      margin-bottom: 12px;
+    }
+
+    .empty-state h3 {
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: #334155;
+      margin-bottom: 6px;
+    }
+
+    .empty-state p {
+      font-size: 0.8rem;
+      line-height: 1.4;
+      margin-bottom: 20px;
+    }
+
+    .empty-action-btn {
+      background: #0066ff;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 20px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 102, 255, 0.3);
+    }
+
+    /* Botão Flutuante (+) para Cadastrar Novo Cliente */
+    .fab-btn {
+      position: fixed;
+      bottom: 24px;
+      right: calc(50% - 190px);
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, #0077ff 0%, #0044cc 100%);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(0, 102, 255, 0.4);
+      border: none;
+      cursor: pointer;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-wrapper">
+    <!-- Cabeçalho -->
+    <header class="header-banner">
+      <div class="header-left">
+        <button class="icon-btn" onclick="window.location.href='index.html'">
+          <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" fill="none" stroke-width="2.5"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
+        <h1 class="header-title">Clientes</h1>
+      </div>
+      <button class="icon-btn" onclick="window.location.href='cadastrar-cliente.html'" title="Adicionar Cliente">
+        <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" fill="none" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      </button>
+    </header>
+
+    <!-- Barra de Pesquisa -->
+    <div class="search-container">
+      <div class="search-input-box">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="inputPesquisa" placeholder="Pesquisar cliente por nome ou telefone..." oninput="pesquisarClientes()">
+      </div>
+    </div>
+
+    <!-- Lista Dinâmica de Clientes -->
+    <main class="container" id="listaClientes">
+      <!-- O conteúdo será carregado via JavaScript -->
+    </main>
+
+    <!-- Botão Flutuante (+) -->
+    <button class="fab-btn" onclick="window.location.href='cadastrar-cliente.html'">
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+    </button>
+  </div>
+
+  <script>
+    function carregarClientes() {
+      const container = document.getElementById('listaClientes');
+      const clientesSalvos = JSON.parse(localStorage.getItem('ac_lista_clientes')) || [];
+
+      if (clientesSalvos.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            <h3>Nenhum cliente cadastrado</h3>
+            <p>Cadastre os seus clientes para facilitar a criação de ordens de serviço e orçamentos.</p>
+            <button class="empty-action-btn" onclick="window.location.href='cadastrar-cliente.html'">+ Cadastrar Novo Cliente</button>
+          </div>
+        `;
+        return;
+      }
+
+      renderizarLista(clientesSalvos);
+    }
+
+    function renderizarLista(lista) {
+      const container = document.getElementById('listaClientes');
+      let html = '';
+
+      lista.forEach((cli, index) => {
+        const iniciais = cli.nome ? cli.nome.substring(0, 2).toUpperCase() : 'AC';
+        html += `
+          <div class="client-card">
+            <div class="client-info-area">
+              <div class="client-avatar">${iniciais}</div>
+              <div class="client-details">
+                <h3>${cli.nome}</h3>
+                <p>📞 ${cli.telefone || cli.whatsapp || 'Sem telefone'}</p>
+                <p>✉️ ${cli.email || 'Sem e-mail'}</p>
+                <span class="client-tag">${cli.tipo || 'Pessoa Física'}</span>
+              </div>
+            </div>
+            <button class="delete-btn" onclick="apagarCliente(${index})" title="Apagar Cliente">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+            </button>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function pesquisarClientes() {
+      const termo = document.getElementById('inputPesquisa').value.toLowerCase();
+      const clientesSalvos = JSON.parse(localStorage.getItem('ac_lista_clientes')) || [];
+
+      const filtrados = clientesSalvos.filter(cli => 
+        cli.nome.toLowerCase().includes(termo) || 
+        (cli.telefone && cli.telefone.includes(termo))
+      );
+
+      renderizarLista(filtrados);
+    }
+
+    function apagarCliente(index) {
+      if (confirm("Tem certeza que deseja apagar este cliente do registo?")) {
+        let clientesSalvos = JSON.parse(localStorage.getItem('ac_lista_clientes')) || [];
+        clientesSalvos.splice(index, 1);
+        localStorage.setItem('ac_lista_clientes', JSON.stringify(clientesSalvos));
+        carregarClientes();
+      }
+    }
+
+    window.onload = carregarClientes;
+  </script>
+
+</body>
+</html>
