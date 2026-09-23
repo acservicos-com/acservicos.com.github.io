@@ -82,7 +82,6 @@
       display: block;
     }
 
-    /* Cards e Formulários */
     .data-card {
       background: #ffffff;
       border: 1px solid #f1f5f9;
@@ -139,13 +138,6 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
-    }
-
-    .row-item-form {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr;
-      gap: 6px;
-      margin-bottom: 8px;
     }
 
     .pill-btn {
@@ -249,12 +241,10 @@
           <button type="button" class="next-btn" onclick="proximaEtapa(3)">Próximo &rarr;</button>
         </div>
 
-        <!-- ETAPA 3: SERVIÇOS E PEÇAS (TOTALMENTE PREENCHÍVEL PELO USUÁRIO) -->
+        <!-- ETAPA 3: SERVIÇOS E PEÇAS -->
         <div class="tab-step" id="step3">
           <div class="data-card">
-            <div class="data-card-header">
-              <span>Serviços Realizados</span>
-            </div>
+            <div class="data-card-header"><span>Serviços Realizados</span></div>
             <div class="form-group">
               <label>Descrição do Serviço / Mão de Obra:</label>
               <input type="text" id="srvDesc" placeholder="Ex: Reparo no sistema de elevação">
@@ -272,9 +262,7 @@
           </div>
 
           <div class="data-card">
-            <div class="data-card-header">
-              <span>Peças e Componentes</span>
-            </div>
+            <div class="data-card-header"><span>Peças e Componentes</span></div>
             <div class="form-group">
               <label>Nome da Peça:</label>
               <input type="text" id="pecaDesc" placeholder="Ex: Atuador / Solenoide">
@@ -428,7 +416,6 @@
       }
     }
 
-    // Função para calcular os valores preenchidos na Etapa 3 e atualizar o resumo financeiro
     function calcularTotalEtapa3() {
       const parseMoeda = (val) => parseFloat(val.replace('R$', '').replace(/\./g, '').replace(',', '.').trim()) || 0;
 
@@ -446,7 +433,6 @@
 
       const totalGeral = (totalSrv + totalPeca + matValor + deslValor) - descValor;
 
-      // Exibe no Resumo Financeiro (Etapa 4)
       document.getElementById('resSrv').innerText = totalSrv.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
       document.getElementById('resPeca').innerText = totalPeca.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
       document.getElementById('resMat').innerText = matValor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -455,7 +441,7 @@
       document.getElementById('lblTotalFin').innerText = totalGeral.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
 
-    // Função para gerar o PDF formatado em A4 com base no que o usuário preencheu
+    // Função que gera o PDF e guarda automaticamente no histórico de OS
     function gerarPDFOrcamentoCompleto() {
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF('p', 'mm', 'a4');
@@ -471,6 +457,21 @@
       const obs = document.getElementById('obsGerais').value || 'N/A';
       const dataEmissao = document.getElementById('orcData').value;
 
+      // SALVA NO HISTÓRICO LOCAL PARA APARECER NA ABA DE ORDENS DE SERVIÇO
+      const novaOS = {
+        numero: numOrc,
+        cliente: cliente,
+        equipamento: equip,
+        data: `${dataEmissao} - ${new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'})}`,
+        statusTexto: 'Em andamento',
+        statusEstilo: 'status-andamento',
+        statusClasse: 'andamento'
+      };
+
+      let ordensSalvas = JSON.parse(localStorage.getItem('ac_lista_os')) || [];
+      ordensSalvas.unshift(novaOS); // Adiciona no início da lista
+      localStorage.setItem('ac_lista_os', JSON.stringify(ordensSalvas));
+
       const imgLogo = new Image();
       imgLogo.src = "AClogomarca.png";
 
@@ -484,7 +485,6 @@
     }
 
     function desenharPDF(doc, imgLogo, numOrc, cliente, equip, problema, diagnostico, totalFin, prazo, garantia, obs, dataEmissao) {
-      // Cabeçalho Azul Institucional
       doc.setFillColor(0, 59, 142);
       doc.rect(0, 0, 210, 32, "F");
 
@@ -511,7 +511,6 @@
       doc.setTextColor(100, 116, 139);
       doc.text(`${numOrc} | Emissão: ${dataEmissao}`, 15, y + 6);
 
-      // Status Pendente
       doc.setFillColor(254, 243, 199);
       doc.roundedRect(165, y - 4, 30, 8, 2, 2, "F");
       doc.setTextColor(217, 119, 6);
@@ -561,6 +560,11 @@
 
       const nomeClean = cliente.replace(/[^a-zA-Z0-9 _-]/g, "");
       doc.save(`AC SERVIÇOS - Orcamento _ ${nomeClean}.pdf`);
+
+      // Redireciona para a página de Ordens de Serviço após gerar o PDF
+      setTimeout(() => {
+        window.location.href = 'ordens.html';
+      }, 1000);
     }
   </script>
 
