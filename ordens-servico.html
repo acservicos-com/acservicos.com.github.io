@@ -480,42 +480,39 @@
 
       const dataAtual = new Date().toLocaleDateString('pt-BR');
 
-      // --- TOPO AZUL INSTITUCIONAL ---
-      doc.setFillColor(0, 59, 142);
-      doc.rect(0, 0, 210, 32, "F");
-
-      // Logomarca incorporada diretamente por Base64 para garantir carregamento instantâneo e sem bloqueio CORS
-      try {
-        const logoBase64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="; // Placeholder seguro de exemplo estrutural, substituído pelo carregamento direto via fetch interno ou imagem nativa
-      } catch(e) {}
-
-      // Vamos desenhar a logomarca via carregamento de imagem embutida com tratamento seguro de erro
       const imgLogo = new Image();
       imgLogo.src = "AClogomarca.png";
       
       imgLogo.onload = function() {
-        try {
-          doc.addImage(imgLogo, 'PNG', 15, 5, 36, 22);
-        } catch(err) {}
-        finalizarPDFDoc(doc, cliente, cnpj, tel, endereco, equip, marca, serie, prob, desc, urg, causa, pecas, orcamento, tecnico, dataAtual);
+        finalizarPDFDoc(doc, cliente, cnpj, tel, endereco, equip, marca, serie, prob, desc, urg, causa, pecas, orcamento, tecnico, dataAtual, imgLogo);
       };
 
       imgLogo.onerror = function() {
-        // Caso falhe por bloqueio de servidor, gera o layout limpo garantindo a entrega do documento
-        finalizarPDFDoc(doc, cliente, cnpj, tel, endereco, equip, marca, serie, prob, desc, urg, causa, pecas, orcamento, tecnico, dataAtual);
+        finalizarPDFDoc(doc, cliente, cnpj, tel, endereco, equip, marca, serie, prob, desc, urg, causa, pecas, orcamento, tecnico, dataAtual, null);
       };
     }
 
-    function finalizarPDFDoc(doc, cliente, cnpj, tel, endereco, equip, marca, serie, prob, desc, urg, causa, pecas, orcamento, tecnico, dataAtual) {
-      doc.setTextColor(255, 255, 255);
-      doc.setFontSize(15);
-      doc.setFont("helvetica", "bold");
-      doc.text("AC SERVIÇOS", 55, 14);
+    function finalizarPDFDoc(doc, cliente, cnpj, tel, endereco, equip, marca, serie, prob, desc, urg, causa, pecas, orcamento, tecnico, dataAtual, imgLogo) {
+      // --- TOPO AZUL INSTITUCIONAL ---
+      doc.setFillColor(0, 59, 142);
+      doc.rect(0, 0, 210, 32, "F");
 
-      doc.setFontSize(8.5);
-      doc.setFont("helvetica", "normal");
-      doc.text("CONSERTOS DE EQUIPAMENTOS ODONTOLÓGICOS", 55, 20);
-      doc.text("Cel.: (99) 98456-4555  |  Rua Sá Sobrinho nº 26, São João dos Patos-MA", 55, 26);
+      // Logomarca centralizada e com proporções corretas (sem distorção/achatamento)
+      if (imgLogo) {
+        // Mantém a proporção correta baseada na largura e altura originais da imagem
+        const imgWidth = 55;
+        const imgHeight = (imgLogo.height * imgWidth) / imgLogo.width;
+        const posX = (210 - imgWidth) / 2; // Centralizado horizontalmente no A4 (210mm)
+        const posY = (32 - imgHeight) / 2; // Centralizado verticalmente na faixa azul (32mm)
+        
+        doc.addImage(imgLogo, 'PNG', posX, Math.max(2, posY), imgWidth, Math.min(28, imgHeight));
+      } else {
+        // Fallback caso a imagem demore ou falhe
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(16);
+        doc.setFont("helvetica", "bold");
+        doc.text("AC SERVIÇOS", 105, 18, { align: "center" });
+      }
 
       // --- FAIXA DE TÍTULO DA OS ---
       doc.setFillColor(240, 244, 248);
