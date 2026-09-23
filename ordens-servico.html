@@ -131,14 +131,12 @@
       font-weight: 700;
     }
 
-    /* Conteúdo com Scroll */
     .container {
       padding: 16px;
       flex: 1;
       overflow-y: auto;
     }
 
-    /* Botão Selecionar Cliente Existente */
     .select-client-card {
       background: #ffffff;
       border: 1px solid #e2e8f0;
@@ -182,7 +180,6 @@
       margin: 6px 0 12px 0;
     }
 
-    /* Botão Novo Cliente */
     .add-client-btn {
       display: flex;
       align-items: center;
@@ -200,7 +197,6 @@
       cursor: pointer;
     }
 
-    /* Cartão de Dados do Cliente */
     .data-card {
       background: #ffffff;
       border: 1px solid #f1f5f9;
@@ -225,7 +221,6 @@
       stroke: #003b8e;
     }
 
-    /* Formulários e Entradas */
     .form-group {
       margin-bottom: 12px;
     }
@@ -266,11 +261,10 @@
 
     .row-cidade-uf {
       display: grid;
-      grid-template-columns: 3fr 1fr;
+      grid-template-columns: 2fr 1fr;
       gap: 10px;
     }
 
-    /* Botão Próximo */
     .next-btn {
       width: 100%;
       background: linear-gradient(180deg, #0077ff 0%, #0055ff 100%);
@@ -333,10 +327,9 @@
       </div>
     </div>
 
-    <!-- Conteúdo do Formulário em Branco -->
+    <!-- Conteúdo do Formulário -->
     <main class="container">
       
-      <!-- Selecionar Cliente Existente -->
       <a href="#" class="select-client-card">
         <div class="select-client-left">
           <div class="icon-user-bg">
@@ -344,7 +337,7 @@
           </div>
           <span class="select-client-text">Selecionar cliente existente</span>
         </div>
-        <svg class="chevron-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#94a3b8" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
       </a>
 
       <div class="divider-ou">ou</div>
@@ -353,7 +346,6 @@
         <span>+</span> Cadastrar novo cliente
       </button>
 
-      <!-- Cartão de Dados do Cliente Vazio (Com Placeholders) -->
       <div class="data-card">
         <div class="data-card-header">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
@@ -396,15 +388,41 @@
           <div class="row-cidade-uf">
             <div class="form-group">
               <label>Cidade <span>*</span></label>
-              <input type="text" placeholder="Cidade">
+              <select id="cidadeSelect" disabled>
+                <option value="" disabled selected>Selecione a UF primeiro</option>
+              </select>
             </div>
             <div class="form-group">
               <label>UF <span>*</span></label>
-              <select>
+              <select id="ufSelect" onchange="carregarCidades()">
                 <option value="" disabled selected>UF</option>
-                <option value="MA">MA</option>
-                <option value="PI">PI</option>
+                <option value="AC">AC</option>
+                <option value="AL">AL</option>
+                <option value="AP">AP</option>
+                <option value="AM">AM</option>
+                <option value="BA">BA</option>
                 <option value="CE">CE</option>
+                <option value="DF">DF</option>
+                <option value="ES">ES</option>
+                <option value="GO">GO</option>
+                <option value="MA">MA</option>
+                <option value="MT">MT</option>
+                <option value="MS">MS</option>
+                <option value="MG">MG</option>
+                <option value="PA">PA</option>
+                <option value="PB">PB</option>
+                <option value="PR">PR</option>
+                <option value="PE">PE</option>
+                <option value="PI">PI</option>
+                <option value="RJ">RJ</option>
+                <option value="RN">RN</option>
+                <option value="RS">RS</option>
+                <option value="RO">RO</option>
+                <option value="RR">RR</option>
+                <option value="SC">SC</option>
+                <option value="SP">SP</option>
+                <option value="SE">SE</option>
+                <option value="TO">TO</option>
               </select>
             </div>
           </div>
@@ -417,6 +435,37 @@
 
     </main>
   </div>
+
+  <script>
+    // Carrega automaticamente as cidades do estado escolhido através da API do IBGE
+    async function carregarCidades() {
+      const uf = document.getElementById("ufSelect").value;
+      const cidadeSelect = document.getElementById("cidadeSelect");
+
+      if (!uf) return;
+
+      cidadeSelect.disabled = true;
+      cidadeSelect.innerHTML = `<option value="" disabled selected>Carregando cidades...</option>`;
+
+      try {
+        const response = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`);
+        const cidades = await response.json();
+
+        // Ordena as cidades em ordem alfabética
+        cidades.sort((a, b) => a.nome.localeCompare(b.nome));
+
+        let options = `<option value="" disabled selected>Selecione a cidade</option>`;
+        cidades.forEach(cidade => {
+          options += `<option value="${cidade.nome}">${cidade.nome}</option>`;
+        });
+
+        cidadeSelect.innerHTML = options;
+        cidadeSelect.disabled = false;
+      } catch (error) {
+        cidadeSelect.innerHTML = `<option value="" disabled selected>Erro ao carregar</option>`;
+      }
+    }
+  </script>
 
 </body>
 </html>
