@@ -17,6 +17,8 @@
       background-color: #f4f6f9;
       color: #333;
       padding-bottom: 75px;
+      display: flex;
+      justify-content: center;
     }
 
     /* Animação suave de entrada */
@@ -35,10 +37,20 @@
       animation: fadeInSmooth 0.4s ease-out forwards;
     }
 
+    /* Container Principal que simula o App Mobile */
+    .app-wrapper {
+      width: 100%;
+      max-width: 480px;
+      background-color: #f4f6f9;
+      min-height: 100vh;
+      position: relative;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+    }
+
     /* Cabeçalho com Logomarca Centralizada */
     .header-banner {
-      background-color: #2b3990; /* Tom azul idêntico ao da imagem */
-      padding: 24px 16px;
+      background-color: #2b3990;
+      padding: 20px 16px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -47,26 +59,23 @@
 
     .brand-logo-full {
       width: 100%;
-      max-width: 320px;
+      max-width: 300px;
       height: auto;
       object-fit: contain;
       display: block;
     }
 
-    /* Container Principal Mobile */
+    /* Container Conteúdo Mobile */
     .container {
-      width: 100%;
-      max-width: 480px;
-      margin: 0 auto;
-      padding: 18px 14px;
+      padding: 20px 16px;
     }
 
     .welcome-text {
-      margin-bottom: 16px;
+      margin-bottom: 20px;
     }
 
     .welcome-text h2 {
-      font-size: 1.3rem;
+      font-size: 1.35rem;
       color: #1e293b;
       font-weight: 800;
     }
@@ -74,85 +83,40 @@
     .welcome-text p {
       font-size: 0.85rem;
       color: #64748b;
-      margin-top: 2px;
+      margin-top: 3px;
     }
 
-    /* Grid de Resumo (Cards Superiores) */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-bottom: 16px;
-    }
-
-    .stat-card {
-      background: #ffffff;
-      padding: 12px 10px;
-      border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .stat-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: bold;
-      font-size: 0.9rem;
-      flex-shrink: 0;
-    }
-
-    .blue-bg { background-color: #2563eb; }
-    .orange-bg { background-color: #f59e0b; }
-    .purple-bg { background-color: #8b5cf6; }
-    .green-bg { background-color: #10b981; }
-
-    .stat-info .number {
-      font-size: 1.05rem;
-      font-weight: 800;
-      color: #111827;
-      line-height: 1.1;
-    }
-
-    .stat-info .label {
-      font-size: 0.7rem;
-      color: #6b7280;
-    }
-
-    /* Grid de Botões de Ação */
+    /* Grid de Botões de Ação Principais */
     .actions-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
     }
 
     .action-btn {
-      background: #2b3990;
-      color: #ffffff;
-      border: none;
-      border-radius: 12px;
-      padding: 16px 6px;
+      background: #ffffff;
+      color: #2b3990;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 20px 12px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 10px;
       text-decoration: none;
-      font-size: 0.75rem;
-      font-weight: 600;
-      box-shadow: 0 3px 8px rgba(43, 57, 144, 0.2);
+      font-size: 0.85rem;
+      font-weight: 700;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
       text-align: center;
+      transition: all 0.2s ease;
     }
 
-    .action-btn.dark-blue {
-      background: #1e255e;
-      box-shadow: 0 3px 8px rgba(30, 37, 94, 0.2);
+    .action-btn.primary {
+      background: #2b3990;
+      color: #ffffff;
+      border: none;
+      box-shadow: 0 4px 10px rgba(43, 57, 144, 0.25);
     }
 
     .action-btn:active {
@@ -160,8 +124,8 @@
     }
 
     .action-btn svg {
-      width: 24px;
-      height: 24px;
+      width: 28px;
+      height: 28px;
       fill: none;
       stroke: currentColor;
       stroke-width: 2;
@@ -169,18 +133,20 @@
       stroke-linejoin: round;
     }
 
-    /* Navegação Inferior Fixa Mobile */
+    /* Navegação Inferior Limitada à Largura do Mobile (max-width: 480px) */
     .bottom-nav {
       position: fixed;
       bottom: 0;
-      left: 0;
-      right: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
       background: #ffffff;
       border-top: 1px solid #e5e7eb;
       display: flex;
       justify-content: space-around;
       padding: 8px 0 10px 0;
-      box-shadow: 0 -2px 8px rgba(0,0,0,0.06);
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
       z-index: 1000;
     }
 
@@ -210,110 +176,77 @@
 </head>
 <body>
 
-  <!-- Topo Mobile Apenas com a Logomarca Centralizada -->
-  <header class="header-banner animate-entry">
-    <img src="AClogomarca.png" alt="AC Serviços" class="brand-logo-full">
-  </header>
+  <div class="app-wrapper">
+    <!-- Topo Mobile Apenas com a Logomarca Centralizada -->
+    <header class="header-banner animate-entry">
+      <img src="AClogomarca.png" alt="AC Serviços" class="brand-logo-full">
+    </header>
 
-  <!-- Conteúdo Principal -->
-  <main class="container animate-entry">
-    <div class="welcome-text">
-      <h2>Olá, Técnico!</h2>
-      <p>Acompanhe suas ordens de serviço e mantenha seu trabalho sempre organizado.</p>
-    </div>
-
-    <!-- Cards de Resumo -->
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-icon blue-bg">📅</div>
-        <div class="stat-info">
-          <div class="number">12</div>
-          <div class="label">Agendar</div>
-        </div>
+    <!-- Conteúdo Principal -->
+    <main class="container animate-entry">
+      <div class="welcome-text">
+        <h2>Olá, Técnico!</h2>
+        <p>Acompanhe suas ordens de serviço e mantenha seu trabalho sempre organizado.</p>
       </div>
 
-      <div class="stat-card">
-        <div class="stat-icon orange-bg">⚙️</div>
-        <div class="stat-info">
-          <div class="number">5</div>
-          <div class="label">Em andamento</div>
-        </div>
-      </div>
+      <!-- Botões de Ação das Funções -->
+      <div class="actions-grid">
+        <a href="#" class="action-btn primary">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          Nova Ordem de Serviço
+        </a>
 
-      <div class="stat-card">
-        <div class="stat-icon purple-bg">📝</div>
-        <div class="stat-info">
-          <div class="number">3</div>
-          <div class="label">Orçamento</div>
-        </div>
-      </div>
+        <a href="#" class="action-btn">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+          Ordens de Serviço
+        </a>
 
-      <div class="stat-card">
-        <div class="stat-icon green-bg">✓</div>
-        <div class="stat-info">
-          <div class="number">8</div>
-          <div class="label">Concluídas</div>
-        </div>
-      </div>
-    </div>
+        <a href="#" class="action-btn">
+          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          Clientes
+        </a>
 
-    <!-- Botões de Ação Principais -->
-    <div class="actions-grid">
-      <a href="#" class="action-btn">
-        <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-        Nova Ordem de Serviço
+        <a href="#" class="action-btn">
+          <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="6" y1="8" x2="18" y2="8"></line><line x1="6" y1="12" x2="18" y2="12"></line><line x1="6" y1="16" x2="12" y2="16"></line></svg>
+          Orçamentos
+        </a>
+
+        <a href="#" class="action-btn">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+          Relatórios
+        </a>
+
+        <a href="#" class="action-btn">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          Configurações
+        </a>
+      </div>
+    </main>
+
+    <!-- Rodapé Fixo e Limitado ao App Mobile -->
+    <nav class="bottom-nav">
+      <a href="#" class="nav-item active">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+        Início
       </a>
-
-      <a href="#" class="action-btn dark-blue">
-        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
-        Ordens de Serviço
+      <a href="#" class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg>
+        OS
       </a>
-
-      <a href="#" class="action-btn">
-        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      <a href="#" class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
         Clientes
       </a>
-
-      <a href="#" class="action-btn">
-        <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="6" y1="8" x2="18" y2="8"></line><line x1="6" y1="12" x2="18" y2="12"></line><line x1="6" y1="16" x2="12" y2="16"></line></svg>
+      <a href="#" class="nav-item">
+        <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="6" y1="8" x2="18" y2="8"></line></svg>
         Orçamento
       </a>
-
-      <a href="#" class="action-btn dark-blue">
-        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
-        Relatórios
+      <a href="#" class="nav-item">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+        Mais
       </a>
-
-      <a href="#" class="action-btn">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-        Configurações
-      </a>
-    </div>
-  </main>
-
-  <!-- Navegação Inferior Fixa Mobile -->
-  <nav class="bottom-nav">
-    <a href="#" class="nav-item active">
-      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
-      Início
-    </a>
-    <a href="#" class="nav-item">
-      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg>
-      OS
-    </a>
-    <a href="#" class="nav-item">
-      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
-      Clientes
-    </a>
-    <a href="#" class="nav-item">
-      <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="6" y1="8" x2="18" y2="8"></line></svg>
-      Orçamento
-    </a>
-    <a href="#" class="nav-item">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
-      Mais
-    </a>
-  </nav>
+    </nav>
+  </div>
 
 </body>
 </html>
