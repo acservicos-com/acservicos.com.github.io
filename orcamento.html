@@ -33,7 +33,6 @@
       overflow-x: hidden;
     }
 
-    /* Topo Azul com Logo */
     .header-banner {
       background-color: #003b8e;
       padding: 14px 16px;
@@ -63,14 +62,12 @@
       object-fit: contain;
     }
 
-    /* Conteúdo Principal */
     .container {
       padding: 16px;
       flex: 1;
       overflow-y: auto;
     }
 
-    /* Título e Status da OS */
     .os-info-header {
       display: flex;
       justify-content: space-between;
@@ -101,14 +98,13 @@
       border: 1px solid #fde68a;
     }
 
-    /* Detalhes do Cliente e Equipamento */
     .client-equip-info {
       font-size: 0.82rem;
       color: #334155;
       margin-bottom: 14px;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 6px;
     }
 
     .client-equip-info div {
@@ -117,7 +113,6 @@
       gap: 6px;
     }
 
-    /* Abas de Navegação */
     .nav-tabs {
       display: flex;
       background: #e2e8f0;
@@ -145,7 +140,6 @@
       box-shadow: 0 2px 5px rgba(0, 102, 255, 0.3);
     }
 
-    /* Cards Superiores (Valor e Validade) */
     .top-cards-grid {
       display: grid;
       grid-template-columns: 1.3fr 1fr;
@@ -180,7 +174,6 @@
       margin-top: 2px;
     }
 
-    /* Bloco Detalhes do Orçamento */
     .details-card {
       background: #ffffff;
       border: 1px solid #e2e8f0;
@@ -200,6 +193,7 @@
     .detail-row {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       font-size: 0.82rem;
       color: #334155;
       padding: 6px 0;
@@ -210,13 +204,20 @@
       border-bottom: none;
     }
 
-    .detail-row.total-row {
-      border-top: 1px solid #e2e8f0;
-      margin-top: 6px;
-      padding-top: 10px;
-      font-weight: 800;
-      color: #003b8e;
-      font-size: 0.95rem;
+    .detail-row input {
+      width: 110px;
+      padding: 6px 8px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      text-align: right;
+      font-size: 0.82rem;
+      background-color: #f8fafc;
+      outline: none;
+    }
+
+    .detail-row input:focus {
+      border-color: #0066ff;
+      background-color: #ffffff;
     }
 
     .total-highlight-box {
@@ -227,7 +228,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 8px;
+      margin-top: 10px;
     }
 
     .total-highlight-box span {
@@ -236,7 +237,6 @@
       font-size: 1rem;
     }
 
-    /* Forma de Pagamento e Observações */
     .info-card-link {
       background: #ffffff;
       border: 1px solid #e2e8f0;
@@ -279,22 +279,28 @@
       margin-bottom: 4px;
     }
 
-    .obs-card p {
-      font-size: 0.75rem;
-      color: #475569;
-      line-height: 1.4;
+    .obs-card textarea {
+      width: 100%;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      padding: 8px;
+      font-size: 0.78rem;
+      color: #334155;
+      background-color: #f8fafc;
+      resize: vertical;
+      min-height: 60px;
+      outline: none;
     }
 
-    .obs-card p a {
-      color: #0066ff;
-      text-decoration: none;
+    .obs-card textarea:focus {
+      border-color: #0066ff;
+      background-color: #ffffff;
     }
   </style>
 </head>
 <body>
 
   <div class="app-wrapper">
-    <!-- Cabeçalho com Logomarca -->
     <header class="header-banner">
       <button class="back-btn" onclick="window.location.href='index.html'">
         <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" fill="none" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
@@ -307,10 +313,8 @@
       </button>
     </header>
 
-    <!-- Conteúdo da Página -->
     <main class="container">
       
-      <!-- Cabeçalho do Orçamento -->
       <div class="os-info-header">
         <div class="os-title-area">
           <h1>Orçamento</h1>
@@ -319,14 +323,12 @@
         <span class="status-badge">Pendente</span>
       </div>
 
-      <!-- Informações do Cliente e Equipamento -->
       <div class="client-equip-info">
-        <div>👤 <strong>Cliente:</strong> Clínica Sorriso Feliz</div>
-        <div>⚙️ <strong>Equipamento:</strong> Autocláve</div>
-        <div>📅 <strong>Data do orçamento:</strong> 23/09/2026 - 14:32</div>
+        <div>👤 <strong>Cliente:</strong> <input type="text" id="inputCliente" placeholder="Nome do cliente..." style="border:1px solid #cbd5e1; border-radius:4px; padding:2px 6px; font-size:0.8rem; width: 65%;"></div>
+        <div>⚙️ <strong>Equipamento:</strong> <input type="text" id="inputEquip" placeholder="Nome do equipamento..." style="border:1px solid #cbd5e1; border-radius:4px; padding:2px 6px; font-size:0.8rem; width: 60%;"></div>
+        <div>📅 <strong>Data do orçamento:</strong> <span id="dataAtual">--/--/----</span></div>
       </div>
 
-      <!-- Abas de Navegação -->
       <div class="nav-tabs">
         <button class="tab-btn active">Resumo</button>
         <button class="tab-btn">Itens</button>
@@ -334,67 +336,83 @@
         <button class="tab-btn">Histórico</button>
       </div>
 
-      <!-- Cards Superiores -->
       <div class="top-cards-grid">
         <div class="card-box">
           <div class="card-box-title">Valor total do orçamento</div>
-          <div class="card-box-value">R$ 4.850,00</div>
+          <div class="card-box-value" id="lblTotalTop">R$ 0,00</div>
         </div>
         <div class="card-box">
           <div class="card-box-title">Validade do orçamento</div>
-          <div class="card-box-value" style="font-size: 1rem;">7 dias</div>
-          <div class="card-box-sub">(até 30/09/2026)</div>
+          <div class="card-box-value" style="font-size: 1rem;"><input type="text" id="inputValidade" placeholder="7 dias" style="width: 60px; border:1px solid #cbd5e1; border-radius:4px; text-align:center; font-size:0.9rem;"></div>
+          <div class="card-box-sub">informe a validade</div>
         </div>
       </div>
 
-      <!-- Detalhes do Orçamento -->
       <div class="details-card">
         <div class="details-card-title">Detalhes do orçamento</div>
         
         <div class="detail-row">
           <span>Mão de obra</span>
-          <span>R$ 1.500,00</span>
+          <input type="text" id="valMaoDeObra" placeholder="R$ 0,00" oninput="calcularTotal()">
         </div>
         <div class="detail-row">
           <span>Peças e componentes</span>
-          <span>R$ 2.800,00</span>
+          <input type="text" id="valPecas" placeholder="R$ 0,00" oninput="calcularTotal()">
         </div>
         <div class="detail-row">
           <span>Materiais e insumos</span>
-          <span>R$ 200,00</span>
+          <input type="text" id="valMateriais" placeholder="R$ 0,00" oninput="calcularTotal()">
         </div>
         <div class="detail-row">
           <span>Deslocamento</span>
-          <span>R$ 150,00</span>
+          <input type="text" id="valDeslocamento" placeholder="R$ 0,00" oninput="calcularTotal()">
         </div>
         <div class="detail-row">
           <span>Desconto</span>
-          <span>R$ 0,00</span>
+          <input type="text" id="valDesconto" placeholder="R$ 0,00" oninput="calcularTotal()">
         </div>
 
         <div class="total-highlight-box">
           <strong>Total</strong>
-          <span>R$ 4.850,00</span>
+          <span id="lblTotalGeral">R$ 0,00</span>
         </div>
       </div>
 
-      <!-- Forma de Pagamento -->
       <a href="#" class="info-card-link">
         <div>
           <strong>Forma de pagamento</strong>
-          <span>PIX | Cartão | Transferência | Dinheiro</span>
+          <span>Selecione ou configure as formas</span>
         </div>
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#94a3b8" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
       </a>
 
-      <!-- Observações -->
       <div class="obs-card">
         <strong>Observações</strong>
-        <p>O orçamento inclui a substituição da válvula de segurança, verificação do sistema elétrico e teste completo do equipamento. Qualquer alteração será <a href="#">comunicada previamente</a>.</p>
+        <textarea placeholder="Escreva as observações do orçamento aqui..."></textarea>
       </div>
 
     </main>
   </div>
+
+  <script>
+    // Insere a data atual automaticamente
+    document.getElementById('dataAtual').innerText = new Date().toLocaleDateString('pt-BR') + ' - ' + new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+
+    function calcularTotal() {
+      // Função simples reservada para somar os campos se o usuário desejar digitar os valores
+      const mao = parseFloat(document.getElementById('valMaoDeObra').value.replace('R$', '').replace('.', '').replace(',', '.')) || 0;
+      const pecas = parseFloat(document.getElementById('valPecas').value.replace('R$', '').replace('.', '').replace(',', '.')) || 0;
+      const materiais = parseFloat(document.getElementById('valMateriais').value.replace('R$', '').replace('.', '').replace(',', '.')) || 0;
+      const deslocamento = parseFloat(document.getElementById('valDeslocamento').value.replace('R$', '').replace('.', '').replace(',', '.')) || 0;
+      const desconto = parseFloat(document.getElementById('valDesconto').value.replace('R$', '').replace('.', '').replace(',', '.')) || 0;
+
+      const total = (mao + pecas + materiais + deslocamento) - desconto;
+      const formatado = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+      document.getElementById('lblTotalTop').innerText = formatado;
+      document.getElementById('lblTotalGeral').innerText = formatado;
+    }
+  </script>
 
 </body>
 </html>
