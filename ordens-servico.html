@@ -391,7 +391,7 @@
               <input type="text" id="diagPecas" placeholder="Ex: Atuador KaVo">
             </div>
             <div class="form-group">
-              <label>Orçamento Estimado:</label>
+              <label>Valor do Serviço / Total:</label>
               <input type="text" id="diagOrcamento" placeholder="Ex: R$ 1.800,00">
             </div>
           </div>
@@ -475,7 +475,7 @@
 
       const causa = document.getElementById('diagCausa').value || 'N/A';
       const pecas = document.getElementById('diagPecas').value || 'N/A';
-      const orcamento = document.getElementById('diagOrcamento').value || 'R$ 1.800,00';
+      const valorTotal = document.getElementById('diagOrcamento').value || 'R$ 1.800,00';
       const tecnico = document.getElementById('tecNome').value || 'João Carlos Souza';
 
       const dataAtual = new Date().toLocaleDateString('pt-BR');
@@ -484,30 +484,27 @@
       imgLogo.src = "AClogomarca.png";
       
       imgLogo.onload = function() {
-        finalizarPDFDoc(doc, cliente, cnpj, tel, endereco, equip, marca, serie, prob, desc, urg, causa, pecas, orcamento, tecnico, dataAtual, imgLogo);
+        finalizarPDFDoc(doc, cliente, cnpj, tel, endereco, equip, marca, serie, prob, desc, urg, causa, pecas, valorTotal, tecnico, dataAtual, imgLogo);
       };
 
       imgLogo.onerror = function() {
-        finalizarPDFDoc(doc, cliente, cnpj, tel, endereco, equip, marca, serie, prob, desc, urg, causa, pecas, orcamento, tecnico, dataAtual, null);
+        finalizarPDFDoc(doc, cliente, cnpj, tel, endereco, equip, marca, serie, prob, desc, urg, causa, pecas, valorTotal, tecnico, dataAtual, null);
       };
     }
 
-    function finalizarPDFDoc(doc, cliente, cnpj, tel, endereco, equip, marca, serie, prob, desc, urg, causa, pecas, orcamento, tecnico, dataAtual, imgLogo) {
+    function finalizarPDFDoc(doc, cliente, cnpj, tel, endereco, equip, marca, serie, prob, desc, urg, causa, pecas, valorTotal, tecnico, dataAtual, imgLogo) {
       // --- TOPO AZUL INSTITUCIONAL ---
       doc.setFillColor(0, 59, 142);
       doc.rect(0, 0, 210, 32, "F");
 
-      // Logomarca centralizada e com proporções corretas (sem distorção/achatamento)
       if (imgLogo) {
-        // Mantém a proporção correta baseada na largura e altura originais da imagem
         const imgWidth = 55;
         const imgHeight = (imgLogo.height * imgWidth) / imgLogo.width;
-        const posX = (210 - imgWidth) / 2; // Centralizado horizontalmente no A4 (210mm)
-        const posY = (32 - imgHeight) / 2; // Centralizado verticalmente na faixa azul (32mm)
+        const posX = (210 - imgWidth) / 2;
+        const posY = (32 - imgHeight) / 2;
         
         doc.addImage(imgLogo, 'PNG', posX, Math.max(2, posY), imgWidth, Math.min(28, imgHeight));
       } else {
-        // Fallback caso a imagem demore ou falhe
         doc.setTextColor(255, 255, 255);
         doc.setFontSize(16);
         doc.setFont("helvetica", "bold");
@@ -575,15 +572,15 @@
 
       y += 16;
 
-      // --- ORÇAMENTO ---
+      // --- VALOR DO SERVIÇO ---
       doc.setFillColor(240, 244, 248);
       doc.rect(15, y, 180, 7, "F");
       doc.setFont("helvetica", "bold");
-      doc.text("ORÇAMENTO E VALORES", 18, y + 5);
+      doc.text("VALOR DO SERVIÇO / COBRANÇA", 18, y + 5);
 
       y += 12;
       doc.setFont("helvetica", "normal");
-      doc.text(`Orçamento Estimado: ${orcamento}`, 15, y);
+      doc.text(`Valor Total: ${valorTotal}`, 15, y);
       doc.text(`Forma de Pagamento: PIX / Dinheiro / Cartão`, 15, y + 6);
 
       y += 20;
