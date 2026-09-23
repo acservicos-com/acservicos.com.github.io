@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Ordens de Serviço - AC Serviços</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: #e2e8f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .app-wrapper {
+      width: 100%;
+      max-width: 420px;
+      background-color: #f8fafc;
+      min-height: 100vh;
+      position: relative;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Cabeçalho Azul */
+    .header-banner {
+      background-color: #003b8e;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #ffffff;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .icon-btn {
+      background: none;
+      border: none;
+      color: #ffffff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
+    /* Filtros e Abas de Status */
+    .filters-container {
+      padding: 12px 14px;
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none; /* Firefox */
+    }
+
+    .filters-container::-webkit-scrollbar {
+      display: none; /* Chrome/Safari */
+    }
+
+    .filter-tab {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      border: 1px solid #cbd5e1;
+      background: #f1f5f9;
+      color: #64748b;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .filter-tab.active {
+      background: #0066ff;
+      color: #ffffff;
+      border-color: #0066ff;
+      box-shadow: 0 2px 6px rgba(0, 102, 255, 0.25);
+    }
+
+    /* Lista de OS */
+    .container {
+      padding: 14px;
+      flex: 1;
+      overflow-y: auto;
+      padding-bottom: 80px;
+    }
+
+    .os-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.1s ease;
+    }
+
+    .os-card:active {
+      transform: scale(0.98);
+    }
+
+    .os-card-content {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .os-icon-box {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background-color: #eff6ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0066ff;
+      flex-shrink: 0;
+    }
+
+    .os-details h3 {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 2px;
+    }
+
+    .os-details p {
+      font-size: 0.78rem;
+      color: #475569;
+      margin-bottom: 2px;
+    }
+
+    .os-date {
+      font-size: 0.72rem;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 4px;
+    }
+
+    .os-right-side {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 10px;
+    }
+
+    /* Badges de Status Personalizados */
+    .status-badge {
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 12px;
+      white-space: nowrap;
+    }
+
+    .status-manutencao {
+      background-color: #fee2e2;
+      color: #dc2626;
+    }
+
+    .status-aguardando {
+      background-color: #fef3c7;
+      color: #d97706;
+    }
+
+    .status-concluida {
+      background-color: #dcfce7;
+      color: #16a34a;
+    }
+
+    .status-andamento {
+      background-color: #e0f2fe;
+      color: #0284c7;
+    }
+
+    .status-aberta {
+      background-color: #f1f5f9;
+      color: #64748b;
+    }
+
+    .arrow-icon {
+      color: #94a3b8;
+    }
+
+    /* Botão Flutuante de Adição (+) */
+    .fab-btn {
+      position: fixed;
+      bottom: 24px;
+      right: calc(50% - 190px);
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, #0077ff 0%, #0044cc 100%);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(0, 102, 255, 0.4);
+      border: none;
+      cursor: pointer;
+      z-index: 10;
+      transition: transform 0.2s ease;
+    }
+
+    .fab-btn:active {
+      transform: scale(0.92);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-wrapper">
+    <!-- Cabeçalho -->
+    <header class="header-banner">
+      <div class="header-left">
+        <button class="icon-btn" onclick="window.location.href='index.html'">
+          <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" fill="none" stroke-width="2.5"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
+        <h1 class="header-title">Ordens de Serviço</h1>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn">
+          <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" fill="none" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </button>
+        <button class="icon-btn">
+          <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" fill="none" stroke-width="2.5"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Filtros de Status -->
+    <div class="filters-container">
+      <button class="filter-tab active" onclick="filtrarOS('todas', this)">Todas</button>
+      <button class="filter-tab" onclick="filtrarOS('aberta', this)">Abertas</button>
+      <button class="filter-tab" onclick="filtrarOS('andamento', this)">Em andamento</button>
+      <button class="filter-tab" onclick="filtrarOS('aguardando', this)">Aguardando peça</button>
+      <button class="filter-tab" onclick="filtrarOS('concluida', this)">Concluídas</button>
+    </div>
+
+    <!-- Lista de Histórico de OS -->
+    <main class="container" id="listaOS">
+      
+      <!-- OS 1 -->
+      <a href="nova-os.html" class="os-card" data-status="andamento">
+        <div class="os-card-content">
+          <div class="os-icon-box">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+          </div>
+          <div class="os-details">
+            <h3>OS #000125</h3>
+            <p>Cliente: Clínica Sorriso Feliz</p>
+            <p>Equipamento: Autocláve</p>
+            <div class="os-date">
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              23/09/2026 - 14:32
+            </div>
+          </div>
+        </div>
+        <div class="os-right-side">
+          <span class="status-badge status-manutencao">Em manutenção</span>
+          <svg class="arrow-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </div>
+      </a>
+
+      <!-- OS 2 -->
+      <a href="nova-os.html" class="os-card" data-status="aguardando">
+        <div class="os-card-content">
+          <div class="os-icon-box">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          </div>
+          <div class="os-details">
+            <h3>OS #000124</h3>
+            <p>Cliente: Consultório São Lucas</p>
+            <p>Equipamento: Compressor</p>
+            <div class="os-date">
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              22/09/2026 - 11:20
+            </div>
+          </div>
+        </div>
+        <div class="os-right-side">
+          <span class="status-badge status-aguardando">Aguardando peça</span>
+          <svg class="arrow-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </div>
+      </a>
+
+      <!-- OS 3 -->
+      <a href="nova-os.html" class="os-card" data-status="concluida">
+        <div class="os-card-content">
+          <div class="os-icon-box">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+          </div>
+          <div class="os-details">
+            <h3>OS #000123</h3>
+            <p>Cliente: Odonto Mais</p>
+            <p>Equipamento: Cadeira Odontológica</p>
+            <div class="os-date">
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              21/09/2026 - 16:45
+            </div>
+          </div>
+        </div>
+        <div class="os-right-side">
+          <span class="status-badge status-concluida">Concluída</span>
+          <svg class="arrow-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </div>
+      </a>
+
+      <!-- OS 4 -->
+      <a href="nova-os.html" class="os-card" data-status="andamento">
+        <div class="os-card-content">
+          <div class="os-icon-box">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+          </div>
+          <div class="os-details">
+            <h3>OS #000122</h3>
+            <p>Cliente: Sorriso Saúde</p>
+            <p>Equipamento: Raio-X</p>
+            <div class="os-date">
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              20/09/2026 - 10:10
+            </div>
+          </div>
+        </div>
+        <div class="os-right-side">
+          <span class="status-badge status-andamento">Em andamento</span>
+          <svg class="arrow-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </div>
+      </a>
+
+      <!-- OS 5 -->
+      <a href="nova-os.html" class="os-card" data-status="aberta">
+        <div class="os-card-content">
+          <div class="os-icon-box">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+          </div>
+          <div class="os-details">
+            <h3>OS #000121</h3>
+            <p>Cliente: Clínica Vida</p>
+            <p>Equipamento: Autoclave</p>
+            <div class="os-date">
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              19/09/2026 - 09:05
+            </div>
+          </div>
+        </div>
+        <div class="os-right-side">
+          <span class="status-badge status-aberta">Aberta</span>
+          <svg class="arrow-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </div>
+      </a>
+
+    </main>
+
+    <!-- Botão Flutuante (+) -->
+    <button class="fab-btn" onclick="window.location.href='nova-os.html'">
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+    </button>
+  </div>
+
+  <script>
+    function filtrarOS(status, elemento) {
+      // Alterna a classe ativa dos botões de filtro
+      document.querySelectorAll('.filter-tab').forEach(tab => tab.classList.remove('active'));
+      elemento.classList.add('active');
+
+      // Filtra os cards da lista
+      const cards = document.querySelectorAll('.os-card');
+      cards.forEach(card => {
+        if (status === 'todas') {
+          card.style.display = 'flex';
+        } else {
+          const cardStatus = card.getAttribute('data-status');
+          if (cardStatus.includes(status)) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
