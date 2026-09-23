@@ -3,456 +3,161 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AC SERVIÇOS - Painel do Técnico</title>
-  <!-- Ícones Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>AC Serviços - Consertos de Equipamentos Odontológicos</title>
   <style>
-    :root {
-      --header-bg: #032b5b;
-      --bg-body: #f4f6f9;
-      --card-bg: #ffffff;
-      --text-dark: #1e293b;
-      --text-muted: #64748b;
-      --primary-blue: #0066cc;
-      --dark-blue: #092c55;
-    }
-
+    /* Reset básico e tipografia */
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
     body {
-      background-color: var(--bg-body);
-      color: var(--text-dark);
-      display: flex;
-      justify-content: center;
-      min-height: 100vh;
-    }
-
-    .app-container {
-      width: 100%;
-      max-width: 430px;
-      background-color: #ffffff;
+      background-color: #f4f7f6;
+      color: #333;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 0 20px rgba(0,0,0,0.1);
-      position: relative;
-      padding-bottom: 70px;
     }
 
-    /* Cabeçalho */
+    /* Animação minimalista de entrada (Fade-in e Slide-up) */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-entry {
+      animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Cabeçalho inspirado na marca AC Serviços */
     header {
-      background-color: var(--header-bg);
-      color: white;
-      padding: 20px 15px 15px 15px;
-      border-bottom-left-radius: 12px;
-      border-bottom-right-radius: 12px;
-    }
-
-    .top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 10px;
-    }
-
-    .logo-container {
+      background-color: #0d2c54;
+      color: #ffffff;
+      padding: 20px 30px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      justify-content: space-between;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
 
-    .logo-img {
-      height: 65px;
-      width: auto;
-      object-fit: contain;
-    }
-
-    .company-info {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .company-name {
-      font-size: 1.3rem;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-    }
-
-    .company-subtitle {
-      font-size: 0.55rem;
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-      opacity: 0.85;
-      margin-bottom: 4px;
-    }
-
-    .company-phone {
-      font-size: 0.85rem;
-      font-weight: 700;
-    }
-
-    .company-address {
-      font-size: 0.65rem;
-      opacity: 0.8;
-    }
-
-    .header-icons {
+    .brand-container {
       display: flex;
       align-items: center;
       gap: 15px;
     }
 
-    .notification-icon {
-      position: relative;
-      font-size: 1.2rem;
-      cursor: pointer;
+    .logo-img {
+      height: 60px;
+      width: auto;
+      object-fit: contain;
     }
 
-    .badge {
-      position: absolute;
-      top: -6px;
-      right: -6px;
-      background-color: #ef4444;
-      color: white;
-      font-size: 0.65rem;
-      font-weight: bold;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .brand-text h1 {
+      font-size: 1.4rem;
+      letter-spacing: 1px;
+      font-weight: 700;
     }
 
-    .user-icon {
-      font-size: 1.5rem;
-      cursor: pointer;
+    .brand-text p {
+      font-size: 0.75rem;
+      color: #a0c4ff;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     /* Conteúdo Principal */
     main {
-      padding: 15px;
       flex: 1;
+      max-width: 900px;
+      width: 90%;
+      margin: 40px auto;
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+      text-align: center;
     }
 
-    .welcome-section {
+    .hero-logo {
+      max-width: 220px;
+      height: auto;
+      margin-bottom: 25px;
+    }
+
+    main h2 {
+      color: #0d2c54;
+      font-size: 1.8rem;
       margin-bottom: 15px;
     }
 
-    .welcome-section h2 {
-      font-size: 1.3rem;
-      color: #0f172a;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-
-    .welcome-section p {
-      font-size: 0.82rem;
-      color: var(--text-muted);
-      line-height: 1.3;
-    }
-
-    /* Grid de Estatísticas */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-bottom: 8px;
-    }
-
-    .stat-card {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 10px;
-      padding: 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .stat-icon {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.8rem;
-      color: white;
-      flex-shrink: 0;
-    }
-
-    .bg-blue { background-color: #2563eb; }
-    .bg-orange { background-color: #f59e0b; }
-    .bg-purple { background-color: #9333ea; }
-    .bg-green { background-color: #16a34a; }
-
-    .stat-info .number {
+    main p {
       font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--text-dark);
-      line-height: 1;
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 30px;
     }
 
-    .stat-info .label {
-      font-size: 0.65rem;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-
-    .stats-bottom-grid {
-      display: grid;
-      grid-template-columns: 1fr 1.2fr;
-      gap: 8px;
-      margin-bottom: 20px;
-    }
-
-    .stat-card-wide {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 10px;
-      padding: 10px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .stat-info .value-large {
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--dark-blue);
-    }
-
-    /* Grid de Ações Rápidas */
-    .actions-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-    }
-
-    .action-btn {
-      background: var(--primary-blue);
-      color: white;
-      border: none;
-      border-radius: 12px;
-      padding: 15px 8px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      cursor: pointer;
-      transition: transform 0.1s, background-color 0.2s;
+    .contact-btn {
+      display: inline-block;
+      background-color: #0066cc;
+      color: #ffffff;
+      padding: 14px 32px;
+      border-radius: 30px;
       text-decoration: none;
-    }
-
-    .action-btn:active {
-      transform: scale(0.98);
-    }
-
-    .action-btn.dark {
-      background: var(--dark-blue);
-    }
-
-    .action-btn i {
-      font-size: 1.4rem;
-    }
-
-    .action-btn span {
-      font-size: 0.72rem;
       font-weight: 600;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .contact-btn:hover {
+      background-color: #004999;
+      transform: translateY(-2px);
+    }
+
+    /* Rodapé */
+    footer {
       text-align: center;
-      line-height: 1.1;
-    }
-
-    /* Menu Inferior (Navegação) */
-    .bottom-nav {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 60px;
-      background: #ffffff;
-      border-top: 1px solid #e2e8f0;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-    }
-
-    .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.65rem;
-    }
-
-    .nav-item.active {
-      color: var(--primary-blue);
-      font-weight: 600;
-    }
-
-    .nav-item i {
-      font-size: 1.1rem;
+      padding: 20px;
+      background-color: #0a2240;
+      color: #88a0c0;
+      font-size: 0.85rem;
     }
   </style>
 </head>
 <body>
 
-  <div class="app-container">
-    <!-- Cabeçalho -->
-    <header>
-      <div class="top-bar">
-        <div class="logo-container">
-          <!-- Carrega a logomarca que enviou -->
-          <img src="AClogomarca.png" alt="AC Serviços Logo" class="logo-img" onerror="this.style.display='none'">
-          <div class="company-info">
-            <span class="company-name">AC SERVIÇOS</span>
-            <span class="company-subtitle">CONSERTOS DE EQUIPAMENTOS ODONTOLÓGICOS</span>
-            <span class="company-phone">(99) 98456-4555</span>
-            <span class="company-address">Rua Sá Sobrinho Nº26 São João dos Patos-MA</span>
-          </div>
-        </div>
-        <div class="header-icons">
-          <div class="notification-icon">
-            <i class="fa-regular fa-bell"></i>
-            <span class="badge">3</span>
-          </div>
-          <div class="user-icon">
-            <i class="fa-regular fa-circle-user"></i>
-          </div>
-        </div>
+  <!-- Cabeçalho -->
+  <header class="animate-entry">
+    <div class="brand-container">
+      <!-- Ficheiro de logomarca em PNG na raiz do repositório -->
+      <img src="AClogomarca.png" alt="AC Serviços Logo" class="logo-img">
+      <div class="brand-text">
+        <h1>AC SERVIÇOS</h1>
+        <p>Consertos de Equipamentos Odontológicos</p>
       </div>
-    </header>
+    </div>
+  </header>
 
-    <!-- Conteúdo Principal -->
-    <main>
-      <section class="welcome-section">
-        <h2>Olá, Técnico!</h2>
-        <p>Acompanhe suas ordens de serviço e mantenha seu trabalho sempre organizado.</p>
-      </section>
+  <!-- Conteúdo Central com Animação -->
+  <main class="animate-entry">
+    <img src="AClogomarca.png" alt="AC Serviços - Equipamentos Odontológicos" class="hero-logo">
+    <h2>Especialistas em Manutenção Odontológica</h2>
+    <p>Assistência técnica especializada na manutenção e conserto de equipamentos odontológicos. Garantia de qualidade e agilidade no atendimento.</p>
+    
+    <a href="https://wa.me/5599984564555" class="contact-btn" target="_blank">Falar pelo WhatsApp</a>
+  </main>
 
-      <!-- Cartões de Status (Linha Superior) -->
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-icon bg-blue">
-            <i class="fa-solid fa-box-archive"></i>
-          </div>
-          <div class="stat-info">
-            <div class="number">12</div>
-            <div class="label">Abertas</div>
-          </div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-icon bg-orange">
-            <i class="fa-solid fa-dollar-sign"></i>
-          </div>
-          <div class="stat-info">
-            <div class="number">5</div>
-            <div class="label">Em andamento</div>
-          </div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-icon bg-purple">
-            <i class="fa-solid fa-gear"></i>
-          </div>
-          <div class="stat-info">
-            <div class="number">3</div>
-            <div class="label">Aguardando peça</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Cartões de Status (Linha Inferior) -->
-      <div class="stats-bottom-grid">
-        <div class="stat-card-wide">
-          <div class="stat-icon bg-green">
-            <i class="fa-solid fa-check"></i>
-          </div>
-          <div class="stat-info">
-            <div class="number">8</div>
-            <div class="label">Concluídas</div>
-          </div>
-        </div>
-
-        <div class="stat-card-wide">
-          <div class="stat-icon bg-blue">
-            <i class="fa-solid fa-brazilian-real-sign"></i>
-          </div>
-          <div class="stat-info">
-            <div class="value-large">R$ 12.480,00</div>
-            <div class="label">Total do mês</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Botões de Ações Rápidas -->
-      <div class="actions-grid">
-        <button class="action-btn">
-          <i class="fa-solid fa-plus"></i>
-          <span>Nova Ordem<br>de Serviço</span>
-        </button>
-
-        <button class="action-btn dark">
-          <i class="fa-regular fa-file-lines"></i>
-          <span>Ordens de<br>Serviço</span>
-        </button>
-
-        <button class="action-btn">
-          <i class="fa-regular fa-user"></i>
-          <span>Clientes</span>
-        </button>
-
-        <button class="action-btn">
-          <i class="fa-solid fa-desktop"></i>
-          <span>Equipamentos</span>
-        </button>
-
-        <button class="action-btn dark">
-          <i class="fa-solid fa-file-invoice"></i>
-          <span>Relatórios</span>
-        </button>
-
-        <button class="action-btn">
-          <i class="fa-solid fa-gear"></i>
-          <span>Configurações</span>
-        </button>
-      </div>
-    </main>
-
-    <!-- Menu de Navegação Inferior -->
-    <nav class="bottom-nav">
-      <a href="#" class="nav-item active">
-        <i class="fa-solid fa-house"></i>
-        <span>Início</span>
-      </a>
-      <a href="#" class="nav-item">
-        <i class="fa-regular fa-file-lines"></i>
-        <span>OS</span>
-      </a>
-      <a href="#" class="nav-item">
-        <i class="fa-solid fa-user-group"></i>
-        <span>Clientes</span>
-      </a>
-      <a href="#" class="nav-item">
-        <i class="fa-solid fa-boxes-packing"></i>
-        <span>Equipamentos</span>
-      </a>
-      <a href="#" class="nav-item">
-        <i class="fa-solid fa-ellipsis"></i>
-        <span>Mais</span>
-      </a>
-    </nav>
-  </div>
+  <!-- Rodapé -->
+  <footer>
+    <p>&copy; AC Serviços Odontológicos. Todos os direitos reservados.</p>
+  </footer>
 
 </body>
 </html>
