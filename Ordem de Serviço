@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Nova Ordem de Serviço</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: #e2e8f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    /* Simulação de Moldura de Celular se visualizado no PC */
+    .app-wrapper {
+      width: 100%;
+      max-width: 420px;
+      background-color: #ffffff;
+      min-height: 100vh;
+      position: relative;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Cabeçalho Azul */
+    .header-banner {
+      background-color: #003b8e;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #ffffff;
+    }
+
+    .back-btn {
+      color: #ffffff;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+    }
+
+    .header-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+    }
+
+    .counter-badge {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    /* Stepper / Etapas do Processo */
+    .stepper-container {
+      background: #ffffff;
+      padding: 16px 12px 12px 12px;
+      border-bottom: 1px solid #f1f5f9;
+      position: relative;
+    }
+
+    .stepper-steps {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      z-index: 1;
+    }
+
+    .stepper-line {
+      position: absolute;
+      top: 15px;
+      left: 10%;
+      right: 10%;
+      height: 2px;
+      background: #e2e8f0;
+      z-index: 0;
+    }
+
+    .step-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      text-decoration: none;
+      background: white;
+      padding: 0 4px;
+      z-index: 2;
+    }
+
+    .step-circle {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: #f1f5f9;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      border: 1px solid #cbd5e1;
+    }
+
+    .step-item.active .step-circle {
+      background-color: #0066ff;
+      color: #ffffff;
+      border-color: #0066ff;
+    }
+
+    .step-label {
+      font-size: 0.65rem;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    .step-item.active .step-label {
+      color: #0066ff;
+      font-weight: 700;
+    }
+
+    /* Conteúdo Rolável */
+    .container {
+      padding: 16px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    /* Botão Selecionar Cliente Existente */
+    .select-client-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      text-decoration: none;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+      margin-bottom: 12px;
+    }
+
+    .select-client-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .icon-user-bg {
+      width: 32px;
+      height: 32px;
+      background: #e0edff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #003b8e;
+    }
+
+    .select-client-text {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #001e50;
+    }
+
+    .chevron-icon {
+      color: #94a3b8;
+    }
+
+    .divider-ou {
+      text-align: center;
+      font-size: 0.75rem;
+      color: #94a3b8;
+      margin: 6px 0 12px 0;
+      position: relative;
+    }
+
+    /* Botão Novo Cliente */
+    .add-client-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: #0066ff;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 18px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin: 0 auto 20px auto;
+      box-shadow: 0 2px 6px rgba(0, 102, 255, 0.25);
+      cursor: pointer;
+    }
+
+    /* Card de Dados do Cliente */
+    .data-card {
+      background: #ffffff;
+      border: 1px solid #f1f5f9;
+      border-radius: 12px;
+      padding: 16px 14px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    }
+
+    .data-card-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: #001e50;
+      margin-bottom: 14px;
+    }
+
+    .data-card-header svg {
+      width: 18px;
+      height: 18px;
+      stroke: #003b8e;
+    }
+
+    /* Formulários e Inputs */
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #64748b;
+      margin-bottom: 4px;
+    }
+
+    label span {
+      color: #ef4444;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      color: #1e293b;
+      background-color: #f8fafc;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: #0066ff;
+      background-color: #ffffff;
+    }
+
+    .row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .row-cidade-uf {
+      display: grid;
+      grid-template-columns: 3fr 1fr;
+      gap: 10px;
+    }
+
+    /* Botão Próximo */
+    .next-btn {
+      width: 100%;
+      background: linear-gradient(180deg, #0077ff 0%, #0055ff 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 18px;
+      box-shadow: 0 4px 12px rgba(0, 85, 255, 0.3);
+      cursor: pointer;
+    }
+
+    .next-btn:active {
+      transform: scale(0.98);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-wrapper">
+    <!-- Cabeçalho -->
+    <header class="header-banner">
+      <a href="#" class="back-btn">
+        <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" fill="none" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </a>
+      <h1 class="header-title">Nova Ordem de Serviço</h1>
+      <span class="counter-badge">1/11</span>
+    </header>
+
+    <!-- Stepper das Etapas -->
+    <div class="stepper-container">
+      <div class="stepper-line"></div>
+      <div class="stepper-steps">
+        <div class="step-item active">
+          <div class="step-circle">1</div>
+          <span class="step-label">Cliente</span>
+        </div>
+        <div class="step-item">
+          <div class="step-circle">2</div>
+          <span class="step-label">Equipamento</span>
+        </div>
+        <div class="step-item">
+          <div class="step-circle">3</div>
+          <span class="step-label">Problema</span>
+        </div>
+        <div class="step-item">
+          <div class="step-circle">4</div>
+          <span class="step-label">Diagnóstico</span>
+        </div>
+        <div class="step-item">
+          <div class="step-circle">5</div>
+          <span class="step-label">Serviço</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Conteúdo Formulário -->
+    <main class="container">
+      
+      <!-- Selecionar Cliente Existente -->
+      <a href="#" class="select-client-card">
+        <div class="select-client-left">
+          <div class="icon-user-bg">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          </div>
+          <span class="select-client-text">Selecionar cliente existente</span>
+        </div>
+        <svg class="chevron-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </a>
+
+      <div class="divider-ou">ou</div>
+
+      <button class="add-client-btn">
+        <span>+</span> Cadastrar novo cliente
+      </button>
+
+      <!-- Card Dados do Cliente -->
+      <div class="data-card">
+        <div class="data-card-header">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          Dados do Cliente
+        </div>
+
+        <form>
+          <div class="form-group">
+            <label>Nome / Razão Social <span>*</span></label>
+            <input type="text" value="Clínica Odontológica Sorriso Feliz">
+          </div>
+
+          <div class="row-2">
+            <div class="form-group">
+              <label>CPF / CNPJ <span>*</span></label>
+              <input type="text" value="12.345.678/0001-90">
+            </div>
+            <div class="form-group">
+              <label>Responsável <span>*</span></label>
+              <input type="text" value="Maria Silva">
+            </div>
+          </div>
+
+          <div class="row-2">
+            <div class="form-group">
+              <label>Telefone / WhatsApp <span>*</span></label>
+
+              <input type="text" value=" (99) 98456-4555">
+            </div>
+            <div class="form-group">
+              <label>E-mail</label>
+              <input type="email" value="contato@sorrisofeliz.com.br">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Endereço <span>*</span></label>
+            <input type="text" value="Rua das Flores, 123">
+          </div>
+
+          <div class="row-cidade-uf">
+            <div class="form-group">
+              <label>Cidade <span>*</span></label>
+              <input type="text" value="São João dos Patos">
+            </div>
+            <div class="form-group">
+              <label>UF <span>*</span></label>
+              <select>
+                <option value="MA" selected>MA</option>
+                <option value="PI">PI</option>
+                <option value="CE">CE</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Botão de Ação -->
+          <button type="button" class="next-btn">
+            Próximo &rarr;
+          </button>
+        </form>
+      </div>
+
+    </main>
+  </div>
+
+</body>
+</html>
