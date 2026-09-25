@@ -35,6 +35,7 @@
       overflow-x: hidden;
     }
 
+    /* Cabeçalho Azul */
     .header-banner {
       background-color: #003b8e;
       padding: 14px 18px;
@@ -167,16 +168,16 @@
         <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" fill="none" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
       </button>
       <h1 class="header-title">Nova Ordem de Serviço</h1>
-      <span class="counter-badge" id="counterBadge">1/6</span>
+      <span class="counter-badge" id="counterBadge">1/7</span>
     </header>
 
     <main class="container">
       <form id="osForm">
 
-        <!-- ETAPA 1: DADOS DO CLIENTE E CABEÇALHO -->
+        <!-- ETAPA 1: DADOS PRINCIPAIS E CADASTRAIS (COMPLETO) -->
         <div class="tab-step active" id="step1">
           <div class="data-card">
-            <div class="data-card-header"><span>1. Dados Cadastrais</span></div>
+            <div class="data-card-header"><span>Dados Cadastrais da OS</span> <span style="color:#0284c7; background:#e0f2fe; padding:2px 8px; border-radius:10px; font-size:0.7rem;">Nova OS</span></div>
             <div class="form-group">
               <label>Nº da OS:</label>
               <input type="text" id="osNum" value="OS #000125">
@@ -213,13 +214,13 @@
           <button type="button" class="next-btn" onclick="proximaEtapa(2)">Próximo &rarr;</button>
         </div>
 
-        <!-- ETAPA 2: DETALHES TÉCNICOS E CONTROLO -->
+        <!-- ETAPA 2: INFORMAÇÕES TÉCNICAS E CONTROLO -->
         <div class="tab-step" id="step2">
           <div class="data-card">
-            <div class="data-card-header"><span>2. Informações de Atendimento</span></div>
+            <div class="data-card-header">Detalhes de Atendimento</div>
             <div class="row-2">
               <div class="form-group">
-                <label>Garantia (Sim/Não):</label>
+                <label>Garantia:</label>
                 <select id="osGarantia">
                   <option value="Sim">Sim</option>
                   <option value="Não">Não</option>
@@ -227,7 +228,7 @@
               </div>
               <div class="form-group">
                 <label>Nº do Chamado:</label>
-                <input type="text" id="osChamado" placeholder="Chamado...">
+                <input type="text" id="osChamado" placeholder="Nº Chamado">
               </div>
             </div>
             <div class="row-2">
@@ -237,7 +238,7 @@
               </div>
               <div class="form-group">
                 <label>Horário:</label>
-                <input type="text" id="osHorario" placeholder="Ex: 14:30">
+                <input type="text" id="osHorario" placeholder="Ex: 14:32">
               </div>
             </div>
             <div class="row-2">
@@ -247,85 +248,136 @@
               </div>
               <div class="form-group">
                 <label>N.F. (Nota Fiscal):</label>
-                <input type="text" id="osNf" placeholder="Nº da NF...">
+                <input type="text" id="osNf" placeholder="Nº da NF">
               </div>
             </div>
           </div>
           <button type="button" class="next-btn" onclick="proximaEtapa(3)">Próximo &rarr;</button>
         </div>
 
-        <!-- ETAPA 3: SERVIÇOS, CABOS E PEÇAS -->
+        <!-- ETAPA 3: SERVIÇOS, CABOS E PEÇAS (TOTALMENTE PREENCHÍVEL) -->
         <div class="tab-step" id="step3">
           <div class="data-card">
-            <div class="data-card-header"><span>3. Peças, Cabos e Serviços Executados</span></div>
+            <div class="data-card-header"><span>Serviço Executado / Mão de Obra</span></div>
             <div class="form-group">
-              <label>Descrição do Item (Peça, Cabo ou Serviço):</label>
-              <input type="text" id="itemDesc" placeholder="Ex: Terminal bordem, Placa principal, Cabo, etc.">
+              <label>Descrição do Serviço:</label>
+              <input type="text" id="srvDesc" placeholder="Ex: Manutenção corretiva / Serviço">
             </div>
             <div class="row-2">
               <div class="form-group">
-                <label>Quantidade:</label>
-                <input type="number" id="itemQuant" value="1" min="1">
+                <label>Quant.:</label>
+                <input type="number" id="srvQtd" value="1" min="1" oninput="calcularTotalOS()">
               </div>
               <div class="form-group">
-                <label>Código:</label>
-                <input type="text" id="itemCodigo" placeholder="Cód...">
+                <label>Valor Unit. (R$):</label>
+                <input type="text" id="srvValor" placeholder="0,00" oninput="calcularTotalOS()">
               </div>
             </div>
-            <div class="form-group">
-              <label>Valor Unitário (R$):</label>
-              <input type="text" id="itemValor" placeholder="0,00">
-            </div>
-            <p style="font-size: 0.72rem; color: #64748b; margin-top: 6px;">* O sistema adiciona automaticamente à lista oficial da OS.</p>
           </div>
+
+          <div class="data-card">
+            <div class="data-card-header"><span>Peças, Cabos e Componentes</span></div>
+            <div class="form-group">
+              <label>Nome da Peça / Cabo / Insumo:</label>
+              <input type="text" id="pecaDesc" placeholder="Ex: Terminal bordem, Placa, Cabo, etc.">
+            </div>
+            <div class="row-2">
+              <div class="form-group">
+                <label>Quant.:</label>
+                <input type="number" id="pecaQtd" value="1" min="1" oninput="calcularTotalOS()">
+              </div>
+              <div class="form-group">
+                <label>Valor Unit. (R$):</label>
+                <input type="text" id="pecaValor" placeholder="0,00" oninput="calcularTotalOS()">
+              </div>
+            </div>
+          </div>
+
+          <div class="data-card">
+            <div class="data-card-header">Custos Adicionais (Combustível, Carro, etc.)</div>
+            <div class="row-2">
+              <div class="form-group">
+                <label>Materiais (R$):</label>
+                <input type="text" id="matValor" placeholder="0,00" oninput="calcularTotalOS()">
+              </div>
+              <div class="form-group">
+                <label>Deslocamento / Combustível (R$):</label>
+                <input type="text" id="deslValor" placeholder="0,00" oninput="calcularTotalOS()">
+              </div>
+            </div>
+          </div>
+
           <button type="button" class="next-btn" onclick="proximaEtapa(4)">Próximo &rarr;</button>
         </div>
 
-        <!-- ETAPA 4: RESUMO E VALORES FINAIS -->
+        <!-- ETAPA 4: RESUMO FINANCEIRO -->
         <div class="tab-step" id="step4">
           <div class="data-card">
-            <div class="data-card-header"><span>4. Totais Financeiros</span></div>
-            <div class="form-group">
-              <label>Total de Peças / Componentes (R$):</label>
-              <input type="text" id="valTotalPecas" placeholder="990,00">
+            <div class="data-card-header">Resumo Financeiro da OS</div>
+            <div class="detail-row" style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.85rem;"><span>Serviços / Mão de obra:</span> <strong id="resSrv">R$ 0,00</strong></div>
+            <div class="detail-row" style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.85rem;"><span>Peças / Cabos:</span> <strong id="resPeca">R$ 0,00</strong></div>
+            <div class="detail-row" style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.85rem;"><span>Materiais / Combustível:</span> <strong id="resMat">R$ 0,00</strong></div>
+
+            <div style="background:#003b8e; color:white; padding:12px; border-radius:8px; display:flex; justify-content:space-between; font-weight:800; font-size:1.1rem; margin-top: 10px;">
+              <span>TOTAL GERAL DA OS</span>
+              <span id="lblTotalOS">R$ 0,00</span>
             </div>
-            <div class="form-group">
-              <label>Serviço / Mão de Obra (R$):</label>
-              <input type="text" id="valTotalServico" placeholder="380,00">
-            </div>
-            <div class="form-group">
-              <label>VALOR TOTAL GERAL (R$):</label>
-              <input type="text" id="valTotalGeral" placeholder="1370,00">
+
+            <div class="form-group" style="margin-top: 14px;">
+              <label>Status da OS *</label>
+              <select id="statusSelect">
+                <option value="Em andamento">Em andamento</option>
+                <option value="Em manutenção">Em manutenção</option>
+                <option value="Aguardando peça">Aguardando peça</option>
+                <option value="Concluída">Concluída</option>
+                <option value="Aberta">Aberta</option>
+              </select>
             </div>
           </div>
           <button type="button" class="next-btn" onclick="proximaEtapa(5)">Próximo &rarr;</button>
         </div>
 
-        <!-- ETAPA 5: OBSERVAÇÕES E REVISÃO -->
+        <!-- ETAPA 5: PRAZOS E GARANTIA -->
         <div class="tab-step" id="step5">
           <div class="data-card">
-            <div class="data-card-header"><span>5. Observações</span></div>
+            <div class="data-card-header">Prazos e Condições</div>
             <div class="form-group">
-              <textarea id="osObservacoes" placeholder="Observações gerais da OS..."></textarea>
+              <label>Prazo de Conclusão:</label>
+              <input type="text" id="prazEst" placeholder="Ex: 3 dias úteis">
             </div>
-            <div class="form-group" style="margin-top:10px;">
-              <label>Equipamento consertado e revisado em perfeitas condições?</label>
+            <div class="form-group" style="margin-top:12px;">
+              <label>Tempo de Garantia:</label>
+              <input type="text" id="garServico" placeholder="Ex: 90 dias">
+            </div>
+          </div>
+          <button type="button" class="next-btn" onclick="proximaEtapa(6)">Próximo &rarr;</button>
+        </div>
+
+        <!-- ETAPA 6: OBSERVAÇÕES E REVISÃO -->
+        <div class="tab-step" id="step6">
+          <div class="data-card">
+            <div class="data-card-header">Observações e Revisão</div>
+            <div class="form-group">
+              <textarea id="obsGerais" placeholder="Adicione observações importantes para a OS..."></textarea>
+            </div>
+            <div class="form-group" style="margin-top:12px;">
+              <label>O equipamento foi consertado e revisado, estando em perfeitas condições?</label>
               <select id="osRevisado">
                 <option value="Sim">Sim</option>
                 <option value="Não">Não</option>
               </select>
             </div>
           </div>
-          <button type="button" class="next-btn" onclick="proximaEtapa(6)">Próximo &rarr;</button>
+          <button type="button" class="next-btn" onclick="proximaEtapa(7)">Próximo &rarr;</button>
         </div>
 
-        <!-- ETAPA 6: GERAR PDF EXATO -->
-        <div class="tab-step" id="step6">
+        <!-- ETAPA 7: GERAR PDF EXATO E SALVAR -->
+        <div class="tab-step" id="step7">
           <div class="data-card" style="text-align: center;">
-            <div class="data-card-header" style="justify-content:center;">Conclusão da OS</div>
-            <p style="font-size:0.85rem; color:#64748b; margin-bottom:14px;">Tudo pronto! Clique abaixo para gerar o PDF idêntico ao formulário oficial empresarial.</p>
+            <div class="data-card-header" style="justify-content:center;">Conclusão e Emissão</div>
+            <p style="font-size:0.85rem; color:#64748b; margin-bottom:14px;">Tudo pronto! Clique abaixo para gerar o PDF oficial idêntico ao formulário empresarial.</p>
             
-            <button type="button" class="next-btn" onclick="gerarPDFOficialOS()" style="background: #10b981; margin-bottom: 15px;">
+            <button type="button" class="next-btn" onclick="gerarPDFOSCompleta()" style="background: #10b981; margin-bottom: 15px;">
               📄 GERAR PDF OFICIAL DA OS &rarr;
             </button>
           </div>
@@ -337,7 +389,7 @@
 
   <script>
     let etapaAtual = 1;
-    const totalEtapas = 6;
+    const totalEtapas = 7;
 
     function proximaEtapa(etapa) {
       document.getElementById(`step${etapaAtual}`).classList.remove('active');
@@ -354,7 +406,30 @@
       }
     }
 
-    function gerarPDFOficialOS() {
+    function calcularTotalOS() {
+      const parseMoeda = (val) => parseFloat(val.replace('R$', '').replace(/\./g, '').replace(',', '.').trim()) || 0;
+
+      const srvQtd = parseFloat(document.getElementById('srvQtd').value) || 0;
+      const srvValor = parseMoeda(document.getElementById('srvValor').value);
+      const totalSrv = srvQtd * srvValor;
+
+      const pecaQtd = parseFloat(document.getElementById('pecaQtd').value) || 0;
+      const pecaValor = parseMoeda(document.getElementById('pecaValor').value);
+      const totalPeca = pecaQtd * pecaValor;
+
+      const matValor = parseMoeda(document.getElementById('matValor').value);
+      const deslValor = parseMoeda(document.getElementById('deslValor').value);
+      const totalOutros = matValor + deslValor;
+
+      const totalGeral = totalSrv + totalPeca + totalOutros;
+
+      document.getElementById('resSrv').innerText = totalSrv.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      document.getElementById('resPeca').innerText = totalPeca.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      document.getElementById('resMat').innerText = totalOutros.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      document.getElementById('lblTotalOS').innerText = totalGeral.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    function gerarPDFOSCompleta() {
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF('p', 'mm', 'a4');
 
@@ -372,21 +447,35 @@
       const instalado = document.getElementById('osInstalado').value || '';
       const nf = document.getElementById('osNf').value || '';
       
-      const totalPecas = document.getElementById('valTotalPecas').value || '990,00';
-      const totalServico = document.getElementById('valTotalServico').value || '380,00';
-      const totalGeral = document.getElementById('valTotalGeral').value || '1370,00';
-      const obs = document.getElementById('osObservacoes').value || '';
-      const revisado = document.getElementById('osRevisado').value;
+      const srvDesc = document.getElementById('srvDesc').value || 'Serviço';
+      const srvQtd = document.getElementById('srvQtd').value || '1';
+      const srvValor = document.getElementById('srvValor').value || '380,00';
+      
+      const pecaDesc = document.getElementById('pecaDesc').value || 'Peça / Cabo';
+      const pecaQtd = document.getElementById('pecaQtd').value || '1';
+      const pecaValor = document.getElementById('pecaValor').value || '990,00';
 
-      // Salva no histórico para aparecer na aba ordens.html
+      const totalGeralStr = document.getElementById('lblTotalOS').innerText.replace('R$', '').trim() || '1370,00';
+      const obs = document.getElementById('obsGerais').value || '';
+      const revisado = document.getElementById('osRevisado').value;
+      const statusTexto = document.getElementById('statusSelect').value;
+
+      let statusEstilo = 'status-andamento';
+      let statusClasse = 'andamento';
+      if (statusTexto === 'Em manutenção') { statusEstilo = 'status-manutencao'; statusClasse = 'manutencao'; }
+      else if (statusTexto === 'Aguardando peça') { statusEstilo = 'status-aguardando'; statusClasse = 'aguardando'; }
+      else if (statusTexto === 'Concluída') { statusEstilo = 'status-concluida'; statusClasse = 'concluida'; }
+      else if (statusTexto === 'Aberta') { statusEstilo = 'status-aberta'; statusClasse = 'aberta'; }
+
+      // Salva no histórico local para aparecer na página ordens.html
       const novaOS = {
         numero: numOS,
         cliente: cliente,
         equipamento: 'Equipamento Odontológico',
         data: `${new Date().toLocaleDateString('pt-BR')} - ${new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'})}`,
-        statusTexto: 'Concluída',
-        statusEstilo: 'status-concluida',
-        statusClasse: 'concluida'
+        statusTexto: statusTexto,
+        statusEstilo: statusEstilo,
+        statusClasse: statusClasse
       };
 
       let ordensSalvas = JSON.parse(localStorage.getItem('ac_lista_os')) || [];
@@ -397,16 +486,15 @@
       imgLogo.src = "AClogomarca.png";
 
       imgLogo.onload = function() {
-        desenharLayoutEmpresarial(doc, imgLogo, numOS, cliente, endereco, cidade, estado, contato, cep, garantia, chamado, marcado, horario, instalado, nf, totalPecas, totalServico, totalGeral, obs, revisado);
+        desenharLayoutEmpresarial(doc, imgLogo, numOS, cliente, endereco, cidade, estado, contato, cep, garantia, chamado, marcado, horario, instalado, nf, srvDesc, srvQtd, srvValor, pecaDesc, pecaQtd, pecaValor, totalGeralStr, obs, revisado);
       };
 
       imgLogo.onerror = function() {
-        desenharLayoutEmpresarial(doc, null, numOS, cliente, endereco, cidade, estado, contato, cep, garantia, chamado, marcado, horario, instalado, nf, totalPecas, totalServico, totalGeral, obs, revisado);
+        desenharLayoutEmpresarial(doc, null, numOS, cliente, endereco, cidade, estado, contato, cep, garantia, chamado, marcado, horario, instalado, nf, srvDesc, srvQtd, srvValor, pecaDesc, pecaQtd, pecaValor, totalGeralStr, obs, revisado);
       };
     }
 
-    function desenharLayoutEmpresarial(doc, imgLogo, numOS, cliente, endereco, cidade, estado, contato, cep, garantia, chamado, marcado, horario, instalado, nf, totalPecas, totalServico, totalGeral, obs, revisado) {
-      // Configurações de margens e grelha idêntica à imagem
+    function desenharLayoutEmpresarial(doc, imgLogo, numOS, cliente, endereco, cidade, estado, contato, cep, garantia, chamado, marcado, horario, instalado, nf, srvDesc, srvQtd, srvValor, pecaDesc, pecaQtd, pecaValor, totalGeralStr, obs, revisado) {
       doc.setLineWidth(0.3);
       doc.setDrawColor(0, 0, 0);
 
@@ -473,7 +561,7 @@
       doc.text(`Instalado: ${instalado}`, 173, y + 5);
 
       y += 8;
-      // Linha N.F. e Caixas de Sim/Não
+      // Linha N.F. e Marcado p/
       doc.rect(10, y, 60, 8);
       doc.text(`N.F.: ${nf}`, 13, y + 5);
 
@@ -504,35 +592,38 @@
       doc.setTextColor(0, 0, 0);
       doc.setFont("helvetica", "normal");
 
-      // Linhas de exemplo padrão da OS igual ao modelo
-      const itensExemplo = [
-        ["01", "", "Terminal bordem", "90,00", "90,00"],
-        ["01", "", "Placa principal", "500,00", "500,00"],
-        ["01", "", "Chave I/d", "40,00", "40,00"],
-        ["01", "", "Cabo", "10,00", "10,00"],
-        ["01", "", "Combustível", "270,00", "120,00"],
-        ["01", "", "Carro", "100,00", "100,00"],
-        ["01", "", "Almoço", "100,00", "100,00"],
-        ["01", "", "Capacitor", "30,00", "30,00"],
-        ["01", "", "Serviço", "300,00", "380,00"]
+      // Itens preenchidos pelo usuário
+      const itensDinamicos = [
+        [srvQtd, "", srvDesc, srvValor, srvValor],
+        [pecaQtd, "", pecaDesc, pecaValor, pecaValor]
       ];
 
-      itensExemplo.forEach(item => {
+      itensDinamicos.forEach(item => {
         doc.rect(10, y, 30, 7);
         doc.rect(40, y, 35, 7);
         doc.rect(75, y, 65, 7);
         doc.rect(140, y, 25, 7);
         doc.rect(165, y, 35, 7);
 
-        doc.text(item[0], 15, y + 4.8);
-        doc.text(item[1], 43, y + 4.8);
-        doc.text(item[2], 78, y + 4.8);
-        doc.text(item[3], 162, y + 4.8, { align: "right" });
-        doc.text(item[4], 197, y + 4.8, { align: "right" });
+        doc.text(String(item[0]), 15, y + 4.8);
+        doc.text(String(item[1]), 43, y + 4.8);
+        doc.text(String(item[2]), 78, y + 4.8);
+        doc.text(String(item[3]), 162, y + 4.8, { align: "right" });
+        doc.text(String(item[4]), 197, y + 4.8, { align: "right" });
         y += 7;
       });
 
-      // Bloco de Observações
+      // Preenche o restante do espaço da tabela até a seção de observações
+      for (let i = 0; i < 7; i++) {
+        doc.rect(10, y, 30, 7);
+        doc.rect(40, y, 35, 7);
+        doc.rect(75, y, 65, 7);
+        doc.rect(140, y, 25, 7);
+        doc.rect(165, y, 35, 7);
+        y += 7;
+      }
+
+      // Bloco de Observações e Totais
       doc.rect(10, y, 140, 25);
       doc.rect(150, y, 50, 8.3);
       doc.rect(150, y + 8.3, 50, 8.3);
@@ -541,16 +632,16 @@
       doc.setFont("helvetica", "bold");
       doc.text("Observações:", 13, y + 5);
       doc.setFont("helvetica", "normal");
-      doc.text(obs || "Equipamento revisado com sucesso.", 13, y + 12, { maxWidth: 130 });
+      doc.text(obs || "Equipamento revisado e testado com sucesso.", 13, y + 12, { maxWidth: 130 });
 
       doc.text("TOTAL PÇ", 153, y + 5.5);
-      doc.text(`R$ ${totalPecas}`, 197, y + 5.5, { align: "right" });
+      doc.text(`R$ ${pecaValor}`, 197, y + 5.5, { align: "right" });
 
       doc.text("SERVIÇO", 153, y + 13.8);
-      doc.text(`R$ ${totalServico}`, 197, y + 13.8, { align: "right" });
+      doc.text(`R$ ${srvValor}`, 197, y + 13.8, { align: "right" });
 
       doc.text("TOTAL", 153, y + 22.1);
-      doc.text(`R$ ${totalGeral}`, 197, y + 22.1, { align: "right" });
+      doc.text(`R$ ${totalGeralStr}`, 197, y + 22.1, { align: "right" });
 
       y += 25;
 
