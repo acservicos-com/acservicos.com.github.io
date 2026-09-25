@@ -197,6 +197,7 @@
       border-radius: 8px;
       padding: 12px;
       margin-bottom: 12px;
+      position: relative;
     }
 
     .add-btn {
@@ -246,7 +247,7 @@
     <!-- Indicador de Abas Superior -->
     <div class="steps-indicator" id="stepsIndicator">
       <div class="step-item active" onclick="irParaEtapa(1)"><div class="step-circle">1</div><span class="step-label">Cabeçalho</span></div>
-      <div class="step-item" onclick="irParaEtapa(2)"><div class="step-circle">2</div><span class="step-label">Peças e Serviços</span></div>
+      <div class="step-item" onclick="irParaEtapa(2)"><div class="step-circle">2</div><span class="step-label">Equipamentos & Itens</span></div>
       <div class="step-item" onclick="irParaEtapa(3)"><div class="step-circle">3</div><span class="step-label">Revisão</span></div>
       <div class="step-item" onclick="irParaEtapa(4)"><div class="step-circle">4</div><span class="step-label">Gerar PDF</span></div>
     </div>
@@ -327,10 +328,23 @@
           <button type="button" class="next-btn" onclick="proximaEtapa(2)">Próximo &rarr;</button>
         </div>
 
-        <!-- ETAPA 2: PEÇAS, CABOS E SERVIÇOS EXECUTADOS -->
+        <!-- ETAPA 2: EQUIPAMENTOS E MÚLTIPLOS ITENS (PEÇAS, CABOS, SERVIÇOS) -->
         <div class="tab-step" id="step2">
           <div class="data-card">
-            <div class="data-card-header">2. Serviços Executados e Peças</div>
+            <div class="data-card-header">2. Equipamentos Atendidos</div>
+            <div id="listaEquipamentosContainer">
+              <div class="item-row">
+                <div class="form-group">
+                  <label>Equipamento / Marca / Modelo:</label>
+                  <input type="text" class="eq-nome" placeholder="Ex: Cadeira Odontológica / Autoclave">
+                </div>
+              </div>
+            </div>
+            <button type="button" class="add-btn" onclick="adicionarNovoEquipamento()">+ Adicionar outro equipamento</button>
+          </div>
+
+          <div class="data-card" style="margin-top: 16px;">
+            <div class="data-card-header">Peças, Cabos e Serviços Executados</div>
             
             <div id="listaItensContainer">
               <div class="item-row">
@@ -383,7 +397,7 @@
         <div class="tab-step" id="step4">
           <div class="data-card" style="text-align: center;">
             <div class="data-card-header" style="justify-content:center;">Emissão Oficial da OS</div>
-            <p style="font-size:0.85rem; color:#64748b; margin-bottom:14px;">Tudo pronto! Clique abaixo para gerar o PDF idêntico à ficha corporativa com os seus dados.</p>
+            <p style="font-size:0.85rem; color:#64748b; margin-bottom:14px;">Tudo pronto! O PDF será gerado exatamente com todos os equipamentos e itens que adicionou.</p>
             
             <button type="button" class="next-btn" onclick="gerarPDFOficialOS()" style="background: #10b981; margin-bottom: 15px;">
               📄 GERAR PDF OFICIAL DA OS &rarr;
@@ -420,6 +434,19 @@
       } else {
         window.location.href = 'index.html';
       }
+    }
+
+    function adicionarNovoEquipamento() {
+      const container = document.getElementById('listaEquipamentosContainer');
+      const bloco = document.createElement('div');
+      bloco.classList.add('item-row');
+      bloco.innerHTML = `
+        <div class="form-group">
+          <label>Equipamento / Marca / Modelo:</label>
+          <input type="text" class="eq-nome" placeholder="Ex: Equipamento adicional">
+        </div>
+      `;
+      container.appendChild(bloco);
     }
 
     function adicionarNovoItem() {
@@ -469,6 +496,14 @@
       const obs = document.getElementById('osObservacoes').value || '';
       const revisado = document.getElementById('osRevisado').value;
 
+      // Recolher equipamentos
+      const eqInputs = document.querySelectorAll('.eq-nome');
+      let listaEquipamentos = [];
+      eqInputs.forEach(eq => {
+        if (eq.value.trim()) listaEquipamentos.push(eq.value.trim());
+      });
+      const stringEquipamentos = listaEquipamentos.length > 0 ? listaEquipamentos.join(', ') : 'Equipamento Odontológico';
+
       // Recolher itens preenchidos pelo técnico
       const nomes = document.querySelectorAll('.item-nome');
       const quants = document.querySelectorAll('.item-quant');
@@ -481,7 +516,7 @@
 
       for (let i = 0; i < nomes.length; i++) {
         const nome = nomes[i].value.trim();
-        if (!nome) continue; // Ignora campos vazios
+        if (!nome) continue;
 
         const q = parseFloat(quants[i].value) || 1;
         const cod = codigos[i].value || '';
@@ -499,11 +534,11 @@
 
       const totalGeralCalc = totalPecasCalc + totalServicoCalc;
 
-      // Salva no histórico local para aparecer na página ordens.html
+      // Salva no histórico local
       const novaOS = {
         numero: numOS,
         cliente: cliente,
-        equipamento: 'Equipamento Odontológico',
+        equipamento: stringEquipamentos,
         data: `${new Date().toLocaleDateString('pt-BR')} - ${horario || new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'})}`,
         statusTexto: 'Concluída',
         statusEstilo: 'status-concluida',
@@ -518,15 +553,15 @@
       imgLogo.src = "AClogomarca.png";
 
       imgLogo.onload = function() {
-        desenharLayoutEmpresarial(doc, imgLogo, numOS, cliente, endereco, cidade, estado, contato, cep, garantia, chamado, marcado, horario, instalado, nf, listaItens, totalPecasCalc, totalServicoCalc, totalGeralCalc, obs, revisado);
+        desenharLayoutEmpresarial(doc, imgLogo, numOS, cliente, endereco, cidade, estado, contato, cep, garantia, chamado, marcado, horario, instalado, nf, stringEquipamentos, listaItens, totalPecasCalc, totalServicoCalc, totalGeralCalc, obs, revisado);
       };
 
       imgLogo.onerror = function() {
-        desenharLayoutEmpresarial(doc, null, numOS, cliente, endereco, cidade, estado, contato, cep, garantia, chamado, marcado, horario, instalado, nf, listaItens, totalPecasCalc, totalServicoCalc, totalGeralCalc, obs, revisado);
+        desenharLayoutEmpresarial(doc, null, numOS, cliente, endereco, cidade, estado, contato, cep, garantia, chamado, marcado, horario, instalado, nf, stringEquipamentos, listaItens, totalPecasCalc, totalServicoCalc, totalGeralCalc, obs, revisado);
       };
     }
 
-    function desenharLayoutEmpresarial(doc, imgLogo, numOS, cliente, endereco, cidade, estado, contato, cep, garantia, chamado, marcado, horario, instalado, nf, listaItens, totalPecas, totalServico, totalGeral, obs, revisado) {
+    function desenharLayoutEmpresarial(doc, imgLogo, numOS, cliente, endereco, cidade, estado, contato, cep, garantia, chamado, marcado, horario, instalado, nf, stringEquipamentos, listaItens, totalPecas, totalServico, totalGeral, obs, revisado) {
       doc.setLineWidth(0.3);
       doc.setDrawColor(0, 0, 0);
 
@@ -606,7 +641,7 @@
       doc.rect(10, y, 190, 7, "F");
       doc.rect(10, y, 190, 7);
       doc.setFont("helvetica", "bold");
-      doc.text("Serviços Executados", 105, y + 5, { align: "center" });
+      doc.text(`Serviços Executados (Eq: ${stringEquipamentos})`, 105, y + 5, { align: "center" });
 
       y += 7;
       // Cabeçalho da Tabela
@@ -624,7 +659,7 @@
       doc.setTextColor(0, 0, 0);
       doc.setFont("helvetica", "normal");
 
-      // Preenche apenas os itens inseridos pelo técnico
+      // Preenche os itens inseridos pelo técnico
       listaItens.forEach(item => {
         doc.rect(10, y, 30, 7);
         doc.rect(40, y, 35, 7);
