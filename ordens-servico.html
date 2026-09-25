@@ -304,25 +304,33 @@
           <button type="button" class="next-btn" onclick="proximaEtapa(2)">Próximo &rarr;</button>
         </div>
 
-        <!-- ETAPA 2: EQUIPAMENTO -->
+        <!-- ETAPA 2: EQUIPAMENTO (COM OPÇÃO DE ADICIONAR MÚLTIPLOS) -->
         <div class="tab-step" id="step2">
           <div class="data-card">
             <div class="data-card-header">Dados do Equipamento</div>
-            <div class="form-group">
-              <label>Equipamento / Marca / Modelo *</label>
-              <input type="text" id="eqInfo" placeholder="Ex: Cadeira Odontológica KaVo">
-            </div>
-            <div class="row-2">
-              <div class="form-group">
-                <label>Nº de Série</label>
-                <input type="text" id="eqSerie" placeholder="Nº de série">
+            
+            <div id="listaEquipamentosContainer">
+              <div class="item-row equip-row">
+                <div class="form-group">
+                  <label>Equipamento / Marca / Modelo *</label>
+                  <input type="text" class="eq-info" placeholder="Ex: Cadeira Odontológica KaVo">
+                </div>
+                <div class="row-2">
+                  <div class="form-group">
+                    <label>Nº de Série</label>
+                    <input type="text" class="eq-serie" placeholder="Nº de série">
+                  </div>
+                  <div class="form-group">
+                    <label>N.F. (Nota Fiscal)</label>
+                    <input type="text" class="eq-nf" placeholder="Nº Nota Fiscal">
+                  </div>
+                </div>
               </div>
-              <div class="form-group">
-                <label>N.F. (Nota Fiscal)</label>
-                <input type="text" id="eqNf" placeholder="Nº Nota Fiscal">
-              </div>
             </div>
-            <div class="row-2">
+
+            <button type="button" class="add-btn" onclick="adicionarNovoEquipamento()">+ Adicionar outro equipamento</button>
+
+            <div class="row-2" style="margin-top: 10px;">
               <div class="form-group">
                 <label>Chamado Nº</label>
                 <input type="text" id="eqChamado" placeholder="Chamado">
@@ -336,32 +344,45 @@
               </div>
             </div>
           </div>
-          <button type="button" class="next-btn" onclick="proximaEtapa(3)">Próximo &rarr;</button>
+          <button type="button" class="next-btn" onclick="prepararSelectEquipamentos(); proximaEtapa(3);">Próximo &rarr;</button>
         </div>
 
-        <!-- ETAPA 3: PROBLEMA E DIAGNÓSTICO -->
+        <!-- ETAPA 3: PROBLEMA E DIAGNÓSTICO (VINCULADO AO EQUIPAMENTO E MÚLTIPLO) -->
         <div class="tab-step" id="step3">
           <div class="data-card">
             <div class="data-card-header">Problema e Diagnóstico</div>
-            <div class="form-group">
-              <label>Problema Relatado *</label>
-              <textarea id="probRelato" placeholder="Descreva o problema..."></textarea>
+            
+            <div id="listaDiagnosticosContainer">
+              <div class="item-row diag-row">
+                <div class="form-group">
+                  <label>Vincular ao Equipamento:</label>
+                  <select class="diag-eq-select">
+                    <option value="Equipamento Principal">Equipamento Principal</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Problema Relatado *</label>
+                  <textarea class="diag-problema" placeholder="Descreva o problema relatado..."></textarea>
+                </div>
+                <div class="form-group">
+                  <label>Diagnóstico Técnico *</label>
+                  <textarea class="diag-tecnico" placeholder="Descreva o diagnóstico realizado..."></textarea>
+                </div>
+              </div>
             </div>
-            <div class="form-group">
-              <label>Diagnóstico Técnico *</label>
-              <textarea id="diagTecnico" placeholder="Descreva o diagnóstico..."></textarea>
-            </div>
+
+            <button type="button" class="add-btn" onclick="adicionarNovoDiagnostico()">+ Adicionar outro diagnóstico</button>
+
           </div>
           <button type="button" class="next-btn" onclick="proximaEtapa(4)">Próximo &rarr;</button>
         </div>
 
-        <!-- ETAPA 4: ITENS, CABOS E PEÇAS (COM ADIÇÃO MÚLTIPLA) -->
+        <!-- ETAPA 4: ITENS, CABOS E PEÇAS -->
         <div class="tab-step" id="step4">
           <div class="data-card">
             <div class="data-card-header">Peças, Cabos e Serviços Executados</div>
             
             <div id="listaItensContainer">
-              <!-- Item Inicial -->
               <div class="item-row">
                 <div class="form-group">
                   <label>Descrição do Item (Peça, Cabo ou Serviço):</label>
@@ -451,6 +472,78 @@
       }
     }
 
+    function adicionarNovoEquipamento() {
+      const container = document.getElementById('listaEquipamentosContainer');
+      const novoBloco = document.createElement('div');
+      novoBloco.classList.add('item-row', 'equip-row');
+      novoBloco.innerHTML = `
+        <div class="form-group">
+          <label>Equipamento / Marca / Modelo *</label>
+          <input type="text" class="eq-info" placeholder="Ex: Autoclave / Compressor">
+        </div>
+        <div class="row-2">
+          <div class="form-group">
+            <label>Nº de Série</label>
+            <input type="text" class="eq-serie" placeholder="Nº de série">
+          </div>
+          <div class="form-group">
+            <label>N.F. (Nota Fiscal)</label>
+            <input type="text" class="eq-nf" placeholder="Nº Nota Fiscal">
+          </div>
+        </div>
+      `;
+      container.appendChild(novoBloco);
+    }
+
+    function prepararSelectEquipamentos() {
+      const selects = document.querySelectorAll('.diag-eq-select');
+      const equipamentos = document.querySelectorAll('.eq-info');
+      
+      let optionsHtml = '';
+      equipamentos.forEach((eq, index) => {
+        const nomeEq = eq.value || `Equipamento ${index + 1}`;
+        optionsHtml += `<option value="${nomeEq}">${nomeEq}</option>`;
+      });
+
+      selects.forEach(sel => {
+        const valorAtual = sel.value;
+        sel.innerHTML = optionsHtml;
+        sel.value = valorAtual;
+      });
+    }
+
+    function adicionarNovoDiagnostico() {
+      const container = document.getElementById('listaDiagnosticosContainer');
+      
+      // Recolhe as opções atuais de equipamentos para o select do novo bloco
+      let optionsHtml = '';
+      const equipamentos = document.querySelectorAll('.eq-info');
+      equipamentos.forEach((eq, index) => {
+        const nomeEq = eq.value || `Equipamento ${index + 1}`;
+        optionsHtml += `<option value="${nomeEq}">${nomeEq}</option>`;
+      });
+
+      const novoBloco = document.createElement('div');
+      novoBloco.classList.add('item-row', 'diag-row');
+      novoBloco.innerHTML = `
+        <div class="form-group">
+          <label>Vincular ao Equipamento:</label>
+          <select class="diag-eq-select">
+            ${optionsHtml}
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Problema Relatado *</label>
+          <textarea class="diag-problema" placeholder="Descreva o problema relatado..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Diagnóstico Técnico *</label>
+          <textarea class="diag-tecnico" placeholder="Descreva o diagnóstico realizado..."></textarea>
+        </div>
+      `;
+      container.appendChild(novoBloco);
+    }
+
     function adicionarNovoItem() {
       const container = document.getElementById('listaItensContainer');
       const novoBloco = document.createElement('div');
@@ -489,8 +582,8 @@
       const chamado = document.getElementById('eqChamado').value || '';
       const marcado = document.getElementById('cliResp').value || '';
       const horario = new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
-      const instalado = document.getElementById('eqSerie').value || '';
-      const nf = document.getElementById('eqNf').value || '';
+      const instalado = document.querySelectorAll('.eq-serie')[0]?.value || '';
+      const nf = document.querySelectorAll('.eq-nf')[0]?.value || '';
       const obs = document.getElementById('obsGerais').value || '';
       const revisado = document.getElementById('osRevisado').value;
 
@@ -519,7 +612,7 @@
       const novaOS = {
         numero: numOS,
         cliente: cliente,
-        equipamento: document.getElementById('eqInfo').value || 'Equipamento',
+        equipamento: document.querySelectorAll('.eq-info')[0]?.value || 'Equipamento',
         data: `${new Date().toLocaleDateString('pt-BR')} - ${horario}`,
         statusTexto: 'Concluída',
         statusEstilo: 'status-concluida',
@@ -656,7 +749,7 @@
         y += 7;
       });
 
-      // Linhas vazias complementares para manter o padrão visual corporativo
+      // Linhas vazias complementares
       for (let i = 0; i < Math.max(0, 8 - listaItens.length); i++) {
         doc.rect(10, y, 30, 7);
         doc.rect(40, y, 35, 7);
