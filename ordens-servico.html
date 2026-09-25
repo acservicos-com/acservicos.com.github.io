@@ -286,15 +286,14 @@
             <div class="row-2">
               <div class="form-group">
                 <label>Estado *</label>
-                <select id="cliEstado" onchange="atualizarCidades()">
-                  <option value="">Selecione...</option>
-                  <option value="AC">AC</option><option value="AL">AL</option><option value="AP">AP</option><option value="AM">AM</option><option value="BA">BA</option><option value="CE">CE</option><option value="DF">DF</option><option value="ES">ES</option><option value="GO">GO</option><option value="MA">MA</option><option value="MT">MT</option><option value="MS">MS</option><option value="MG">MG</option><option value="PA">PA</option><option value="PB">PB</option><option value="PR">PR</option><option value="PE">PE</option><option value="PI" selected>PI</option><option value="RJ">RJ</option><option value="RN">RN</option><option value="RS">RS</option><option value="RO">RO</option><option value="RR">RR</option><option value="SC">SC</option><option value="SP">SP</option><option value="SE">SE</option><option value="TO">TO</option>
+                <select id="cliEstado" onchange="carregarCidadesDoIBGE()">
+                  <option value="">Carregando estados...</option>
                 </select>
               </div>
               <div class="form-group">
                 <label>Cidade *</label>
                 <select id="cliCidade">
-                  <option value="">Selecione o estado...</option>
+                  <option value="">Selecione o estado primeiro...</option>
                 </select>
               </div>
             </div>
@@ -413,61 +412,6 @@
     let etapaAtual = 1;
     const totalEtapas = 3;
 
-    // Base de cidades principais por Estado para preenchimento automático
-    const cidadesPorEstado = {
-      PI: ["Teresina", "Parnaíba", "Picos", "Floriano", "Barras", "Piripiri", "São Raimundo Nonato", "Campo Maior"],
-      SP: ["São Paulo", "Campinas", "Santos", "Ribeirão Preto", "São José dos Campos", "Sorocaba", "Piracicaba", "Bauru"],
-      RJ: ["Rio de Janeiro", "Niterói", "Petrópolis", "Duque de Caxias", "Nova Iguaçu", "Campos dos Goytacazes", "Volta Redonda"],
-      MG: ["Belo Horizonte", "Uberlândia", "Contagem", "Juiz de Fora", "Betim", "Montes Claros", "Uberaba", "Ipatinga"],
-      BA: ["Salvador", "Feira de Santana", "Conquista", "Camaçari", "Itabuna", "Juazeiro", "Lauro de Freitas"],
-      CE: ["Fortaleza", "Caucaia", "Juazeiro do Norte", "Maracanaú", "Sobral", "Crato", "Itapipoca"],
-      PR: ["Curitiba", "Londrina", "Maringá", "Ponta Grossa", "Cascavel", "São José dos Pinhais", "Foz do Iguaçu"],
-      RS: ["Porto Alegre", "Caxias do Sul", "Pelotas", "Canoas", "Santa Maria", "Gravataí", "Bento Gonçalves"],
-      SC: ["Florianópolis", "Joinville", "Blumenau", "São José", "Criciúma", "Chapecó", "Itajaí", "Balneário Camboriú"],
-      GO: ["Goiânia", "Aparecida de Goiânia", "Anápolis", "Rio Verde", "Itumbiara", "Senador Canedo"],
-      DF: ["Brasília", "Taguatinga", "Ceilândia", "Samambaia", "Asa Sul", "Asa Norte"],
-      ES: ["Vitória", "Vila Velha", "Serra", "Cariacica", "Guarapari", "Linhares", "Cachoeiro de Itapemirim"],
-      PE: ["Recife", "Jaboatão dos Guararapes", "Olinda", "Caruaru", "Petrolina", "Paulista", "Cabo de Santo Agostinho"],
-      PA: ["Belém", "Ananindeua", "Santarém", "Marabá", "Parauapebas", "Castanhal"],
-      MA: ["São Luís", "Imperatriz", "São José de Ribamar", "Timon", "Caxias", "Paço do Lumiar"],
-      PB: ["João Pessoa", "Campina Grande", "Santa Rita", "Patos", "Bayeux", "Sousa"],
-      RN: ["Natal", "Mossoró", "Parnamirim", "São Gonçalo do Amarante", "Macaíba", "Ceará-Mirim"],
-      AL: ["Maceió", "Arapiraca", "Rio Largo", "Palmeira dos Índios", "Penedo", "União dos Palmares"],
-      SE: ["Aracaju", "Nossa Senhora do Socorro", "Lagarto", "Itabaiana", "São Cristóvão", "Estância"],
-      MT: ["Cuiabá", "Várzea Grande", "Rondonópolis", "Sinop", "Tangará da Serra", "Cáceres"],
-      MS: ["Campo Grande", "Dourados", "Três Lagoas", "Corumbá", "Ponta Porã", "Naviraí"],
-      RO: ["Porto Velho", "Ji-Paraná", "Ariquemes", "Vilhena", "Cacoal", "Jaru"],
-      TO: ["Palmas", "Araguaína", "Gurupi", "Porto Nacional", "Paraíso do Tocantins"],
-      AP: ["Macapá", "Laranjal do Jari", "Santana", "Oiapoke"],
-      RR: ["Boa Vista", "Rorainópolis", "Caracaraí", "Mucajaí"],
-      AC: ["Rio Branco", "Cruzeiro do Sul", "Sena Madureira", "Tarauacá"],
-      MS: ["Campo Grande", "Dourados", "Três Lagoas", "Corumbá"],
-      TO: ["Palmas", "Araguaína", "Gurupi"]
-    };
-
-    function atualizarCidades() {
-      const selectEstado = document.getElementById('cliEstado');
-      const selectCidade = document.getElementById('cliCidade');
-      const estadoSelecionado = selectEstado.value;
-
-      selectCidade.innerHTML = "";
-
-      if (estadoSelecionado && cidadesPorEstado[estadoSelecionado]) {
-        const cidades = cidadesPorEstado[estadoSelecionado];
-        cidades.forEach(cidade => {
-          const opt = document.createElement('option');
-          opt.value = cidade;
-          opt.textContent = cidade;
-          selectCidade.appendChild(opt);
-        });
-      } else {
-        const opt = document.createElement('option');
-        opt.value = "";
-        opt.textContent = "Digite ou selecione a cidade";
-        selectCidade.appendChild(opt);
-      }
-    }
-
     // Gerar número de OS e Chamado de 5 dígitos automáticos ao abrir a página
     window.addEventListener('DOMContentLoaded', () => {
       let contadorOS = localStorage.getItem('ac_contador_os');
@@ -489,9 +433,58 @@
       const horaFormatada = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
       document.getElementById('osHorario').value = horaFormatada;
 
-      // Inicializa as cidades padrão para o Piauí (PI) já selecionado
-      atualizarCidades();
+      // Carregar Estados do IBGE dinamicamente
+      const selectEstado = document.getElementById('cliEstado');
+      if (selectEstado) {
+        fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome')
+          .then(response => response.json())
+          .then(estados => {
+            selectEstado.innerHTML = '<option value="">Selecione o Estado...</option>';
+            estados.forEach(estado => {
+              const opt = document.createElement('option');
+              opt.value = estado.sigla;
+              opt.textContent = `${estado.nome} (${estado.sigla})`;
+              // Selecionar PI (Piauí) por predefinição, se aplicável
+              if (estado.sigla === 'PI') opt.selected = true;
+              selectEstado.appendChild(opt);
+            });
+            // Após carregar os estados, carregar as cidades correspondentes
+            carregarCidadesDoIBGE();
+          })
+          .catch(error => console.error("Erro ao carregar estados:", error));
+      }
     });
+
+    // Função para buscar Cidades do IBGE dinamicamente
+    function carregarCidadesDoIBGE() {
+      const selectEstado = document.getElementById('cliEstado');
+      const selectCidade = document.getElementById('cliCidade');
+      if (!selectEstado || !selectCidade) return;
+
+      const uf = selectEstado.value;
+      if (!uf) {
+        selectCidade.innerHTML = '<option value="">Selecione o estado primeiro...</option>';
+        return;
+      }
+
+      selectCidade.innerHTML = '<option value="">A carregar cidades...</option>';
+
+      fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios?orderBy=nome`)
+        .then(response => response.json())
+        .then(cidades => {
+          selectCidade.innerHTML = '<option value="">Selecione a Cidade...</option>';
+          cidades.forEach(cidade => {
+            const opt = document.createElement('option');
+            opt.value = cidade.nome;
+            opt.textContent = cidade.nome;
+            selectCidade.appendChild(opt);
+          });
+        })
+        .catch(error => {
+          console.error("Erro ao carregar cidades:", error);
+          selectCidade.innerHTML = '<option value="">Erro ao carregar cidades</option>';
+        });
+    }
 
     function proximaEtapa(etapa) {
       document.getElementById(`step${etapaAtual}`).classList.remove('active');
