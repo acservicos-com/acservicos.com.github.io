@@ -197,7 +197,6 @@
       border-radius: 8px;
       padding: 12px;
       margin-bottom: 12px;
-      position: relative;
     }
 
     .add-btn {
@@ -241,24 +240,23 @@
         <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" fill="none" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
       </button>
       <h1 class="header-title">Nova Ordem de Serviço</h1>
-      <span class="counter-badge" id="counterBadge">1/4</span>
+      <span class="counter-badge" id="counterBadge">1/3</span>
     </header>
 
-    <!-- Indicador de Abas Superior -->
+    <!-- Indicador de Passos Simplificado -->
     <div class="steps-indicator" id="stepsIndicator">
-      <div class="step-item active" onclick="irParaEtapa(1)"><div class="step-circle">1</div><span class="step-label">Cabeçalho</span></div>
-      <div class="step-item" onclick="irParaEtapa(2)"><div class="step-circle">2</div><span class="step-label">Equipamentos & Itens</span></div>
-      <div class="step-item" onclick="irParaEtapa(3)"><div class="step-circle">3</div><span class="step-label">Revisão</span></div>
-      <div class="step-item" onclick="irParaEtapa(4)"><div class="step-circle">4</div><span class="step-label">Gerar PDF</span></div>
+      <div class="step-item active" onclick="irParaEtapa(1)"><div class="step-circle">1</div><span class="step-label">Cabeçalho & Cliente</span></div>
+      <div class="step-item" onclick="irParaEtapa(2)"><div class="step-circle">2</div><span class="step-label">Equipamento & Serviços</span></div>
+      <div class="step-item" onclick="irParaEtapa(3)"><div class="step-circle">3</div><span class="step-label">Finalizar & PDF</span></div>
     </div>
 
     <main class="container">
       <form id="osForm">
 
-        <!-- ETAPA 1: DADOS DO CABEÇALHO DA OS -->
+        <!-- ETAPA 1: CABEÇALHO E DADOS DO CLIENTE -->
         <div class="tab-step active" id="step1">
           <div class="data-card">
-            <div class="data-card-header">1. Informações da Ficha de OS</div>
+            <div class="data-card-header">1. Dados da Ficha e Cliente</div>
             <div class="form-group">
               <label>Nº da OS *</label>
               <input type="text" id="osNum" value="OS #000125" required>
@@ -328,29 +326,25 @@
           <button type="button" class="next-btn" onclick="proximaEtapa(2)">Próximo &rarr;</button>
         </div>
 
-        <!-- ETAPA 2: EQUIPAMENTOS E MÚLTIPLOS ITENS (PEÇAS, CABOS, SERVIÇOS) -->
+        <!-- ETAPA 2: EQUIPAMENTO UNIFICADO COM PEÇAS E SERVIÇOS -->
         <div class="tab-step" id="step2">
           <div class="data-card">
-            <div class="data-card-header">2. Equipamentos Atendidos</div>
-            <div id="listaEquipamentosContainer">
-              <div class="item-row">
-                <div class="form-group">
-                  <label>Equipamento / Marca / Modelo:</label>
-                  <input type="text" class="eq-nome" placeholder="Ex: Cadeira Odontológica / Autoclave">
-                </div>
-              </div>
-            </div>
-            <button type="button" class="add-btn" onclick="adicionarNovoEquipamento()">+ Adicionar outro equipamento</button>
-          </div>
-
-          <div class="data-card" style="margin-top: 16px;">
-            <div class="data-card-header">Peças, Cabos e Serviços Executados</div>
+            <div class="data-card-header">2. Equipamento e Serviços Executados</div>
             
+            <div class="form-group">
+              <label>Equipamento em Atendimento (Ex: Cadeira Odontológica / Autoclave) *</label>
+              <input type="text" id="osEquipamentoPrincipal" placeholder="Digite o equipamento principal...">
+            </div>
+
+            <div style="margin-top: 14px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 800; color: #001e50;">
+              Adicione os itens (peças, cabos, manutenções, deslocamento ou serviços):
+            </div>
+
             <div id="listaItensContainer">
               <div class="item-row">
                 <div class="form-group">
-                  <label>Nome da Peça / Cabo / Serviço:</label>
-                  <input type="text" class="item-nome" placeholder="Ex: Terminal bordem, Cabo, Combustível, Serviço...">
+                  <label>Nome da Peça / Serviço / Manutenção:</label>
+                  <input type="text" class="item-nome" placeholder="Ex: Terminal bordem, Cabo, Manutenção preventiva...">
                 </div>
                 <div class="row-2">
                   <div class="form-group">
@@ -374,13 +368,13 @@
           <button type="button" class="next-btn" onclick="proximaEtapa(3)">Próximo &rarr;</button>
         </div>
 
-        <!-- ETAPA 3: OBSERVAÇÕES E REVISÃO -->
+        <!-- ETAPA 3: REVISÃO, OBSERVAÇÕES E GERAÇÃO DO PDF -->
         <div class="tab-step" id="step3">
           <div class="data-card">
-            <div class="data-card-header">3. Observações e Condições</div>
+            <div class="data-card-header">3. Observações e Fechamento</div>
             <div class="form-group">
-              <label>Observações:</label>
-              <textarea id="osObservacoes" placeholder="Observações gerais da OS..."></textarea>
+              <label>Observações gerais:</label>
+              <textarea id="osObservacoes" placeholder="Observações adicionais para a OS..."></textarea>
             </div>
             <div class="form-group" style="margin-top: 10px;">
               <label>O equipamento foi consertado e revisado?</label>
@@ -390,16 +384,9 @@
               </select>
             </div>
           </div>
-          <button type="button" class="next-btn" onclick="proximaEtapa(4)">Próximo &rarr;</button>
-        </div>
 
-        <!-- ETAPA 4: GERAR PDF OFICIAL -->
-        <div class="tab-step" id="step4">
-          <div class="data-card" style="text-align: center;">
-            <div class="data-card-header" style="justify-content:center;">Emissão Oficial da OS</div>
-            <p style="font-size:0.85rem; color:#64748b; margin-bottom:14px;">Tudo pronto! O PDF será gerado exatamente com todos os equipamentos e itens que adicionou.</p>
-            
-            <button type="button" class="next-btn" onclick="gerarPDFOficialOS()" style="background: #10b981; margin-bottom: 15px;">
+          <div class="data-card" style="text-align: center; margin-top: 14px;">
+            <button type="button" class="next-btn" onclick="gerarPDFOficialOS()" style="background: #10b981; margin-bottom: 5px;">
               📄 GERAR PDF OFICIAL DA OS &rarr;
             </button>
           </div>
@@ -411,7 +398,7 @@
 
   <script>
     let etapaAtual = 1;
-    const totalEtapas = 4;
+    const totalEtapas = 3;
 
     function proximaEtapa(etapa) {
       document.getElementById(`step${etapaAtual}`).classList.remove('active');
@@ -436,26 +423,13 @@
       }
     }
 
-    function adicionarNovoEquipamento() {
-      const container = document.getElementById('listaEquipamentosContainer');
-      const bloco = document.createElement('div');
-      bloco.classList.add('item-row');
-      bloco.innerHTML = `
-        <div class="form-group">
-          <label>Equipamento / Marca / Modelo:</label>
-          <input type="text" class="eq-nome" placeholder="Ex: Equipamento adicional">
-        </div>
-      `;
-      container.appendChild(bloco);
-    }
-
     function adicionarNovoItem() {
       const container = document.getElementById('listaItensContainer');
       const bloco = document.createElement('div');
       bloco.classList.add('item-row');
       bloco.innerHTML = `
         <div class="form-group">
-          <label>Nome da Peça / Cabo / Serviço:</label>
+          <label>Nome da Peça / Serviço / Manutenção:</label>
           <input type="text" class="item-nome" placeholder="Ex: Cabo, Peça, Serviço...">
         </div>
         <div class="row-2">
@@ -493,16 +467,9 @@
       const horario = document.getElementById('osHorario').value || '';
       const instalado = document.getElementById('osInstalado').value || '';
       const nf = document.getElementById('osNf').value || '';
+      const equipamentoPrincipal = document.getElementById('osEquipamentoPrincipal').value || 'Equipamento Odontológico';
       const obs = document.getElementById('osObservacoes').value || '';
       const revisado = document.getElementById('osRevisado').value;
-
-      // Recolher equipamentos
-      const eqInputs = document.querySelectorAll('.eq-nome');
-      let listaEquipamentos = [];
-      eqInputs.forEach(eq => {
-        if (eq.value.trim()) listaEquipamentos.push(eq.value.trim());
-      });
-      const stringEquipamentos = listaEquipamentos.length > 0 ? listaEquipamentos.join(', ') : 'Equipamento Odontológico';
 
       // Recolher itens preenchidos pelo técnico
       const nomes = document.querySelectorAll('.item-nome');
@@ -525,7 +492,7 @@
 
         listaItens.push([String(q).padStart(2, '0'), cod, nome, v.toFixed(2).replace('.', ','), subtotal.toFixed(2).replace('.', ',')]);
         
-        if (nome.toLowerCase().includes('serviço') || nome.toLowerCase().includes('mão de obra')) {
+        if (nome.toLowerCase().includes('serviço') || nome.toLowerCase().includes('mão de obra') || nome.toLowerCase().includes('manutenção')) {
           totalServicoCalc += subtotal;
         } else {
           totalPecasCalc += subtotal;
@@ -534,11 +501,11 @@
 
       const totalGeralCalc = totalPecasCalc + totalServicoCalc;
 
-      // Salva no histórico local
+      // Salva no histórico local para aparecer na página ordens.html
       const novaOS = {
         numero: numOS,
         cliente: cliente,
-        equipamento: stringEquipamentos,
+        equipamento: equipamentoPrincipal,
         data: `${new Date().toLocaleDateString('pt-BR')} - ${horario || new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'})}`,
         statusTexto: 'Concluída',
         statusEstilo: 'status-concluida',
@@ -553,15 +520,15 @@
       imgLogo.src = "AClogomarca.png";
 
       imgLogo.onload = function() {
-        desenharLayoutEmpresarial(doc, imgLogo, numOS, cliente, endereco, cidade, estado, contato, cep, garantia, chamado, marcado, horario, instalado, nf, stringEquipamentos, listaItens, totalPecasCalc, totalServicoCalc, totalGeralCalc, obs, revisado);
+        desenharLayoutEmpresarial(doc, imgLogo, numOS, cliente, endereco, cidade, estado, contato, cep, garantia, chamado, marcado, horario, instalado, nf, equipamentoPrincipal, listaItens, totalPecasCalc, totalServicoCalc, totalGeralCalc, obs, revisado);
       };
 
       imgLogo.onerror = function() {
-        desenharLayoutEmpresarial(doc, null, numOS, cliente, endereco, cidade, estado, contato, cep, garantia, chamado, marcado, horario, instalado, nf, stringEquipamentos, listaItens, totalPecasCalc, totalServicoCalc, totalGeralCalc, obs, revisado);
+        desenharLayoutEmpresarial(doc, null, numOS, cliente, endereco, cidade, estado, contato, cep, garantia, chamado, marcado, horario, instalado, nf, equipamentoPrincipal, listaItens, totalPecasCalc, totalServicoCalc, totalGeralCalc, obs, revisado);
       };
     }
 
-    function desenharLayoutEmpresarial(doc, imgLogo, numOS, cliente, endereco, cidade, estado, contato, cep, garantia, chamado, marcado, horario, instalado, nf, stringEquipamentos, listaItens, totalPecas, totalServico, totalGeral, obs, revisado) {
+    function desenharLayoutEmpresarial(doc, imgLogo, numOS, cliente, endereco, cidade, estado, contato, cep, garantia, chamado, marcado, horario, instalado, nf, equipamentoPrincipal, listaItens, totalPecas, totalServico, totalGeral, obs, revisado) {
       doc.setLineWidth(0.3);
       doc.setDrawColor(0, 0, 0);
 
@@ -641,7 +608,7 @@
       doc.rect(10, y, 190, 7, "F");
       doc.rect(10, y, 190, 7);
       doc.setFont("helvetica", "bold");
-      doc.text(`Serviços Executados (Eq: ${stringEquipamentos})`, 105, y + 5, { align: "center" });
+      doc.text(`Serviços Executados [ Equipamento: ${equipamentoPrincipal} ]`, 105, y + 5, { align: "center" });
 
       y += 7;
       // Cabeçalho da Tabela
