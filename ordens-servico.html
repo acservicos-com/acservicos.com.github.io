@@ -243,7 +243,7 @@
       <span class="counter-badge" id="counterBadge">1/3</span>
     </header>
 
-    <!-- Indicador de Passos Simplificado -->
+    <!-- Indicador de Passos -->
     <div class="steps-indicator" id="stepsIndicator">
       <div class="step-item active" onclick="irParaEtapa(1)"><div class="step-circle">1</div><span class="step-label">Cabeçalho & Cliente</span></div>
       <div class="step-item" onclick="irParaEtapa(2)"><div class="step-circle">2</div><span class="step-label">Equipamento & Serviços</span></div>
@@ -304,23 +304,17 @@
             </div>
             <div class="row-2">
               <div class="form-group">
-                <label>Marcado p/</label>
-                <input type="text" id="osMarcado" placeholder="Responsável">
+                <label>Atendido por</label>
+                <input type="text" id="osAtendidoPor" placeholder="Responsável...">
               </div>
               <div class="form-group">
                 <label>Horário</label>
                 <input type="text" id="osHorario" placeholder="Ex: 14:30">
               </div>
             </div>
-            <div class="row-2">
-              <div class="form-group">
-                <label>Instalado em</label>
-                <input type="text" id="osInstalado" placeholder="Data...">
-              </div>
-              <div class="form-group">
-                <label>N.F. (Nota Fiscal)</label>
-                <input type="text" id="osNf" placeholder="Nº NF">
-              </div>
+            <div class="form-group">
+              <label>Instalado em</label>
+              <input type="text" id="osInstalado" placeholder="Data...">
             </div>
           </div>
           <button type="button" class="next-btn" onclick="proximaEtapa(2)">Próximo &rarr;</button>
@@ -358,7 +352,7 @@
                 </div>
                 <div class="form-group" style="margin-top: 8px;">
                   <label>Valor Unitário (R$):</label>
-                  <input type="text" class="item-valor" placeholder="0,00">
+                  <input type="text" class="item-valor" placeholder="0,00" value="0,00">
                 </div>
               </div>
             </div>
@@ -444,7 +438,7 @@
         </div>
         <div class="form-group" style="margin-top: 8px;">
           <label>Valor Unitário (R$):</label>
-          <input type="text" class="item-valor" placeholder="0,00">
+          <input type="text" class="item-valor" placeholder="0,00" value="0,00">
         </div>
       `;
       container.appendChild(bloco);
@@ -463,15 +457,14 @@
       const cep = document.getElementById('cliCep').value || '';
       const garantia = document.getElementById('osGarantia').value;
       const chamado = document.getElementById('osChamado').value || '';
-      const marcado = document.getElementById('osMarcado').value || '';
+      const atendidoPor = document.getElementById('osAtendidoPor').value || '';
       const horario = document.getElementById('osHorario').value || '';
       const instalado = document.getElementById('osInstalado').value || '';
-      const nf = document.getElementById('osNf').value || '';
       const equipamentoPrincipal = document.getElementById('osEquipamentoPrincipal').value || 'Equipamento Odontológico';
       const obs = document.getElementById('osObservacoes').value || '';
       const revisado = document.getElementById('osRevisado').value;
 
-      // Recolher itens preenchidos pelo técnico
+      // Recolher itens preenchidos pelo técnico de forma rigorosa e limpa
       const nomes = document.querySelectorAll('.item-nome');
       const quants = document.querySelectorAll('.item-quant');
       const codigos = document.querySelectorAll('.item-codigo');
@@ -486,13 +479,25 @@
         if (!nome) continue;
 
         const q = parseFloat(quants[i].value) || 1;
-        const cod = codigos[i].value || '';
-        const v = parseFloat(valores[i].value.replace(/\./g, '').replace(',', '.')) || 0;
+        const cod = codigos[i].value.trim() || '';
+        
+        // Tratamento seguro para converter o valor digitado (ex: "150,00" ou "1.500,50") em float real
+        let valStr = valores[i].value.trim().replace('R$', '').trim();
+        valStr = valStr.replace(/\./g, '').replace(',', '.');
+        const v = parseFloat(valStr) || 0;
+        
         const subtotal = q * v;
 
-        listaItens.push([String(q).padStart(2, '0'), cod, nome, v.toFixed(2).replace('.', ','), subtotal.toFixed(2).replace('.', ',')]);
+        listaItens.push([
+          String(q).padStart(2, '0'), 
+          cod, 
+          nome, 
+          v > 0 ? v.toFixed(2).replace('.', ',') : '0,00', 
+          subtotal > 0 ? subtotal.toFixed(2).replace('.', ',') : '0,00'
+        ]);
         
-        if (nome.toLowerCase().includes('serviço') || nome.toLowerCase().includes('mão de obra') || nome.toLowerCase().includes('manutenção')) {
+        const nomeLower = nome.toLowerCase();
+        if (nomeLower.includes('serviço') || nomeLower.includes('mão de obra') || nomeLower.includes('manutenção') || nomeLower.includes('visita') || nomeLower.includes('deslocamento')) {
           totalServicoCalc += subtotal;
         } else {
           totalPecasCalc += subtotal;
@@ -501,7 +506,7 @@
 
       const totalGeralCalc = totalPecasCalc + totalServicoCalc;
 
-      // Salva no histórico local para aparecer na página ordens.html
+      // Salva no histórico local
       const novaOS = {
         numero: numOS,
         cliente: cliente,
@@ -520,15 +525,15 @@
       imgLogo.src = "AClogomarca.png";
 
       imgLogo.onload = function() {
-        desenharLayoutEmpresarial(doc, imgLogo, numOS, cliente, endereco, cidade, estado, contato, cep, garantia, chamado, marcado, horario, instalado, nf, equipamentoPrincipal, listaItens, totalPecasCalc, totalServicoCalc, totalGeralCalc, obs, revisado);
+        desenharLayoutEmpresarial(doc, imgLogo, numOS, cliente, endereco, cidade, estado, contato, cep, garantia, chamado, atendidoPor, horario, instalado, equipamentoPrincipal, listaItens, totalPecasCalc, totalServicoCalc, totalGeralCalc, obs, revisado);
       };
 
       imgLogo.onerror = function() {
-        desenharLayoutEmpresarial(doc, null, numOS, cliente, endereco, cidade, estado, contato, cep, garantia, chamado, marcado, horario, instalado, nf, equipamentoPrincipal, listaItens, totalPecasCalc, totalServicoCalc, totalGeralCalc, obs, revisado);
+        desenharLayoutEmpresarial(doc, null, numOS, cliente, endereco, cidade, estado, contato, cep, garantia, chamado, atendidoPor, horario, instalado, equipamentoPrincipal, listaItens, totalPecasCalc, totalServicoCalc, totalGeralCalc, obs, revisado);
       };
     }
 
-    function desenharLayoutEmpresarial(doc, imgLogo, numOS, cliente, endereco, cidade, estado, contato, cep, garantia, chamado, marcado, horario, instalado, nf, equipamentoPrincipal, listaItens, totalPecas, totalServico, totalGeral, obs, revisado) {
+    function desenharLayoutEmpresarial(doc, imgLogo, numOS, cliente, endereco, cidade, estado, contato, cep, garantia, chamado, atendidoPor, horario, instalado, equipamentoPrincipal, listaItens, totalPecas, totalServico, totalGeral, obs, revisado) {
       doc.setLineWidth(0.3);
       doc.setDrawColor(0, 0, 0);
 
@@ -578,29 +583,26 @@
       doc.text(`Contato: ${contato}`, 163, y + 5);
 
       y += 8;
-      // Linha CEP, Garantia, Chamado, etc.
-      doc.rect(10, y, 60, 8);
+      // Linha CEP, Garantia, Chamado, Horário, Instalado (Sem NF)
+      doc.rect(10, y, 50, 8);
       doc.text(`CEP: ${cep}`, 13, y + 5);
 
-      doc.rect(70, y, 35, 8);
-      doc.text(`Garantia: ${garantia}`, 73, y + 5);
+      doc.rect(60, y, 35, 8);
+      doc.text(`Garantia: ${garantia}`, 63, y + 5);
 
-      doc.rect(105, y, 30, 8);
-      doc.text(`Chamado: ${chamado}`, 108, y + 5);
+      doc.rect(95, y, 35, 8);
+      doc.text(`Chamado: ${chamado}`, 98, y + 5);
 
-      doc.rect(135, y, 35, 8);
-      doc.text(`Horário: ${horario}`, 138, y + 5);
+      doc.rect(130, y, 35, 8);
+      doc.text(`Horário: ${horario}`, 133, y + 5);
 
-      doc.rect(170, y, 30, 8);
-      doc.text(`Instalado: ${instalado}`, 173, y + 5);
+      doc.rect(165, y, 35, 8);
+      doc.text(`Instalado: ${instalado}`, 168, y + 5);
 
       y += 8;
-      // Linha N.F. e Marcado p/
-      doc.rect(10, y, 60, 8);
-      doc.text(`N.F.: ${nf}`, 13, y + 5);
-
-      doc.rect(70, y, 130, 8);
-      doc.text(`Marcado p/: ${marcado}`, 73, y + 5);
+      // Linha Atendido por (Ocupando toda a largura útil sem NF)
+      doc.rect(10, y, 190, 8);
+      doc.text(`Atendido por: ${atendidoPor}`, 13, y + 5);
 
       y += 8;
       // Título da Tabela
