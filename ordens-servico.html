@@ -195,8 +195,8 @@
       background: #f8fafc;
       border: 1px solid #e2e8f0;
       border-radius: 8px;
-      padding: 10px;
-      margin-bottom: 10px;
+      padding: 12px;
+      margin-bottom: 12px;
     }
 
     .add-btn {
@@ -207,9 +207,9 @@
       padding: 10px;
       width: 100%;
       font-weight: 700;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       cursor: pointer;
-      margin-bottom: 10px;
+      margin-bottom: 14px;
     }
 
     .next-btn {
@@ -247,42 +247,22 @@
     <div class="steps-indicator" id="stepsIndicator">
       <div class="step-item active" onclick="irParaEtapa(1)"><div class="step-circle">1</div><span class="step-label">Cliente</span></div>
       <div class="step-item" onclick="irParaEtapa(2)"><div class="step-circle">2</div><span class="step-label">Equipamento</span></div>
-      <div class="step-item" onclick="irParaEtapa(3)"><div class="step-circle">3</div><span class="step-label">Problema</span></div>
-      <div class="step-item" onclick="irParaEtapa(4)"><div class="step-circle">4</div><span class="step-label">Itens/Peças</span></div>
-      <div class="step-item" onclick="irParaEtapa(5)"><div class="step-circle">5</div><span class="step-label">Prazos</span></div>
+      <div class="step-item" onclick="irParaEtapa(3)"><div class="step-circle">3</div><span class="step-label">Controlo</span></div>
+      <div class="step-item" onclick="irParaEtapa(4)"><div class="step-circle">4</div><span class="step-label">Peças e Serviços</span></div>
+      <div class="step-item" onclick="irParaEtapa(5)"><div class="step-circle">5</div><span class="step-label">Revisão</span></div>
       <div class="step-item" onclick="irParaEtapa(6)"><div class="step-circle">6</div><span class="step-label">Gerar PDF</span></div>
     </div>
 
     <main class="container">
       <form id="osForm">
 
-        <!-- ETAPA 1: CLIENTE -->
+        <!-- ETAPA 1: DADOS DO CLIENTE -->
         <div class="tab-step active" id="step1">
           <div class="data-card">
-            <div class="data-card-header">Dados do Cliente</div>
+            <div class="data-card-header">1. Dados do Cliente</div>
             <div class="form-group">
-              <label>Nome / Razão Social *</label>
+              <label>Cliente (Razão Social / Nome) *</label>
               <input type="text" id="cliNome" placeholder="Ex: Clínica Odontológica Sorriso Feliz" required>
-            </div>
-            <div class="row-2">
-              <div class="form-group">
-                <label>CPF / CNPJ *</label>
-                <input type="text" id="cliCnpj" placeholder="00.000.000/0001-00">
-              </div>
-              <div class="form-group">
-                <label>Responsável *</label>
-                <input type="text" id="cliResp" placeholder="Nome do responsável">
-              </div>
-            </div>
-            <div class="row-2">
-              <div class="form-group">
-                <label>Telefone / WhatsApp *</label>
-                <input type="text" id="cliTel" placeholder="(00) 00000-0000">
-              </div>
-              <div class="form-group">
-                <label>E-mail</label>
-                <input type="email" id="cliEmail" placeholder="email@exemplo.com">
-              </div>
             </div>
             <div class="form-group">
               <label>Endereço *</label>
@@ -294,23 +274,30 @@
                 <input type="text" id="cliCidade" placeholder="Cidade">
               </div>
               <div class="form-group">
-                <label>UF *</label>
-                <select id="cliUf">
-                  <option value="PI">PI</option><option value="MA">MA</option><option value="CE">CE</option><option value="SP">SP</option><option value="RJ">RJ</option><option value="OUTROS">Outros</option>
-                </select>
+                <label>Estado (UF) *</label>
+                <input type="text" id="cliEstado" value="PI">
+              </div>
+            </div>
+            <div class="row-2">
+              <div class="form-group">
+                <label>Contato / Telefone *</label>
+                <input type="text" id="cliContato" placeholder="(00) 00000-0000">
+              </div>
+              <div class="form-group">
+                <label>CEP</label>
+                <input type="text" id="cliCep" placeholder="00000-000">
               </div>
             </div>
           </div>
           <button type="button" class="next-btn" onclick="proximaEtapa(2)">Próximo &rarr;</button>
         </div>
 
-        <!-- ETAPA 2: EQUIPAMENTO (COM OPÇÃO DE ADICIONAR MÚLTIPLOS) -->
+        <!-- ETAPA 2: DADOS DO EQUIPAMENTO -->
         <div class="tab-step" id="step2">
           <div class="data-card">
-            <div class="data-card-header">Dados do Equipamento</div>
-            
+            <div class="data-card-header">2. Dados do Equipamento</div>
             <div id="listaEquipamentosContainer">
-              <div class="item-row equip-row">
+              <div class="item-row">
                 <div class="form-group">
                   <label>Equipamento / Marca / Modelo *</label>
                   <input type="text" class="eq-info" placeholder="Ex: Cadeira Odontológica KaVo">
@@ -318,75 +305,65 @@
                 <div class="row-2">
                   <div class="form-group">
                     <label>Nº de Série</label>
-                    <input type="text" class="eq-serie" placeholder="Nº de série">
+                    <input type="text" class="eq-serie" placeholder="Nº de Série">
                   </div>
                   <div class="form-group">
-                    <label>N.F. (Nota Fiscal)</label>
-                    <input type="text" class="eq-nf" placeholder="Nº Nota Fiscal">
+                    <label>Nota Fiscal (N.F.)</label>
+                    <input type="text" class="eq-nf" placeholder="Nº N.F.">
                   </div>
                 </div>
               </div>
             </div>
-
             <button type="button" class="add-btn" onclick="adicionarNovoEquipamento()">+ Adicionar outro equipamento</button>
+          </div>
+          <button type="button" class="next-btn" onclick="proximaEtapa(3)">Próximo &rarr;</button>
+        </div>
 
-            <div class="row-2" style="margin-top: 10px;">
+        <!-- ETAPA 3: INFORMAÇÕES DE CONTROLO E ATENDIMENTO -->
+        <div class="tab-step" id="step3">
+          <div class="data-card">
+            <div class="data-card-header">3. Informações de Controlo</div>
+            <div class="row-2">
               <div class="form-group">
-                <label>Chamado Nº</label>
-                <input type="text" id="eqChamado" placeholder="Chamado">
-              </div>
-              <div class="form-group">
-                <label>Garantia</label>
-                <select id="eqGarantia">
+                <label>Garantia:</label>
+                <select id="osGarantia">
                   <option value="Sim">Sim</option>
                   <option value="Não">Não</option>
                 </select>
               </div>
-            </div>
-          </div>
-          <button type="button" class="next-btn" onclick="prepararSelectEquipamentos(); proximaEtapa(3);">Próximo &rarr;</button>
-        </div>
-
-        <!-- ETAPA 3: PROBLEMA E DIAGNÓSTICO (VINCULADO AO EQUIPAMENTO E MÚLTIPLO) -->
-        <div class="tab-step" id="step3">
-          <div class="data-card">
-            <div class="data-card-header">Problema e Diagnóstico</div>
-            
-            <div id="listaDiagnosticosContainer">
-              <div class="item-row diag-row">
-                <div class="form-group">
-                  <label>Vincular ao Equipamento:</label>
-                  <select class="diag-eq-select">
-                    <option value="Equipamento Principal">Equipamento Principal</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label>Problema Relatado *</label>
-                  <textarea class="diag-problema" placeholder="Descreva o problema relatado..."></textarea>
-                </div>
-                <div class="form-group">
-                  <label>Diagnóstico Técnico *</label>
-                  <textarea class="diag-tecnico" placeholder="Descreva o diagnóstico realizado..."></textarea>
-                </div>
+              <div class="form-group">
+                <label>Chamado Nº:</label>
+                <input type="text" id="osChamado" placeholder="Nº Chamado">
               </div>
             </div>
-
-            <button type="button" class="add-btn" onclick="adicionarNovoDiagnostico()">+ Adicionar outro diagnóstico</button>
-
+            <div class="row-2">
+              <div class="form-group">
+                <label>Marcado p/:</label>
+                <input type="text" id="osMarcado" placeholder="Responsável">
+              </div>
+              <div class="form-group">
+                <label>Horário:</label>
+                <input type="text" id="osHorario" placeholder="Ex: 14:32">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Instalado em:</label>
+              <input type="text" id="osInstalado" placeholder="Data de instalação">
+            </div>
           </div>
           <button type="button" class="next-btn" onclick="proximaEtapa(4)">Próximo &rarr;</button>
         </div>
 
-        <!-- ETAPA 4: ITENS, CABOS E PEÇAS -->
+        <!-- ETAPA 4: PEÇAS, CABOS E SERVIÇOS EXECUTADOS (MÚLTIPLOS ITENS) -->
         <div class="tab-step" id="step4">
           <div class="data-card">
-            <div class="data-card-header">Peças, Cabos e Serviços Executados</div>
+            <div class="data-card-header">4. Peças, Cabos e Serviços Executados</div>
             
             <div id="listaItensContainer">
               <div class="item-row">
                 <div class="form-group">
-                  <label>Descrição do Item (Peça, Cabo ou Serviço):</label>
-                  <input type="text" class="item-desc" placeholder="Ex: Cabo de força, Terminal bordem...">
+                  <label>Nome da Peça / Cabo / Serviço:</label>
+                  <input type="text" class="item-nome" placeholder="Ex: Terminal bordem, Cabo, Serviço, Combustível">
                 </div>
                 <div class="row-2">
                   <div class="form-group">
@@ -394,29 +371,29 @@
                     <input type="number" class="item-quant" value="1" min="1">
                   </div>
                   <div class="form-group">
-                    <label>Valor Unit. (R$):</label>
-                    <input type="text" class="item-valor" placeholder="0,00">
+                    <label>Código:</label>
+                    <input type="text" class="item-codigo" placeholder="Cód. opcional">
                   </div>
+                </div>
+                <div class="form-group" style="margin-top: 8px;">
+                  <label>Valor Unitário (R$):</label>
+                  <input type="text" class="item-valor" placeholder="0,00">
                 </div>
               </div>
             </div>
 
-            <button type="button" class="add-btn" onclick="adicionarNovoItem()">+ Adicionar outro produto/peça/serviço</button>
+            <button type="button" class="add-btn" onclick="adicionarNovoItem()">+ Adicionar outra peça, cabo ou serviço</button>
           </div>
           <button type="button" class="next-btn" onclick="proximaEtapa(5)">Próximo &rarr;</button>
         </div>
 
-        <!-- ETAPA 5: PRAZOS E REVISÃO -->
+        <!-- ETAPA 5: OBSERVAÇÕES E REVISÃO -->
         <div class="tab-step" id="step5">
           <div class="data-card">
-            <div class="data-card-header">Prazos e Observações</div>
+            <div class="data-card-header">5. Observações e Revisão</div>
             <div class="form-group">
-              <label>Prazo Estimado de Conclusão:</label>
-              <input type="text" id="prazEst" placeholder="Ex: 3 dias úteis">
-            </div>
-            <div class="form-group" style="margin-top: 10px;">
-              <label>Observações gerais da OS:</label>
-              <textarea id="obsGerais" placeholder="Observações..."></textarea>
+              <label>Observações gerais:</label>
+              <textarea id="obsGerais" placeholder="Descreva observações importantes..."></textarea>
             </div>
             <div class="form-group" style="margin-top: 10px;">
               <label>O equipamento foi consertado e revisado?</label>
@@ -432,8 +409,8 @@
         <!-- ETAPA 6: GERAR PDF OFICIAL -->
         <div class="tab-step" id="step6">
           <div class="data-card" style="text-align: center;">
-            <div class="data-card-header" style="justify-content:center;">Emitir Ordem de Serviço</div>
-            <p style="font-size:0.85rem; color:#64748b; margin-bottom:14px;">Tudo pronto! Clique para gerar o PDF oficial idêntico ao formulário corporativo.</p>
+            <div class="data-card-header" style="justify-content:center;">Emissão da OS</div>
+            <p style="font-size:0.85rem; color:#64748b; margin-bottom:14px;">Tudo pronto! Clique abaixo para gerar o PDF oficial idêntico à ficha corporativa.</p>
             
             <button type="button" class="next-btn" onclick="gerarPDFOficialOS()" style="background: #10b981; margin-bottom: 15px;">
               📄 GERAR PDF OFICIAL DA OS &rarr;
@@ -474,9 +451,9 @@
 
     function adicionarNovoEquipamento() {
       const container = document.getElementById('listaEquipamentosContainer');
-      const novoBloco = document.createElement('div');
-      novoBloco.classList.add('item-row', 'equip-row');
-      novoBloco.innerHTML = `
+      const bloco = document.createElement('div');
+      bloco.classList.add('item-row');
+      bloco.innerHTML = `
         <div class="form-group">
           <label>Equipamento / Marca / Modelo *</label>
           <input type="text" class="eq-info" placeholder="Ex: Autoclave / Compressor">
@@ -484,74 +461,25 @@
         <div class="row-2">
           <div class="form-group">
             <label>Nº de Série</label>
-            <input type="text" class="eq-serie" placeholder="Nº de série">
+            <input type="text" class="eq-serie" placeholder="Nº de Série">
           </div>
           <div class="form-group">
-            <label>N.F. (Nota Fiscal)</label>
-            <input type="text" class="eq-nf" placeholder="Nº Nota Fiscal">
+            <label>Nota Fiscal (N.F.)</label>
+            <input type="text" class="eq-nf" placeholder="Nº N.F.">
           </div>
         </div>
       `;
-      container.appendChild(novoBloco);
-    }
-
-    function prepararSelectEquipamentos() {
-      const selects = document.querySelectorAll('.diag-eq-select');
-      const equipamentos = document.querySelectorAll('.eq-info');
-      
-      let optionsHtml = '';
-      equipamentos.forEach((eq, index) => {
-        const nomeEq = eq.value || `Equipamento ${index + 1}`;
-        optionsHtml += `<option value="${nomeEq}">${nomeEq}</option>`;
-      });
-
-      selects.forEach(sel => {
-        const valorAtual = sel.value;
-        sel.innerHTML = optionsHtml;
-        sel.value = valorAtual;
-      });
-    }
-
-    function adicionarNovoDiagnostico() {
-      const container = document.getElementById('listaDiagnosticosContainer');
-      
-      // Recolhe as opções atuais de equipamentos para o select do novo bloco
-      let optionsHtml = '';
-      const equipamentos = document.querySelectorAll('.eq-info');
-      equipamentos.forEach((eq, index) => {
-        const nomeEq = eq.value || `Equipamento ${index + 1}`;
-        optionsHtml += `<option value="${nomeEq}">${nomeEq}</option>`;
-      });
-
-      const novoBloco = document.createElement('div');
-      novoBloco.classList.add('item-row', 'diag-row');
-      novoBloco.innerHTML = `
-        <div class="form-group">
-          <label>Vincular ao Equipamento:</label>
-          <select class="diag-eq-select">
-            ${optionsHtml}
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Problema Relatado *</label>
-          <textarea class="diag-problema" placeholder="Descreva o problema relatado..."></textarea>
-        </div>
-        <div class="form-group">
-          <label>Diagnóstico Técnico *</label>
-          <textarea class="diag-tecnico" placeholder="Descreva o diagnóstico realizado..."></textarea>
-        </div>
-      `;
-      container.appendChild(novoBloco);
+      container.appendChild(bloco);
     }
 
     function adicionarNovoItem() {
       const container = document.getElementById('listaItensContainer');
-      const novoBloco = document.createElement('div');
-      novoBloco.classList.add('item-row');
-      novoBloco.innerHTML = `
+      const bloco = document.createElement('div');
+      bloco.classList.add('item-row');
+      bloco.innerHTML = `
         <div class="form-group">
-          <label>Descrição do Item (Peça, Cabo ou Serviço):</label>
-          <input type="text" class="item-desc" placeholder="Ex: Cabo de força, Terminal...">
+          <label>Nome da Peça / Cabo / Serviço:</label>
+          <input type="text" class="item-nome" placeholder="Ex: Cabo, Placa, Mão de obra...">
         </div>
         <div class="row-2">
           <div class="form-group">
@@ -559,12 +487,16 @@
             <input type="number" class="item-quant" value="1" min="1">
           </div>
           <div class="form-group">
-            <label>Valor Unit. (R$):</label>
-            <input type="text" class="item-valor" placeholder="0,00">
+            <label>Código:</label>
+            <input type="text" class="item-codigo" placeholder="Cód. opcional">
           </div>
         </div>
+        <div class="form-group" style="margin-top: 8px;">
+          <label>Valor Unitário (R$):</label>
+          <input type="text" class="item-valor" placeholder="0,00">
+        </div>
       `;
-      container.appendChild(novoBloco);
+      container.appendChild(bloco);
     }
 
     function gerarPDFOficialOS() {
@@ -575,44 +507,51 @@
       const cliente = document.getElementById('cliNome').value || 'Clínica Odontológica';
       const endereco = document.getElementById('cliEndereco').value || '';
       const cidade = document.getElementById('cliCidade').value || '';
-      const estado = document.getElementById('cliUf').value || 'PI';
-      const contato = document.getElementById('cliTel').value || '';
-      const cep = '64000-000';
-      const garantia = document.getElementById('eqGarantia').value;
-      const chamado = document.getElementById('eqChamado').value || '';
-      const marcado = document.getElementById('cliResp').value || '';
-      const horario = new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
-      const instalado = document.querySelectorAll('.eq-serie')[0]?.value || '';
-      const nf = document.querySelectorAll('.eq-nf')[0]?.value || '';
+      const estado = document.getElementById('cliEstado').value || 'PI';
+      const contato = document.getElementById('cliContato').value || '';
+      const cep = document.getElementById('cliCep').value || '';
+      const garantia = document.getElementById('osGarantia').value;
+      const chamado = document.getElementById('osChamado').value || '';
+      const marcado = document.getElementById('osMarcado').value || '';
+      const horario = document.getElementById('osHorario').value || new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+      const instalado = document.getElementById('osInstalado').value || '';
+      const nf = document.querySelector('.eq-nf')?.value || '';
       const obs = document.getElementById('obsGerais').value || '';
       const revisado = document.getElementById('osRevisado').value;
 
-      // Recolher itens dinâmicos preenchidos
-      const descricoes = document.querySelectorAll('.item-desc');
+      // Recolher itens dinâmicos
+      const nomes = document.querySelectorAll('.item-nome');
       const quants = document.querySelectorAll('.item-quant');
+      const codigos = document.querySelectorAll('.item-codigo');
       const valores = document.querySelectorAll('.item-valor');
 
       let listaItens = [];
       let totalPecasCalc = 0;
       let totalServicoCalc = 0;
 
-      for (let i = 0; i < descricoes.length; i++) {
-        const desc = descricoes[i].value || 'Item';
+      for (let i = 0; i < nomes.length; i++) {
+        const nome = nomes[i].value || 'Item';
         const q = parseFloat(quants[i].value) || 1;
+        const cod = codigos[i].value || '';
         const v = parseFloat(valores[i].value.replace(/\./g, '').replace(',', '.')) || 0;
         const subtotal = q * v;
 
-        listaItens.push([String(q).padStart(2, '0'), "", desc, v.toFixed(2).replace('.', ','), subtotal.toFixed(2).replace('.', ',')]);
-        totalPecasCalc += subtotal;
+        listaItens.push([String(q).padStart(2, '0'), cod, nome, v.toFixed(2).replace('.', ','), subtotal.toFixed(2).replace('.', ',')]);
+        
+        if (nome.toLowerCase().includes('serviço') || nome.toLowerCase().includes('mao de obra')) {
+          totalServicoCalc += subtotal;
+        } else {
+          totalPecasCalc += subtotal;
+        }
       }
 
-      const totalGeralCalc = totalPecasCalc;
+      const totalGeralCalc = totalPecasCalc + totalServicoCalc;
 
-      // Salva no histórico local para aparecer na página ordens.html
+      // Salva no histórico local
       const novaOS = {
         numero: numOS,
         cliente: cliente,
-        equipamento: document.querySelectorAll('.eq-info')[0]?.value || 'Equipamento',
+        equipamento: document.querySelector('.eq-info')?.value || 'Equipamento',
         data: `${new Date().toLocaleDateString('pt-BR')} - ${horario}`,
         statusTexto: 'Concluída',
         statusEstilo: 'status-concluida',
@@ -733,7 +672,7 @@
       doc.setTextColor(0, 0, 0);
       doc.setFont("helvetica", "normal");
 
-      // Preenche os itens adicionados dinamicamente
+      // Preenche os itens adicionados
       listaItens.forEach(item => {
         doc.rect(10, y, 30, 7);
         doc.rect(40, y, 35, 7);
@@ -749,7 +688,7 @@
         y += 7;
       });
 
-      // Linhas vazias complementares
+      // Linhas vazias complementares para manter o formato da ficha física
       for (let i = 0; i < Math.max(0, 8 - listaItens.length); i++) {
         doc.rect(10, y, 30, 7);
         doc.rect(40, y, 35, 7);
