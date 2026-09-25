@@ -67,7 +67,7 @@
       font-weight: 600;
     }
 
-    /* Barra de Passos Superior (Abas) */
+    /* Barra de Passos */
     .steps-indicator {
       display: flex;
       gap: 12px;
@@ -259,7 +259,7 @@
             <div class="data-card-header">1. Dados da Ficha e Cliente</div>
             <div class="form-group">
               <label>Nº da OS *</label>
-              <input type="text" id="osNum" value="OS #000125" required>
+              <input type="text" id="osNum" readonly style="background-color: #e2e8f0; font-weight: bold; color: #003b8e;">
             </div>
             <div class="form-group">
               <label>Cliente *</label>
@@ -298,8 +298,8 @@
                 </select>
               </div>
               <div class="form-group">
-                <label>Chamado</label>
-                <input type="text" id="osChamado" placeholder="Nº Chamado">
+                <label>Chamado (Gerado automático)</label>
+                <input type="text" id="osChamado" readonly style="background-color: #e2e8f0; font-weight: bold; color: #334155;">
               </div>
             </div>
             <div class="row-2">
@@ -309,7 +309,7 @@
               </div>
               <div class="form-group">
                 <label>Horário</label>
-                <input type="text" id="osHorario" placeholder="Ex: 14:30">
+                <input type="text" id="osHorario">
               </div>
             </div>
             <div class="form-group">
@@ -393,6 +393,25 @@
   <script>
     let etapaAtual = 1;
     const totalEtapas = 3;
+
+    // Gerar número de OS e Chamado automáticos ao abrir a página
+    window.addEventListener('DOMContentLoaded', () => {
+      let contadorOS = localStorage.getItem('ac_contador_os');
+      if (!contadorOS) {
+        contadorOS = 125;
+      } else {
+        contadorOS = parseInt(contadorOS) + 1;
+      }
+      localStorage.setItem('ac_contador_os', contadorOS);
+
+      document.getElementById('osNum').value = `OS #${String(contadorOS).padStart(6, '0')}`;
+      document.getElementById('osChamado').value = `CH-${new Date().getFullYear()}${String(contadorOS).padStart(4, '0')}`;
+      
+      // Preencher horário atual automaticamente
+      const agora = new Date();
+      const horaFormatada = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+      document.getElementById('osHorario').value = horaFormatada;
+    });
 
     function proximaEtapa(etapa) {
       document.getElementById(`step${etapaAtual}`).classList.remove('active');
@@ -481,7 +500,6 @@
         const q = parseFloat(quants[i].value) || 1;
         const cod = codigos[i].value.trim() || '';
         
-        // Tratamento seguro para converter o valor digitado (ex: "150,00" ou "1.500,50") em float real
         let valStr = valores[i].value.trim().replace('R$', '').trim();
         valStr = valStr.replace(/\./g, '').replace(',', '.');
         const v = parseFloat(valStr) || 0;
@@ -511,7 +529,7 @@
         numero: numOS,
         cliente: cliente,
         equipamento: equipamentoPrincipal,
-        data: `${new Date().toLocaleDateString('pt-BR')} - ${horario || new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'})}`,
+        data: `${new Date().toLocaleDateString('pt-BR')} - ${horario}`,
         statusTexto: 'Concluída',
         statusEstilo: 'status-concluida',
         statusClasse: 'concluida'
@@ -583,7 +601,7 @@
       doc.text(`Contato: ${contato}`, 163, y + 5);
 
       y += 8;
-      // Linha CEP, Garantia, Chamado, Horário, Instalado (Sem NF)
+      // Linha CEP, Garantia, Chamado, Horário, Instalado
       doc.rect(10, y, 50, 8);
       doc.text(`CEP: ${cep}`, 13, y + 5);
 
@@ -600,7 +618,7 @@
       doc.text(`Instalado: ${instalado}`, 168, y + 5);
 
       y += 8;
-      // Linha Atendido por (Ocupando toda a largura útil sem NF)
+      // Linha Atendido por
       doc.rect(10, y, 190, 8);
       doc.text(`Atendido por: ${atendidoPor}`, 13, y + 5);
 
