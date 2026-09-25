@@ -197,6 +197,20 @@
       border-radius: 8px;
       padding: 12px;
       margin-bottom: 12px;
+      position: relative;
+    }
+
+    .remove-item-btn {
+      background: #fee2e2;
+      color: #ef4444;
+      border: 1px solid #fca5a5;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 8px;
+      cursor: pointer;
+      float: right;
+      margin-bottom: 6px;
     }
 
     .add-btn {
@@ -271,12 +285,17 @@
             </div>
             <div class="row-2">
               <div class="form-group">
-                <label>Cidade *</label>
-                <input type="text" id="cliCidade" placeholder="Cidade">
+                <label>Estado *</label>
+                <select id="cliEstado" onchange="atualizarCidades()">
+                  <option value="">Selecione...</option>
+                  <option value="AC">AC</option><option value="AL">AL</option><option value="AP">AP</option><option value="AM">AM</option><option value="BA">BA</option><option value="CE">CE</option><option value="DF">DF</option><option value="ES">ES</option><option value="GO">GO</option><option value="MA">MA</option><option value="MT">MT</option><option value="MS">MS</option><option value="MG">MG</option><option value="PA">PA</option><option value="PB">PB</option><option value="PR">PR</option><option value="PE">PE</option><option value="PI" selected>PI</option><option value="RJ">RJ</option><option value="RN">RN</option><option value="RS">RS</option><option value="RO">RO</option><option value="RR">RR</option><option value="SC">SC</option><option value="SP">SP</option><option value="SE">SE</option><option value="TO">TO</option>
+                </select>
               </div>
               <div class="form-group">
-                <label>Estado *</label>
-                <input type="text" id="cliEstado" value="PI">
+                <label>Cidade *</label>
+                <select id="cliCidade">
+                  <option value="">Selecione o estado...</option>
+                </select>
               </div>
             </div>
             <div class="row-2">
@@ -298,7 +317,7 @@
                 </select>
               </div>
               <div class="form-group">
-                <label>Chamado (Gerado automático)</label>
+                <label>Chamado (5 Dígitos)</label>
                 <input type="text" id="osChamado" readonly style="background-color: #e2e8f0; font-weight: bold; color: #334155;">
               </div>
             </div>
@@ -394,7 +413,62 @@
     let etapaAtual = 1;
     const totalEtapas = 3;
 
-    // Gerar número de OS e Chamado automáticos ao abrir a página
+    // Base de cidades principais por Estado para preenchimento automático
+    const cidadesPorEstado = {
+      PI: ["Teresina", "Parnaíba", "Picos", "Floriano", "Barras", "Piripiri", "São Raimundo Nonato", "Campo Maior"],
+      SP: ["São Paulo", "Campinas", "Santos", "Ribeirão Preto", "São José dos Campos", "Sorocaba", "Piracicaba", "Bauru"],
+      RJ: ["Rio de Janeiro", "Niterói", "Petrópolis", "Duque de Caxias", "Nova Iguaçu", "Campos dos Goytacazes", "Volta Redonda"],
+      MG: ["Belo Horizonte", "Uberlândia", "Contagem", "Juiz de Fora", "Betim", "Montes Claros", "Uberaba", "Ipatinga"],
+      BA: ["Salvador", "Feira de Santana", "Conquista", "Camaçari", "Itabuna", "Juazeiro", "Lauro de Freitas"],
+      CE: ["Fortaleza", "Caucaia", "Juazeiro do Norte", "Maracanaú", "Sobral", "Crato", "Itapipoca"],
+      PR: ["Curitiba", "Londrina", "Maringá", "Ponta Grossa", "Cascavel", "São José dos Pinhais", "Foz do Iguaçu"],
+      RS: ["Porto Alegre", "Caxias do Sul", "Pelotas", "Canoas", "Santa Maria", "Gravataí", "Bento Gonçalves"],
+      SC: ["Florianópolis", "Joinville", "Blumenau", "São José", "Criciúma", "Chapecó", "Itajaí", "Balneário Camboriú"],
+      GO: ["Goiânia", "Aparecida de Goiânia", "Anápolis", "Rio Verde", "Itumbiara", "Senador Canedo"],
+      DF: ["Brasília", "Taguatinga", "Ceilândia", "Samambaia", "Asa Sul", "Asa Norte"],
+      ES: ["Vitória", "Vila Velha", "Serra", "Cariacica", "Guarapari", "Linhares", "Cachoeiro de Itapemirim"],
+      PE: ["Recife", "Jaboatão dos Guararapes", "Olinda", "Caruaru", "Petrolina", "Paulista", "Cabo de Santo Agostinho"],
+      PA: ["Belém", "Ananindeua", "Santarém", "Marabá", "Parauapebas", "Castanhal"],
+      MA: ["São Luís", "Imperatriz", "São José de Ribamar", "Timon", "Caxias", "Paço do Lumiar"],
+      PB: ["João Pessoa", "Campina Grande", "Santa Rita", "Patos", "Bayeux", "Sousa"],
+      RN: ["Natal", "Mossoró", "Parnamirim", "São Gonçalo do Amarante", "Macaíba", "Ceará-Mirim"],
+      AL: ["Maceió", "Arapiraca", "Rio Largo", "Palmeira dos Índios", "Penedo", "União dos Palmares"],
+      SE: ["Aracaju", "Nossa Senhora do Socorro", "Lagarto", "Itabaiana", "São Cristóvão", "Estância"],
+      MT: ["Cuiabá", "Várzea Grande", "Rondonópolis", "Sinop", "Tangará da Serra", "Cáceres"],
+      MS: ["Campo Grande", "Dourados", "Três Lagoas", "Corumbá", "Ponta Porã", "Naviraí"],
+      RO: ["Porto Velho", "Ji-Paraná", "Ariquemes", "Vilhena", "Cacoal", "Jaru"],
+      TO: ["Palmas", "Araguaína", "Gurupi", "Porto Nacional", "Paraíso do Tocantins"],
+      AP: ["Macapá", "Laranjal do Jari", "Santana", "Oiapoke"],
+      RR: ["Boa Vista", "Rorainópolis", "Caracaraí", "Mucajaí"],
+      AC: ["Rio Branco", "Cruzeiro do Sul", "Sena Madureira", "Tarauacá"],
+      MS: ["Campo Grande", "Dourados", "Três Lagoas", "Corumbá"],
+      TO: ["Palmas", "Araguaína", "Gurupi"]
+    };
+
+    function atualizarCidades() {
+      const selectEstado = document.getElementById('cliEstado');
+      const selectCidade = document.getElementById('cliCidade');
+      const estadoSelecionado = selectEstado.value;
+
+      selectCidade.innerHTML = "";
+
+      if (estadoSelecionado && cidadesPorEstado[estadoSelecionado]) {
+        const cidades = cidadesPorEstado[estadoSelecionado];
+        cidades.forEach(cidade => {
+          const opt = document.createElement('option');
+          opt.value = cidade;
+          opt.textContent = cidade;
+          selectCidade.appendChild(opt);
+        });
+      } else {
+        const opt = document.createElement('option');
+        opt.value = "";
+        opt.textContent = "Digite ou selecione a cidade";
+        selectCidade.appendChild(opt);
+      }
+    }
+
+    // Gerar número de OS e Chamado de 5 dígitos automáticos ao abrir a página
     window.addEventListener('DOMContentLoaded', () => {
       let contadorOS = localStorage.getItem('ac_contador_os');
       if (!contadorOS) {
@@ -405,12 +479,18 @@
       localStorage.setItem('ac_contador_os', contadorOS);
 
       document.getElementById('osNum').value = `OS #${String(contadorOS).padStart(6, '0')}`;
-      document.getElementById('osChamado').value = `CH-${new Date().getFullYear()}${String(contadorOS).padStart(4, '0')}`;
+      
+      // Chamado aleatório/sequencial de exatamente 5 dígitos
+      const numChamado5Digitos = Math.floor(10000 + Math.random() * 90000);
+      document.getElementById('osChamado').value = `CH-${numChamado5Digitos}`;
       
       // Preencher horário atual automaticamente
       const agora = new Date();
       const horaFormatada = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
       document.getElementById('osHorario').value = horaFormatada;
+
+      // Inicializa as cidades padrão para o Piauí (PI) já selecionado
+      atualizarCidades();
     });
 
     function proximaEtapa(etapa) {
@@ -441,7 +521,8 @@
       const bloco = document.createElement('div');
       bloco.classList.add('item-row');
       bloco.innerHTML = `
-        <div class="form-group">
+        <button type="button" class="remove-item-btn" onclick="removerItem(this)">Remover X</button>
+        <div class="form-group" style="clear: both;">
           <label>Nome da Peça / Serviço / Manutenção:</label>
           <input type="text" class="item-nome" placeholder="Ex: Cabo, Peça, Serviço...">
         </div>
@@ -461,6 +542,17 @@
         </div>
       `;
       container.appendChild(bloco);
+    }
+
+    function removerItem(botao) {
+      const bloco = botao.closest('.item-row');
+      const container = document.getElementById('listaItensContainer');
+      // Impede apagar se for o único item restante
+      if (container.querySelectorAll('.item-row').length > 1) {
+        bloco.remove();
+      } else {
+        alert("Você precisa manter pelo menos um item ou serviço.");
+      }
     }
 
     function gerarPDFOficialOS() {
@@ -483,7 +575,7 @@
       const obs = document.getElementById('osObservacoes').value || '';
       const revisado = document.getElementById('osRevisado').value;
 
-      // Recolher itens preenchidos pelo técnico de forma rigorosa e limpa
+      // Recolher itens preenchidos pelo técnico
       const nomes = document.querySelectorAll('.item-nome');
       const quants = document.querySelectorAll('.item-quant');
       const codigos = document.querySelectorAll('.item-codigo');
@@ -601,21 +693,23 @@
       doc.text(`Contato: ${contato}`, 163, y + 5);
 
       y += 8;
-     // Linha CEP, Garantia, Chamado, Horário, Instalado
-      doc.rect(10, y, 50, 8);
-      doc.text(`CEP: ${cep}`, 13, y + 5);
+      // Linha CEP, Garantia, Chamado, Horário, Instalado (Com tamanho ajustado)
+      doc.rect(10, y, 45, 8);
+      doc.setFontSize(8);
+      doc.text(`CEP: ${cep}`, 12, y + 5);
 
-      doc.rect(60, y, 35, 8);
-      doc.text(`Garantia: ${garantia}`, 63, y + 5);
+      doc.rect(55, y, 30, 8);
+      doc.text(`Gar: ${garantia}`, 57, y + 5);
 
-      doc.rect(95, y, 35, 8);
-      doc.text(`Chamado: ${chamado}`, 98, y + 5);
+      doc.rect(85, y, 40, 8);
+      doc.text(`Cham: ${chamado}`, 87, y + 5);
 
-      doc.rect(130, y, 35, 8);
-      doc.text(`Horário: ${horario}`, 133, y + 5);
+      doc.rect(125, y, 35, 8);
+      doc.text(`Hora: ${horario}`, 127, y + 5);
 
-      doc.rect(165, y, 35, 8);
-      doc.text(`Instalado: ${instalado}`, 168, y + 5);
+      doc.rect(160, y, 40, 8);
+      doc.text(`Inst: ${instalado}`, 162, y + 5);
+      doc.setFontSize(9);
 
       y += 8;
       // Linha Atendido por
@@ -636,11 +730,11 @@
       doc.rect(10, y, 190, 8, "F");
       doc.setTextColor(255, 255, 255);
       doc.setFontSize(8.5);
-      doc.text("Quantidade.", 15, y + 5.5);
+      doc.text("Quant.", 15, y + 5.5);
       doc.text("Código", 55, y + 5.5);
-      doc.text("DETALHEMENTO", 95, y + 5.5);
-      doc.text("Valor Unitário", 150, y + 5.5);
-      doc.text("Valor Total", 180, y + 5.5, { align: "right" });
+      doc.text("NOME DA PEÇA", 95, y + 5.5);
+      doc.text("Valor Unit.", 143, y + 5.5);
+      doc.text("Valor Total", 197, y + 5.5, { align: "right" });
 
       y += 8;
       doc.setTextColor(0, 0, 0);
@@ -662,7 +756,7 @@
         y += 7;
       });
 
-      // Linhas vazias complementares para manter o formato exato da folha física
+      // Linhas vazias complementares
       for (let i = 0; i < Math.max(0, 8 - listaItens.length); i++) {
         doc.rect(10, y, 30, 7);
         doc.rect(40, y, 35, 7);
