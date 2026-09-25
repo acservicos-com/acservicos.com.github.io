@@ -240,33 +240,35 @@
         <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" fill="none" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
       </button>
       <h1 class="header-title">Nova Ordem de Serviço</h1>
-      <span class="counter-badge" id="counterBadge">1/6</span>
+      <span class="counter-badge" id="counterBadge">1/4</span>
     </header>
 
     <!-- Indicador de Abas Superior -->
     <div class="steps-indicator" id="stepsIndicator">
-      <div class="step-item active" onclick="irParaEtapa(1)"><div class="step-circle">1</div><span class="step-label">Cliente</span></div>
-      <div class="step-item" onclick="irParaEtapa(2)"><div class="step-circle">2</div><span class="step-label">Equipamento</span></div>
-      <div class="step-item" onclick="irParaEtapa(3)"><div class="step-circle">3</div><span class="step-label">Controlo</span></div>
-      <div class="step-item" onclick="irParaEtapa(4)"><div class="step-circle">4</div><span class="step-label">Peças e Serviços</span></div>
-      <div class="step-item" onclick="irParaEtapa(5)"><div class="step-circle">5</div><span class="step-label">Revisão</span></div>
-      <div class="step-item" onclick="irParaEtapa(6)"><div class="step-circle">6</div><span class="step-label">Gerar PDF</span></div>
+      <div class="step-item active" onclick="irParaEtapa(1)"><div class="step-circle">1</div><span class="step-label">Cabeçalho</span></div>
+      <div class="step-item" onclick="irParaEtapa(2)"><div class="step-circle">2</div><span class="step-label">Peças e Serviços</span></div>
+      <div class="step-item" onclick="irParaEtapa(3)"><div class="step-circle">3</div><span class="step-label">Revisão</span></div>
+      <div class="step-item" onclick="irParaEtapa(4)"><div class="step-circle">4</div><span class="step-label">Gerar PDF</span></div>
     </div>
 
     <main class="container">
       <form id="osForm">
 
-        <!-- ETAPA 1: DADOS DO CLIENTE -->
+        <!-- ETAPA 1: DADOS DO CABEÇALHO DA OS -->
         <div class="tab-step active" id="step1">
           <div class="data-card">
-            <div class="data-card-header">1. Dados do Cliente</div>
+            <div class="data-card-header">1. Informações da Ficha de OS</div>
             <div class="form-group">
-              <label>Cliente (Razão Social / Nome) *</label>
-              <input type="text" id="cliNome" placeholder="Ex: Clínica Odontológica Sorriso Feliz" required>
+              <label>Nº da OS *</label>
+              <input type="text" id="osNum" value="OS #000125" required>
+            </div>
+            <div class="form-group">
+              <label>Cliente *</label>
+              <input type="text" id="cliCliente" placeholder="Nome do cliente ou clínica..." required>
             </div>
             <div class="form-group">
               <label>Endereço *</label>
-              <input type="text" id="cliEndereco" placeholder="Rua, número, bairro">
+              <input type="text" id="cliEndereco" placeholder="Rua, número...">
             </div>
             <div class="row-2">
               <div class="form-group">
@@ -274,96 +276,67 @@
                 <input type="text" id="cliCidade" placeholder="Cidade">
               </div>
               <div class="form-group">
-                <label>Estado (UF) *</label>
+                <label>Estado *</label>
                 <input type="text" id="cliEstado" value="PI">
               </div>
             </div>
             <div class="row-2">
               <div class="form-group">
-                <label>Contato / Telefone *</label>
-                <input type="text" id="cliContato" placeholder="(00) 00000-0000">
+                <label>Contato *</label>
+                <input type="text" id="cliContato" placeholder="Telefone...">
               </div>
               <div class="form-group">
                 <label>CEP</label>
-                <input type="text" id="cliCep" placeholder="00000-000">
+                <input type="text" id="cliCep" placeholder="CEP">
               </div>
             </div>
-          </div>
-          <button type="button" class="next-btn" onclick="proximaEtapa(2)">Próximo &rarr;</button>
-        </div>
-
-        <!-- ETAPA 2: DADOS DO EQUIPAMENTO -->
-        <div class="tab-step" id="step2">
-          <div class="data-card">
-            <div class="data-card-header">2. Dados do Equipamento</div>
-            <div id="listaEquipamentosContainer">
-              <div class="item-row">
-                <div class="form-group">
-                  <label>Equipamento / Marca / Modelo *</label>
-                  <input type="text" class="eq-info" placeholder="Ex: Cadeira Odontológica KaVo">
-                </div>
-                <div class="row-2">
-                  <div class="form-group">
-                    <label>Nº de Série</label>
-                    <input type="text" class="eq-serie" placeholder="Nº de Série">
-                  </div>
-                  <div class="form-group">
-                    <label>Nota Fiscal (N.F.)</label>
-                    <input type="text" class="eq-nf" placeholder="Nº N.F.">
-                  </div>
-                </div>
-              </div>
-            </div>
-            <button type="button" class="add-btn" onclick="adicionarNovoEquipamento()">+ Adicionar outro equipamento</button>
-          </div>
-          <button type="button" class="next-btn" onclick="proximaEtapa(3)">Próximo &rarr;</button>
-        </div>
-
-        <!-- ETAPA 3: INFORMAÇÕES DE CONTROLO E ATENDIMENTO -->
-        <div class="tab-step" id="step3">
-          <div class="data-card">
-            <div class="data-card-header">3. Informações de Controlo</div>
             <div class="row-2">
               <div class="form-group">
-                <label>Garantia:</label>
+                <label>Garantia</label>
                 <select id="osGarantia">
                   <option value="Sim">Sim</option>
                   <option value="Não">Não</option>
                 </select>
               </div>
               <div class="form-group">
-                <label>Chamado Nº:</label>
+                <label>Chamado</label>
                 <input type="text" id="osChamado" placeholder="Nº Chamado">
               </div>
             </div>
             <div class="row-2">
               <div class="form-group">
-                <label>Marcado p/:</label>
+                <label>Marcado p/</label>
                 <input type="text" id="osMarcado" placeholder="Responsável">
               </div>
               <div class="form-group">
-                <label>Horário:</label>
-                <input type="text" id="osHorario" placeholder="Ex: 14:32">
+                <label>Horário</label>
+                <input type="text" id="osHorario" placeholder="Ex: 14:30">
               </div>
             </div>
-            <div class="form-group">
-              <label>Instalado em:</label>
-              <input type="text" id="osInstalado" placeholder="Data de instalação">
+            <div class="row-2">
+              <div class="form-group">
+                <label>Instalado em</label>
+                <input type="text" id="osInstalado" placeholder="Data...">
+              </div>
+              <div class="form-group">
+                <label>N.F. (Nota Fiscal)</label>
+                <input type="text" id="osNf" placeholder="Nº NF">
+              </div>
             </div>
           </div>
-          <button type="button" class="next-btn" onclick="proximaEtapa(4)">Próximo &rarr;</button>
+          <button type="button" class="next-btn" onclick="proximaEtapa(2)">Próximo &rarr;</button>
         </div>
 
-        <!-- ETAPA 4: PEÇAS, CABOS E SERVIÇOS EXECUTADOS (MÚLTIPLOS ITENS) -->
-        <div class="tab-step" id="step4">
+        <!-- ETAPA 2: PEÇAS, CABOS E SERVIÇOS EXECUTADOS -->
+        <div class="tab-step" id="step2">
           <div class="data-card">
-            <div class="data-card-header">4. Peças, Cabos e Serviços Executados</div>
+            <div class="data-card-header">2. Serviços Executados e Peças</div>
             
             <div id="listaItensContainer">
               <div class="item-row">
                 <div class="form-group">
                   <label>Nome da Peça / Cabo / Serviço:</label>
-                  <input type="text" class="item-nome" placeholder="Ex: Terminal bordem, Cabo, Serviço, Combustível">
+                  <input type="text" class="item-nome" placeholder="Ex: Terminal bordem, Cabo, Combustível, Serviço...">
                 </div>
                 <div class="row-2">
                   <div class="form-group">
@@ -382,18 +355,18 @@
               </div>
             </div>
 
-            <button type="button" class="add-btn" onclick="adicionarNovoItem()">+ Adicionar outra peça, cabo ou serviço</button>
+            <button type="button" class="add-btn" onclick="adicionarNovoItem()">+ Adicionar outro item (peça/serviço)</button>
           </div>
-          <button type="button" class="next-btn" onclick="proximaEtapa(5)">Próximo &rarr;</button>
+          <button type="button" class="next-btn" onclick="proximaEtapa(3)">Próximo &rarr;</button>
         </div>
 
-        <!-- ETAPA 5: OBSERVAÇÕES E REVISÃO -->
-        <div class="tab-step" id="step5">
+        <!-- ETAPA 3: OBSERVAÇÕES E REVISÃO -->
+        <div class="tab-step" id="step3">
           <div class="data-card">
-            <div class="data-card-header">5. Observações e Revisão</div>
+            <div class="data-card-header">3. Observações e Condições</div>
             <div class="form-group">
-              <label>Observações gerais:</label>
-              <textarea id="obsGerais" placeholder="Descreva observações importantes..."></textarea>
+              <label>Observações:</label>
+              <textarea id="osObservacoes" placeholder="Observações gerais da OS..."></textarea>
             </div>
             <div class="form-group" style="margin-top: 10px;">
               <label>O equipamento foi consertado e revisado?</label>
@@ -403,14 +376,14 @@
               </select>
             </div>
           </div>
-          <button type="button" class="next-btn" onclick="proximaEtapa(6)">Próximo &rarr;</button>
+          <button type="button" class="next-btn" onclick="proximaEtapa(4)">Próximo &rarr;</button>
         </div>
 
-        <!-- ETAPA 6: GERAR PDF OFICIAL -->
-        <div class="tab-step" id="step6">
+        <!-- ETAPA 4: GERAR PDF OFICIAL -->
+        <div class="tab-step" id="step4">
           <div class="data-card" style="text-align: center;">
-            <div class="data-card-header" style="justify-content:center;">Emissão da OS</div>
-            <p style="font-size:0.85rem; color:#64748b; margin-bottom:14px;">Tudo pronto! Clique abaixo para gerar o PDF oficial idêntico à ficha corporativa.</p>
+            <div class="data-card-header" style="justify-content:center;">Emissão Oficial da OS</div>
+            <p style="font-size:0.85rem; color:#64748b; margin-bottom:14px;">Tudo pronto! Clique abaixo para gerar o PDF idêntico à ficha corporativa com os seus dados.</p>
             
             <button type="button" class="next-btn" onclick="gerarPDFOficialOS()" style="background: #10b981; margin-bottom: 15px;">
               📄 GERAR PDF OFICIAL DA OS &rarr;
@@ -424,7 +397,7 @@
 
   <script>
     let etapaAtual = 1;
-    const totalEtapas = 6;
+    const totalEtapas = 4;
 
     function proximaEtapa(etapa) {
       document.getElementById(`step${etapaAtual}`).classList.remove('active');
@@ -449,29 +422,6 @@
       }
     }
 
-    function adicionarNovoEquipamento() {
-      const container = document.getElementById('listaEquipamentosContainer');
-      const bloco = document.createElement('div');
-      bloco.classList.add('item-row');
-      bloco.innerHTML = `
-        <div class="form-group">
-          <label>Equipamento / Marca / Modelo *</label>
-          <input type="text" class="eq-info" placeholder="Ex: Autoclave / Compressor">
-        </div>
-        <div class="row-2">
-          <div class="form-group">
-            <label>Nº de Série</label>
-            <input type="text" class="eq-serie" placeholder="Nº de Série">
-          </div>
-          <div class="form-group">
-            <label>Nota Fiscal (N.F.)</label>
-            <input type="text" class="eq-nf" placeholder="Nº N.F.">
-          </div>
-        </div>
-      `;
-      container.appendChild(bloco);
-    }
-
     function adicionarNovoItem() {
       const container = document.getElementById('listaItensContainer');
       const bloco = document.createElement('div');
@@ -479,7 +429,7 @@
       bloco.innerHTML = `
         <div class="form-group">
           <label>Nome da Peça / Cabo / Serviço:</label>
-          <input type="text" class="item-nome" placeholder="Ex: Cabo, Placa, Mão de obra...">
+          <input type="text" class="item-nome" placeholder="Ex: Cabo, Peça, Serviço...">
         </div>
         <div class="row-2">
           <div class="form-group">
@@ -503,8 +453,8 @@
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF('p', 'mm', 'a4');
 
-      const numOS = "OS #" + Math.floor(100000 + Math.random() * 900000);
-      const cliente = document.getElementById('cliNome').value || 'Clínica Odontológica';
+      const numOS = document.getElementById('osNum').value || 'OS #000125';
+      const cliente = document.getElementById('cliCliente').value || 'Cliente';
       const endereco = document.getElementById('cliEndereco').value || '';
       const cidade = document.getElementById('cliCidade').value || '';
       const estado = document.getElementById('cliEstado').value || 'PI';
@@ -513,13 +463,13 @@
       const garantia = document.getElementById('osGarantia').value;
       const chamado = document.getElementById('osChamado').value || '';
       const marcado = document.getElementById('osMarcado').value || '';
-      const horario = document.getElementById('osHorario').value || new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+      const horario = document.getElementById('osHorario').value || '';
       const instalado = document.getElementById('osInstalado').value || '';
-      const nf = document.querySelector('.eq-nf')?.value || '';
-      const obs = document.getElementById('obsGerais').value || '';
+      const nf = document.getElementById('osNf').value || '';
+      const obs = document.getElementById('osObservacoes').value || '';
       const revisado = document.getElementById('osRevisado').value;
 
-      // Recolher itens dinâmicos
+      // Recolher itens preenchidos pelo técnico
       const nomes = document.querySelectorAll('.item-nome');
       const quants = document.querySelectorAll('.item-quant');
       const codigos = document.querySelectorAll('.item-codigo');
@@ -530,7 +480,9 @@
       let totalServicoCalc = 0;
 
       for (let i = 0; i < nomes.length; i++) {
-        const nome = nomes[i].value || 'Item';
+        const nome = nomes[i].value.trim();
+        if (!nome) continue; // Ignora campos vazios
+
         const q = parseFloat(quants[i].value) || 1;
         const cod = codigos[i].value || '';
         const v = parseFloat(valores[i].value.replace(/\./g, '').replace(',', '.')) || 0;
@@ -538,7 +490,7 @@
 
         listaItens.push([String(q).padStart(2, '0'), cod, nome, v.toFixed(2).replace('.', ','), subtotal.toFixed(2).replace('.', ',')]);
         
-        if (nome.toLowerCase().includes('serviço') || nome.toLowerCase().includes('mao de obra')) {
+        if (nome.toLowerCase().includes('serviço') || nome.toLowerCase().includes('mão de obra')) {
           totalServicoCalc += subtotal;
         } else {
           totalPecasCalc += subtotal;
@@ -547,12 +499,12 @@
 
       const totalGeralCalc = totalPecasCalc + totalServicoCalc;
 
-      // Salva no histórico local
+      // Salva no histórico local para aparecer na página ordens.html
       const novaOS = {
         numero: numOS,
         cliente: cliente,
-        equipamento: document.querySelector('.eq-info')?.value || 'Equipamento',
-        data: `${new Date().toLocaleDateString('pt-BR')} - ${horario}`,
+        equipamento: 'Equipamento Odontológico',
+        data: `${new Date().toLocaleDateString('pt-BR')} - ${horario || new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'})}`,
         statusTexto: 'Concluída',
         statusEstilo: 'status-concluida',
         statusClasse: 'concluida'
@@ -672,7 +624,7 @@
       doc.setTextColor(0, 0, 0);
       doc.setFont("helvetica", "normal");
 
-      // Preenche os itens adicionados
+      // Preenche apenas os itens inseridos pelo técnico
       listaItens.forEach(item => {
         doc.rect(10, y, 30, 7);
         doc.rect(40, y, 35, 7);
@@ -688,7 +640,7 @@
         y += 7;
       });
 
-      // Linhas vazias complementares para manter o formato da ficha física
+      // Linhas vazias complementares para manter o formato exato da folha física
       for (let i = 0; i < Math.max(0, 8 - listaItens.length); i++) {
         doc.rect(10, y, 30, 7);
         doc.rect(40, y, 35, 7);
@@ -707,13 +659,13 @@
       doc.setFont("helvetica", "bold");
       doc.text("Observações:", 13, y + 5);
       doc.setFont("helvetica", "normal");
-      doc.text(obs || "Equipamento revisado e testado com sucesso.", 13, y + 12, { maxWidth: 130 });
+      doc.text(obs, 13, y + 12, { maxWidth: 130 });
 
       doc.text("TOTAL PÇ", 153, y + 5.5);
-      doc.text(`R$ ${totalPecas.toFixed(2).replace('.', ',')}`, 197, y + 5.5, { align: "right" });
+      doc.text(`R$ ${totalPecas > 0 ? totalPecas.toFixed(2).replace('.', ',') : '0,00'}`, 197, y + 5.5, { align: "right" });
 
       doc.text("SERVIÇO", 153, y + 13.8);
-      doc.text(`R$ ${totalServico.toFixed(2).replace('.', ',')}`, 197, y + 13.8, { align: "right" });
+      doc.text(`R$ ${totalServico > 0 ? totalServico.toFixed(2).replace('.', ',') : '0,00'}`, 197, y + 13.8, { align: "right" });
 
       doc.text("TOTAL", 153, y + 22.1);
       doc.text(`R$ ${totalGeral.toFixed(2).replace('.', ',')}`, 197, y + 22.1, { align: "right" });
